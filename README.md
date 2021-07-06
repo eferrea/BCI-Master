@@ -1,5 +1,5 @@
 # BCImat a Matlab Brain Computer Interface
-Description
+Description1
 BCImat is a Matlab program implementinhg a BCI decoder to decode movement intetions via two types of interfaces:
 1) a simulated set of cosine tuned neurons
 2) a real neural interface from Blackrock 128 channel recording system that using the cbmex .
