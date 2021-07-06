@@ -43,7 +43,7 @@ else
     fake_monkey= simNeurons_3D_velocity(neurons); % number of neurons
 end
 %set_the waiting time in seconds
-BCI_update_time = 0.033 %in secs. As described in papers KF usually uses 50 ms.
+BCI_update_time = 0.05 %in secs. As described in papers KF usually uses 50 ms.
 counter = 1;
 corr_counter =0;% this counter count the number of iterations per trial
 internal_hit_counter =0;
