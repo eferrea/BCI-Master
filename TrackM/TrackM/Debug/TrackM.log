@@ -1,0 +1,29 @@
+﻿Build started 7/6/2021 2:29:23 PM.
+     1>Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(65): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(72): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(74): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(75): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(77): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(80): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(130): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(143): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(144): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(149): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(154): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(166): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(181): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(199): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\LAB\Libraries\SFML-2.5.1\build\lib\Debug" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" vrpn.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.lib" /MACHINE:X86 Debug\main.obj
+         Debug\vrpn_server_class.obj
+         TrackM.vcxproj -> C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.exe
+     1>Done Building Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.55
