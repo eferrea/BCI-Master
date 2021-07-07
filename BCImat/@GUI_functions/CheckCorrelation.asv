@@ -6,6 +6,6 @@ function CheckCorrelation (object, eventdata)
 object.check_correlation = true;
 disp('Check Correlation')
 
- 
+
 
 end
