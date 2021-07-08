@@ -180,20 +180,20 @@ classdef Kalman_decoder_class < handle;
             
         end
         
-        function OnlineCorrelation(obj,task_state,velocity_vector,decoder_on,isIDLE,check_correlation)
+        function OnlineCorrelation(obj,task_state,velocity_vector,decoder_on,isIDLE)
             
             %Output the actual decoder performance stor values in two variables and compare them
             %in the future will be better to store indexes and retrieve
             %data from proper variables.
-            if(decoder_on && isIDLE) && (strcmp(task_state.stage_type,'ACQUIRE_MEM_TGT') || strcmp(task_state.stage_type,'HOLD_MEM_TGT'))
+            if(decoder_on && isIDLE) && (strcmp(task_state.stage_type,'2') || strcmp(task_state.stage_type,'2'))
                 obj.correlation_counter = obj.correlation_counter +1;
                 obj.correlation_velocity(1,obj.correlation_counter) =  velocity_vector(1,1);
                 obj.correlation_velocity(2,obj.correlation_counter) =  velocity_vector(2,1);
-                obj.correlation_velocity(3,obj.correlation_counter) =  velocity_vector(3,1);
+%                obj.correlation_velocity(3,obj.correlation_counter) =  velocity_vector(3,1);
                 
                 obj.bci_correlation_velocity(1,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,1);
                 obj.bci_correlation_velocity(2,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,2);
-                obj.bci_correlation_velocity(3,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,3);
+              %  obj.bci_correlation_velocity(3,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,3);
                 % disp(num2str(vx_bci(obj.correlation_counter)))
                 %         if(task_state.new_stage && (strcmp(task_state.stage_type,'ACQUIRE_MEM_TGT')))
                 %             internal_hit_counter = internal_hit_counter +1
@@ -205,9 +205,9 @@ classdef Kalman_decoder_class < handle;
                     % check_correlation = false;
                     rx = corr(obj.correlation_velocity(1,1:obj.correlation_counter )', obj.bci_correlation_velocity(1,1:obj.correlation_counter )');
                     ry = corr(obj.correlation_velocity(2,1:obj.correlation_counter )', obj.bci_correlation_velocity(2,1:obj.correlation_counter )');
-                    rz = corr(obj.correlation_velocity(3,1:obj.correlation_counter )', obj.bci_correlation_velocity(3,1:obj.correlation_counter )');
+                    %rz = corr(obj.correlation_velocity(3,1:obj.correlation_counter )', obj.bci_correlation_velocity(3,1:obj.correlation_counter )');
                     
-                    disp(['rx: ' num2str(rx) ' ry:' num2str(ry) ' rz:' num2str(rz)])
+                    disp(['rx: ' num2str(rx) ' ry:' num2str(ry) ])
                     obj.correlation_counter  = 0;
                     obj.check_correlation = false;
                 end
@@ -235,11 +235,11 @@ classdef Kalman_decoder_class < handle;
             
             
             obj.K = 0;
-            obj.position = [0 0 0];
-            obj.velocity = [0 0 0];
+            obj.position = [0 0];
+            obj.velocity = [0 0];
             obj.neurons = false(128,6);
             obj.P = 0;
-            obj.X_update = zeros(7,1);
+            obj.X_update = zeros(5,1);
             obj.X_update(1,1) = 1;
             obj.firing_rate = zeros(obj.expected_total_samples,768);
             obj.sample = obj.delay +1;

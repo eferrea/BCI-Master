@@ -349,13 +349,13 @@ classdef Kalman_calibrator_class < handle
             %Calculate modulation depth as norm of the theta matrix
             %(if the velocity vector for training was normalized)
             %(check for this)
-            obj.modulation_depth = arrayfun(@(fix) norm(cH_stored(fix,5:end)), 1:size(cH_stored,1));
+            obj.modulation_depth = arrayfun(@(fix) norm(cH_stored(fix,4:end)), 1:size(cH_stored,1));
             
             %Calculate preferred directions as the third and second
             %elements of B normalized by theta(2:end) length.
             %(check for this as well)
             
-            obj.preferred_direction = (cH_stored(:,5:end)./repmat(obj.modulation_depth',1,3))';
+            obj.preferred_direction = (cH_stored(:,4:end)./repmat(obj.modulation_depth',1,2))';
             
             obj.correlation_tuning = T_stored;
             obj.training_sample_number = samples_stored;

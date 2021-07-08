@@ -4,7 +4,7 @@ clc
 close all
 %warning('off','MATLAB:singularMatrix')
 opengl hardware
-%% Initialize text file to store values
+%% Initialize text file to store variables of interest
 [year,month,day] =  ymd(datetime);
 [hour,minute,second] = hms(datetime);
 filename_root = [num2str(year) '-' num2str(month) '-' num2str(day) '_' num2str(hour) '-'  num2str(minute) '-'  num2str(int8(second))];
@@ -30,6 +30,7 @@ fprintf(fileID_spikes,printfFormatSpikesHeader,'time',1:768);
 parity_check = 0;
 isBCI = -1;
 isIDLE = false;
+parity_idle = 0; %parity check for IDLE state
 decoder_on = false;
 task_running = true;%value to run the loop
 check_correlation = false; % check_correlation in IDLE_state;
@@ -50,6 +51,7 @@ internal_hit_counter =0;
 max_trial_duration = 60;%[s] %used to initialize the maximum size of the buffer for spike data
 max_experiment_duration = 10800;%in [sec]
 
+
 %Inizialize data to store spikes the number 768 takes into account 6 units and 128 channels
 spike_data = zeros(ceil(max_trial_duration/BCI_update_time),768);
 %We want to store the time information for each trial
@@ -62,7 +64,7 @@ interval = 0;
 %store in a table task parameters that will be used to dsave the data: the
 %table is suitable for two reasons: ease of indexing entries and better
 %readability of the code.
-%task_buffer = cell(ceil(max_trial_duration/BCI_update_time),8);alternative
+
 task_buffer =  table(nan(ceil(max_trial_duration/BCI_update_time),1),nan(ceil(max_trial_duration/BCI_update_time),1),...
     repmat({'none'},ceil(max_trial_duration/BCI_update_time),1),nan(ceil(max_trial_duration/BCI_update_time),1),...
     nan(ceil(max_trial_duration/BCI_update_time),1),nan(ceil(max_trial_duration/BCI_update_time),1),...
@@ -73,32 +75,23 @@ task_buffer =  table(nan(ceil(max_trial_duration/BCI_update_time),1),nan(ceil(ma
 
 
 %% initialize dynamical vectors
-direction_vector = [0 0]; %to store directions of the target
-velocity_vector = zeros(ceil(max_trial_duration/BCI_update_time),2); % used to simulate Poisson like
+direction_vector = [0 0]; %to store target directions
+velocity_vector = zeros(ceil(max_trial_duration/BCI_update_time),2); 
 position_vector = zeros(ceil(max_trial_duration/BCI_update_time),2);
-accelleration_vector = zeros(ceil(max_trial_duration/BCI_update_time),2);
+
 
 %% define some inline function to retrieve right timings from the call to now
 d2s=@(t)t*86400;
-s2d=@(t)t/86400;
 
-% % %% initialize VRPN matlab server
-  %vrpn_server('start_server','Tracker0@172.17.6.10:5555')
-% % % %initialize VRPN matlab client
-  % vrpn_client('open_connection','Tracker10@127.0.0.1:6666') %same computer
-% % %vrpn_client('open_connection','Tracker10@172.17.6.149:6666') %Pierre's Computer
-% 
-% 
+%% initialize VRPN matlab server
 vrpn_server('start_server','Tracker0@172.17.6.10')
-% % %initialize VRPN matlab client
+%% %initialize VRPN matlab client
 vrpn_client('open_connection','Tracker10@172.17.6.10:6666') %same computer
-% % %vrpn_client('open_connection','Tracker10@127.0.0.1:6666') %same computer
-% % %vrpn_client('open_connection','Tracker10@172.17.6.10:6666') %Pierre's Computer
- % vrpn_client('open_connection','Tracker10@172.17.6.10:6666') %my computer
 
 %% initialize objects
 tp=task_state_class();
 tp.set_new_trial_callback(@(tmp)[]);
+%max number of idle correlated samples
 max_corr_samples = 200;
 cal = Kalman_calibrator_class(dimensions,BCI_update_time,max_experiment_duration,delay);
 bci = Kalman_decoder_class(dimensions,BCI_update_time,max_experiment_duration,delay,max_corr_samples);
@@ -106,7 +99,7 @@ perc = 0; % shared control starting value
 %%  use a simple GUI to do the switch the function that get used (it is defined
 % at the end of the code)
 fh = figure('Position',[1300 200 1000 900]);
-%Panel to put the switch and close BCI buttons
+%Implement GUI BCI buttons
 p = uipanel('Position',[0.89 0.75 .1 .25]);
 %Configure stop window
 h = uicontrol(p,'Style', 'PushButton', 'String', 'Stop BCI','Units','normalized',...
@@ -124,16 +117,17 @@ f = uicontrol(p,'Style', 'PushButton', 'String', 'Load Decoder', 'Units','normal
 u = uicontrol(p,'Style', 'PushButton', 'String', 'Update Regression', 'Units','normalized',...
     'Callback',@UpdateRegression,'Position',[0 .55 1 .12]);
 
+id = uicontrol(p,'Style', 'PushButton', 'String', 'BCIIDLE', 'Units','normalized',...
+    'Callback',@BCIIDLE,'Position',[0 .69 1 .12]);
 
-%Configure Button Press
+
+%% Configure Button Press
 hndl=@(object,eventdata)mouseClick(cal,'WindowButtonDownFcn');
 hndl1=@(object,eventdata)CheckCorrelation(bci,'PushButton');
-%hndl1 = @(object,eventdata)mouseMove(cal,'WindowButtonMotionFcn');
 
 hl1  = uicontrol(p,'Style', 'PushButton', 'String', 'Check Correlation','Units','normalized',...
     'Callback', hndl1,'Position',[0 .83 1 .12]);
 
-%set (gcf, 'WindowButtonMotionFcn',hndl1);
 set (gcf, 'WindowButtonDownFcn', hndl);
 
 %create other panel to clear calibrator window
@@ -146,8 +140,9 @@ h1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Decoder','Units','norm
 g1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Calibrator', 'Units','normalized',...
     'Callback',@ResetCalibrator,'Position',[0 .52 1 .45]);
 
-%%Log in the task controller the property of the fajke monkey
+%% Log in the task controller the property of the fake monkey
 p2 = uipanel('Title','Shared Control','FontSize',8,'Position',[0.89 0.25 .1 .10])
+%shared control button
 g2 = uicontrol(p2,'style','edit',...
     'Units','normalized',...
     'Position',[0.1 0.1 0.8 0.8],...
@@ -179,7 +174,7 @@ while (task_running)
     %parse task controller messages
     tp.parse_messages(b)
 
-    
+
     %% Generate spike data and flush spike buffer if a new trial has started.
     %Erase spike buffer and elapsed time counter.
     if tp.new_trial
@@ -280,7 +275,7 @@ while (task_running)
     end
     bci.loop(tp,global_time,interval,number_of_spikes,decoder_on,direction_vector,perc);
     %store variables for displaying correlation values in the IDLE mode.
-    bci.OnlineCorrelation(tp,velocity_vector(counter,:)',decoder_on,isIDLE,check_correlation);
+    bci.OnlineCorrelation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
     %run a calibration step if the target was hit (inside the function regression is done at the reward stage)
     cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector,use_eye_fixation);
     
@@ -373,20 +368,22 @@ while (task_running)
     pause(waiting_time) %wait the additional amount of time
 end
 
-%Close the cbmex connection and vrpn connection
+%% Close the cbmex connection and vrpn connection
 cbmex('close')
 vrpn_server('stop_server')
 close all
+%% Define Callback functions when specific buttons are pressed
 
-%this is the function called once we press the button
     function SwitchBCI(hObj,event)
         
         if mod(parity_check,2) == 0
             
             isBCI = 1;
+            g.ForegroundColor = 'red';
             
         else
-            isBCI = 0;
+            isBCI = 0
+            g.ForegroundColor = 'black';
         end
         
         parity_check = parity_check + 1;
@@ -472,6 +469,29 @@ close all
     end
 
 
+    function BCIIDLE(hObj,event)
+        vrpn_server('send_message','BCIIDLEON') %notify it to TC
+        if mod(parity_idle,2) == 0
+            display('BCI IDLE ON')
+            id.ForegroundColor = 'red';
+            cal.UpdateDecoder(bci,decoder_on); % Update the decoder
+            decoder_on = true; %set BCI state active
+            vrpn_server('send_message',cal.filename) %notify TC the calibrator file in use
+            isIDLE = true;
+            
+            
+        else
+            vrpn_server('send_message','BCIIDLEOFF')%notify TC the calibrator file in use
+            display('BCI IDLE OFF')
+            id.ForegroundColor = 'black';%display on shell
+            decoder_on = false; %set BCI state inactive
+            isIDLE = false;
+            
+            
+        end
+        
+        parity_idle= parity_idle + 1;
+    end
 
 
 

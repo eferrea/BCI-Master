@@ -58,6 +58,8 @@ int main()
 	int target_radius = 30;
 	int hand_radius = 5;
 
+	double  targetx_dir = 0, targety_dir = 0,norm;  
+
 	bool is_bci = false;
 
 	int trial_counter = 0;
@@ -145,6 +147,7 @@ int main()
 			
 			vrpn_server->send_message("STAGE," + std::to_string(stage));
 			
+			std::cout << "x:" << targetx_dir << "y" << targety_dir << std::endl;
 			//stage 1 (move to center)
 			if((abs(mousePosition.x - fixPos.x) < 15) & (abs(mousePosition.y - fixPos.y) < 15) & stage ==1 )
 			{
@@ -152,8 +155,15 @@ int main()
 				random_x = rand() % window_length*4/5;
 				random_y = rand() % window_height*4/5;
 				target.setPosition(random_x, random_y);
-				//target.setFillColor(sf::Color(0, 150, 0));
-				//fixPoint.setFillColor(sf::Color(0, 0, 0));
+				targetx_dir = random_x - fixPos.x;
+				targety_dir = -random_y + fixPos.x;
+				norm = sqrt(pow(targetx_dir, 2) + pow(targety_dir, 2));
+				targetx_dir = targetx_dir / norm;
+				targety_dir = targety_dir / norm;
+			    
+				vrpn_server->send_message("REFERENCE_X_DIRECTION," + std::to_string(targetx_dir));
+				vrpn_server->send_message("REFERENCE_Y_DIRECTION," + std::to_string(targety_dir));
+			
 				stage = 2;
 				clock.restart();
 				
@@ -169,8 +179,6 @@ int main()
 				stage = 3;
 				vrpn_server->send_message("STAGE," + std::to_string(stage));
 				Sleep(300);
-				//target.setFillColor(sf::Color(0, 0, 0));
-				//fixPoint.setFillColor(sf::Color(150, 150, 150));
 				stage = 1;
 				trial_counter += 1;
 				vrpn_server->send_message("TRIAL," +std::to_string(trial_counter));
@@ -184,8 +192,6 @@ int main()
 				stage = 3;
 				vrpn_server->send_message("STAGE," + std::to_string(stage));
 				Sleep(300);
-				//target.setFillColor(sf::Color(0, 0, 0));
-				//fixPoint.setFillColor(sf::Color(150, 150, 150));
 				stage = 1;
 				trial_counter += 1;
 				vrpn_server->send_message("TRIAL," + std::to_string(trial_counter));
@@ -208,6 +214,7 @@ int main()
 
 			if (message.compare("BCION") == 0)
 			{
+				Sleep(10);
 				is_bci = true;
 				std::cout << "BCI_stat: "<< is_bci << std::endl;
 			
@@ -216,6 +223,7 @@ int main()
 
 			if (message.compare("BCIOFF") == 0)
 			{
+				Sleep(10);
 				is_bci = false;
 				std::cout << "BCI_stat: " << is_bci << std::endl;
 
