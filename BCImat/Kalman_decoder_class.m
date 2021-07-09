@@ -17,6 +17,7 @@ classdef Kalman_decoder_class < handle;
         bci_correlation_velocity;
         max_corr_samples;
         dt;
+        rotation_counter;
         
         
         fileID_decoder;
@@ -42,6 +43,7 @@ classdef Kalman_decoder_class < handle;
         neurons;
         H;
         H_reset;
+        fixation_position;
         
     end
     
@@ -85,6 +87,8 @@ classdef Kalman_decoder_class < handle;
             obj.bci_correlation_velocity = zeros(3,obj.max_corr_samples);
             obj.check_correlation = false;
             obj.dt = sample_size;
+            obj.rotation_counter = 1;
+            obj.fixation_position = [0 0];
             
             
             [year,month,day] =  ymd(datetime);
@@ -99,6 +103,17 @@ classdef Kalman_decoder_class < handle;
             fprintf(obj.fileID_decoder,obj.printfFormatHeader,'time','K');
             
             
+        end
+        
+        %set BCI starting postion from outside (this info comes from the
+        %task controller (usually)
+        function obj = set_fixation_position(obj,fixation_position)
+            obj.fixation_position  = fixation_position;
+        end
+        
+        
+        function pos = get_position(obj)
+            pos = [obj.position(obj.sample-obj.delay,1) obj.position(obj.sample-obj.delay,2)];
         end
         
         %This function get called ever iteration and does something after a certain amount of time.
@@ -124,7 +139,8 @@ classdef Kalman_decoder_class < handle;
             else
                 % Put cursur at zero position at the beginning of the trial
                 % and when BCI is not running
-                obj.position(obj.sample,:) = [144 123];
+                
+                obj.position(obj.sample,:) = obj.fixation_position';%% read from TC 
                 obj.velocity(obj.sample,:) = [0 0];
                 obj.X_update = [1; obj.position(obj.sample,:)'; obj.velocity(obj.sample,:)'];
                 obj.P = 0;
@@ -132,7 +148,7 @@ classdef Kalman_decoder_class < handle;
             end
             %Send the updated position to the task controller
             
-            obj.send_position();
+            %obj.send_position();
             
             
         end
@@ -143,6 +159,8 @@ classdef Kalman_decoder_class < handle;
             
             obj.Z = obj.firing_rate(obj.sample,find(obj.neurons ==1))'; %the delay takes into account the delay between firing rates and actuation
             obj.X = obj.X_update; %update from previous stage
+            obj.X(2:3) = obj.position(obj.sample-obj.delay,:)';
+            obj.X(4:5) = obj.velocity(obj.sample-obj.delay,:)';
             
             % I. time update the equations
             obj.X_prior = obj.A*obj.X; %a priori estimate of the state
@@ -168,13 +186,14 @@ classdef Kalman_decoder_class < handle;
             
             %dt =0.05;
             obj.velocity(obj.sample,:) = obj.X_update(4:5)';
-            obtimal_vector = target_position-obj.position(obj.sample-1,:);
-            
+           obtimal_vector = -obj.position(obj.sample-1,:) +  target_position;
+            %obtimal_vector = target_position;
+           
             %obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + dt*(1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
-            %obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + (1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
-            obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*obj.velocity(obj.sample,:);
+            obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + (1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
+            %obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*obj.velocity(obj.sample,:);
             obj.X_update(2:3) = obj.position(obj.sample,:)';
-%             obj.X_update(4:5) = num2str(obj.velocity(obj.sample,:)';
+           %  obj.X_update(4:5) = obj.velocity(obj.sample-delay,:)';
             
           % disp([num2str(obj.velocity(obj.sample,1)/1000),'tt', num2str(obj.velocity(obj.sample,2)/1000)])
             
@@ -224,44 +243,39 @@ classdef Kalman_decoder_class < handle;
         end
         
         %send the cursor position to th etask controller
-        function obj = send_position(obj)
-            
-            vrpn_server('set_position',obj.position(obj.sample-obj.delay,1),obj.position(obj.sample-obj.delay,2),0);
-         %disp([num2str(obj.position(obj.sample-obj.delay,1)/1000),'tt', num2str(obj.position(obj.sample-obj.delay,2)/1000)])
-        end
+%         function obj = send_position(obj)
+%             
+%             vrpn_server('set_position',obj.position(obj.sample-obj.delay,1),obj.position(obj.sample-obj.delay,2),0);
+%          %disp([num2str(obj.position(obj.sample-obj.delay,1)/1000),'tt', num2str(obj.position(obj.sample-obj.delay,2)/1000)])
+%         end
         
-        % This function will erase the decoder to values
-        function obj = ResetDecoder(obj)
-            
-            
-            obj.K = 0;
-            obj.position = [0 0];
-            obj.velocity = [0 0];
-            obj.neurons = false(128,6);
-            obj.P = 0;
-            obj.X_update = zeros(5,1);
-            obj.X_update(1,1) = 1;
-            obj.firing_rate = zeros(obj.expected_total_samples,768);
-            obj.sample = obj.delay +1;
-            
-            
-        end
+  
         
         %apply rotation to prefer directions of a subset of neurons
-        function obj = UpdateRotation(obj,reshaped_correlation,unit_vector,theta,percent)
-         selected_unit_matrix = false(128,6)
-         temp_matrix = find(obj.neurons ==1);
-        selected_units = sort(randperm(length(obj.H),floor(length(obj.H)/100*percent)))
-       temp_matrix = temp_matrix(selected_units');
-        selected_unit_matrix(temp_matrix) = 1;
-        %matrix of rotation in 3D
-        rotation_matrix = [unit_vector(1)^2 + (1-unit_vector(1)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(1)*unit_vector(2) - sind(theta)*unit_vector(3), (1 - cosd(theta))*unit_vector(1)*unit_vector(3) + sind(theta)*unit_vector(2);... 
-            (1 - cosd(theta))*unit_vector(2)*unit_vector(1) + sind(theta)*unit_vector(3), unit_vector(2)^2 + (1 - unit_vector(2)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(2)*unit_vector(3) - sind(theta)*unit_vector(1);...
-            (1 - cosd(theta))*unit_vector(3)*unit_vector(1) - sind(theta)*unit_vector(2), (1 - cosd(theta))*unit_vector(3)*unit_vector(2) + sind(theta)*unit_vector(1), unit_vector(3)^2 + (1 - unit_vector(3)^2)*cosd(theta) ];
+        function obj = UpdateRotation(obj,reshaped_correlation,theta,percent)
+            %save original calibration matrix only if the first rotation is
+            %applied sine sequential rotations can be applied also
             
-           % obj.H(selected_units,5:7) = obj.H(selected_units,5:7)*rotation_matrix;
-             temp = rotation_matrix*obj.H(selected_units,5:7)';
-            obj.H(selected_units,5:7) = temp';
+            if (obj.rotation_counter == 1)
+                obj.H_reset =obj.H;
+            end
+            
+            obj.rotation_counter = obj.rotation_counter+1;
+            selected_unit_matrix = false(128,6)
+            temp_matrix = find(obj.neurons ==1);
+            selected_units = sort(randperm(length(obj.H),floor(length(obj.H)/100*percent)))
+            temp_matrix = temp_matrix(selected_units');
+            selected_unit_matrix(temp_matrix) = 1;
+            %matrix of rotation in 3D
+            %         rotation_matrix = [unit_vector(1)^2 + (1-unit_vector(1)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(1)*unit_vector(2) - sind(theta)*unit_vector(3), (1 - cosd(theta))*unit_vector(1)*unit_vector(3) + sind(theta)*unit_vector(2);...
+            %             (1 - cosd(theta))*unit_vector(2)*unit_vector(1) + sind(theta)*unit_vector(3), unit_vector(2)^2 + (1 - unit_vector(2)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(2)*unit_vector(3) - sind(theta)*unit_vector(1);...
+            %             (1 - cosd(theta))*unit_vector(3)*unit_vector(1) - sind(theta)*unit_vector(2), (1 - cosd(theta))*unit_vector(3)*unit_vector(2) + sind(theta)*unit_vector(1), unit_vector(3)^2 + (1 - unit_vector(3)^2)*cosd(theta) ];
+            %matrix of rotation in 2D
+            
+            rotation_matrix = [cosd(theta),-sind(theta); sind(theta), cosd(theta)];
+            % obj.H(selected_units,5:7) = obj.H(selected_units,5:7)*rotation_matrix;
+            temp = rotation_matrix*obj.H(selected_units,4:5)';
+            obj.H(selected_units,4:5) = temp';
             %save the selected units in a perturbation.mat file
             display_rotated_units(0.01, 0.35, .42, .6,reshaped_correlation',obj.neurons',selected_unit_matrix')
         end

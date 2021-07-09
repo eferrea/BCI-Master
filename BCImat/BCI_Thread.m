@@ -3,7 +3,7 @@ function BCI_Thread(isBrain,neurons,dimensions,delay,use_eye_fixation)
 clc
 close all
 %warning('off','MATLAB:singularMatrix')
-opengl hardware
+opengl software
 %% Initialize text file to store variables of interest
 [year,month,day] =  ymd(datetime);
 [hour,minute,second] = hms(datetime);
@@ -78,6 +78,7 @@ task_buffer =  table(nan(ceil(max_trial_duration/BCI_update_time),1),nan(ceil(ma
 direction_vector = [0 0]; %to store target directions
 velocity_vector = zeros(ceil(max_trial_duration/BCI_update_time),2); 
 position_vector = zeros(ceil(max_trial_duration/BCI_update_time),2);
+fixation_position = [0 0];    
 
 
 %% define some inline function to retrieve right timings from the call to now
@@ -131,14 +132,14 @@ hl1  = uicontrol(p,'Style', 'PushButton', 'String', 'Check Correlation','Units',
 set (gcf, 'WindowButtonDownFcn', hndl);
 
 %create other panel to clear calibrator window
-p1 = uipanel('Position',[0.89 0.55 .1 .15]);
+p1 = uipanel('Position',[0.89 0.55 .1 .05]);
 
-%clear the calibrator window
-h1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Decoder','Units','normalized',...
-    'Callback', @ResetDecoder,'Position',[0 .01 1 .45]);
+% %clear the calibrator window
+% h1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Decoder','Units','normalized',...
+%     'Callback', @ResetDecoder,'Position',[0 .01 1 .45]);
 %clear the decoder window
 g1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Calibrator', 'Units','normalized',...
-    'Callback',@ResetCalibrator,'Position',[0 .52 1 .45]);
+    'Callback',@ResetCalibrator,'Position',[0 .12 1 .7]);
 
 %% Log in the task controller the property of the fake monkey
 p2 = uipanel('Title','Shared Control','FontSize',8,'Position',[0.89 0.25 .1 .10])
@@ -179,6 +180,8 @@ while (task_running)
     %Erase spike buffer and elapsed time counter.
     if tp.new_trial
         disp('new trial')
+        %change central fixation position
+        bci.set_fixation_position(fixation_position);
         %save everything from the previous trial at the beginning of the
         %current trial
         for i = 1: counter-1
@@ -211,6 +214,9 @@ while (task_running)
         direction_vector(1) = tp.parameters.REFERENCE_X_DIRECTION;
         direction_vector(2) = tp.parameters.REFERENCE_Y_DIRECTION;
         %direction_vector(3) = tp.parameters.REFERENCE_Z_DIRECTION;
+        
+        fixation_position(1) = tp.parameters.X_FIXATION;
+        fixation_position(2) = tp.parameters.Y_FIXATION;
     end
     %display(global_time)
     % display(direction_vector)
@@ -265,7 +271,7 @@ while (task_running)
     spike_data(counter,1:768) = B;
     
     
-    %% ##############Execute the main calibrator and BCI loops
+%% accumulate spike counts   
     if counter > 1
         number_of_spikes = spike_data(counter,:) - spike_data(counter-1,:);
         interval =  elapsed_time(counter) - elapsed_time(counter-1);
@@ -273,27 +279,35 @@ while (task_running)
         number_of_spikes = spike_data(counter,:);
         interval =  elapsed_time(counter);
     end
+    %% ###Execute the main calibrator,BCI loops and send 
     bci.loop(tp,global_time,interval,number_of_spikes,decoder_on,direction_vector,perc);
     %store variables for displaying correlation values in the IDLE mode.
     bci.OnlineCorrelation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
     %run a calibration step if the target was hit (inside the function regression is done at the reward stage)
     cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector,use_eye_fixation);
     
-    
+    %send decoder info to TC
+    pos = bci.get_position();
+    vrpn_server('set_position',pos(1),pos(2),0);
     
     
     %% #########send info to task controller relative to BCI status,
     %update the decoder when calibration is done
     if (isBCI==1)
+       
         vrpn_server('send_message','BCION')
+        pause(0.1) %pause to be sure the message does not get lost
         display('bci on')
         cal.UpdateDecoder(bci,decoder_on);
+        
         decoder_on = true;
-        isIDLE = true;
+       
+        isIDLE = false;
         isBCI=-1;
         vrpn_server('send_message',cal.filename)
     elseif (isBCI==0)
         vrpn_server('send_message','BCIOFF')
+        pause(0.1) %pause to be sure the message does not get lost
         display('bci off');
         decoder_on = false;
         isIDLE = false;
@@ -307,57 +321,7 @@ while (task_running)
     fprintf(fileID_track,printfFormatTrackBody,[global_time position_vector(counter,:) velocity_vector(counter,:) bci.position(bci.sample-delay,:) bci.velocity(bci.sample-delay,:)]);
     fprintf(fileID_spikes,printfFormatSpikesBody,[global_time number_of_spikes]);
     %disp( num2str(bci.velocity(bci.sample,:)))
-    
-    %% Save task controller data at the end of the trial
-    if strcmp(tp.stage_type,'ERROR')  %&& tp.new_stage
-        task_buffer.Hit(1:counter) = 0;
-        % for i = 1: counter
-        %  fprintf(fileID_task,'%6.6f %12d %12s %12d %12.4f %12.4f %12.4f  %12d\n',task_buffer.time(i),  task_buffer.trial_index(i), char(task_buffer.stage_type{i}),...
-        %      task_buffer.BCI_on(i),task_buffer.tgt_x(i),task_buffer.tgt_y(i),task_buffer.tgt_z(i), task_buffer.Hit(i) );
-        % end
-        % fprintf(fileID_track,'%d %d %s %d %d %d %d %d\n',...
-        %     [task_buffer{1:counter,1},task_buffer{1:counter,2},task_buffer{1:counter,3},task_buffer{1:counter,4},...
-        %     task_buffer{1:counter,5},task_buffer{1:counter,6},task_buffer{1:counter,7},task_buffer{1:counter,8}]);
-    elseif strcmp(tp.stage_type,'REWARD')
-        task_buffer.Hit(1:counter) = 1;
-        %      for i = 1: counter
-        %  fprintf(fileID_task,'%6.6f %12d %12s %12d %12.4f %12.4f %12.4f  %12d\n',task_buffer.time(i),  task_buffer.trial_index(i), char(task_buffer.stage_type{i}),...
-        %      task_buffer.BCI_on(i),task_buffer.tgt_x(i),task_buffer.tgt_y(i),task_buffer.tgt_z(i), task_buffer.Hit(i) );
-        % end
-        % fprintf(fileID_track,'%d %d %s %d %d %d %d %d\n',...
-        %     [task_buffer{1:counter,1},task_buffer{1:counter,2},task_buffer{1:counter,3},task_buffer{1:counter,4},...
-        %     task_buffer{1:counter,5},task_buffer{1:counter,6},task_buffer{1:counter,7},task_buffer{1:counter,8}]);
-    end
-    %     %% Output the actual decoder performances
-    %     if(decoder_on) && (strcmp(tp.stage_type,'ACQUIRE_MEM_TGT') || strcmp(tp.stage_type,'HOLD_MEM_TGT'))
-    %         corr_counter = corr_counter+1;
-    %         vx(corr_counter) =  velocity_vector(counter,1);
-    %         vy(corr_counter) =  velocity_vector(counter,2);
-    %         vz(corr_counter) =  velocity_vector(counter,3);
-    %
-    %         vx_bci(corr_counter) = bci.velocity(bci.sample-delay,1);
-    %         vy_bci(corr_counter) = bci.velocity(bci.sample-delay,2);
-    %         vz_bci(corr_counter) = bci.velocity(bci.sample-delay,3);
-    %
-    %         if(tp.new_stage && (strcmp(tp.stage_type,'ACQUIRE_MEM_TGT')))
-    %             internal_hit_counter = internal_hit_counter +1
-    %
-    %         end
-    %
-    %         % display correlation values every ten trials
-    %         if(internal_hit_counter == 10)
-    %            % check_correlation = false;
-    %             rx = corr(vx(1:corr_counter)',vx_bci(1:corr_counter)');
-    %               ry = corr(vy(1:corr_counter)',vy_bci(1:corr_counter)');
-    %                 rz = corr(vz(1:corr_counter)',vz_bci(1:corr_counter)');
-    %
-    %             disp(['rx: ' num2str(rx) ' ry:' num2str(ry) ' rz:' num2str(rz)])
-    %            internal_hit_counter =0
-    %            corr_counter = 0;;
-    %         end
-    %
-    %
-    %     end
+
     %% Calculate the duration of the loop so far
     loop_end_time = d2s( now - loop_start_time);
     waiting_time = BCI_update_time-loop_end_time; %how much time is left from the iteration time?
@@ -430,12 +394,7 @@ close all
         
     end
 
-    function ResetDecoder(hObj,event)
-        
-        bci.ResetDecoder();
-    end
-
-
+   
 
     function Temp_call(src,eventdata)
         str=get(src,'String')

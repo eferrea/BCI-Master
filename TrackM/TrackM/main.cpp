@@ -73,17 +73,19 @@ int main()
 	window.setPosition(windowposition);
 	sf::CircleShape fixPoint(target_radius), hand(hand_radius), target(target_radius), bci(hand_radius);
 	fixPoint.setFillColor(sf::Color(150, 150, 150));
-	fixPoint.setOrigin(target_radius / 2, target_radius / 2);
+	fixPoint.setOrigin(target_radius, target_radius);
 	fixPoint.setPosition(window_length / 2, window_height / 2);
 	target.setFillColor(sf::Color(0, 150, 0));
-	target.setOrigin(target_radius/2, target_radius/2);
+	target.setOrigin(target_radius, target_radius);
 	
 	hand.setFillColor(sf::Color(150, 0, 0));
-	hand.setOrigin(hand_radius / 2, hand_radius / 2);
+	hand.setOrigin(hand_radius, hand_radius);
 	hand.setPosition(10.f, 50.f);
 	bci.setFillColor(sf::Color(0, 150, 0));
+	bci.setOrigin(hand_radius, hand_radius);
 	bci.setPosition(10.f, 50.f);
    
+
 
 	//initialize clock for timeout
 	sf::Clock clock; // starts the clock
@@ -125,6 +127,7 @@ int main()
 
 			window.draw(hand);
 		}
+		
 		window.display();
 		
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -147,22 +150,26 @@ int main()
 			
 			vrpn_server->send_message("STAGE," + std::to_string(stage));
 			
-			std::cout << "x:" << targetx_dir << "y" << targety_dir << std::endl;
+			//std::cout << "x:" << targetx_dir << "y" << targety_dir << std::endl;
 			//stage 1 (move to center)
-			if((abs(mousePosition.x - fixPos.x) < 15) & (abs(mousePosition.y - fixPos.y) < 15) & stage ==1 )
+			if ((abs(mousePosition.x - fixPos.x) < target_radius / 2) & (abs(mousePosition.y - fixPos.y) < target_radius / 2) & stage == 1)
 			{
 				
-				random_x = rand() % window_length*4/5;
-				random_y = rand() % window_height*4/5;
+				random_x = (rand() % window_length-4*target_radius) + 4*target_radius;
+				random_y = (rand() % window_height - 4*target_radius) + 4*target_radius;
 				target.setPosition(random_x, random_y);
-				targetx_dir = random_x - fixPos.x;
-				targety_dir = -random_y + fixPos.x;
+				targetx_dir = (random_x - fixPos.x);
+				targety_dir = (random_y - fixPos.x);
 				norm = sqrt(pow(targetx_dir, 2) + pow(targety_dir, 2));
 				targetx_dir = targetx_dir / norm;
 				targety_dir = targety_dir / norm;
 			    
-				vrpn_server->send_message("REFERENCE_X_DIRECTION," + std::to_string(targetx_dir));
-				vrpn_server->send_message("REFERENCE_Y_DIRECTION," + std::to_string(targety_dir));
+				
+				
+				vrpn_server->send_message("X_FIXATION," + std::to_string(fixPos.x*25.4 / dpi));
+				vrpn_server->send_message("Y_FIXATION," + std::to_string(fixPos.y*25.4 / dpi));
+				vrpn_server->send_message("REFERENCE_X_DIRECTION," + std::to_string(random_x*25.4 / dpi));
+				vrpn_server->send_message("REFERENCE_Y_DIRECTION," + std::to_string(random_y*25.4 / dpi));
 			
 				stage = 2;
 				clock.restart();
@@ -173,7 +180,7 @@ int main()
 
 		    
 			//mouse control for acquire target Stage 2 (move to target) and Stage 3 (reward stage) and back to stage 1 (go to center)  
-			if (!is_bci  & abs(mousePosition.x - targetPos.x) < 15 & abs(mousePosition.y - targetPos.y) < 15 & stage == 2)
+			if (!is_bci  & abs(mousePosition.x - targetPos.x) < target_radius & abs(mousePosition.y - targetPos.y) < target_radius & stage == 2)
 			{
 
 				stage = 3;
@@ -186,7 +193,7 @@ int main()
 
 			}
 			//bci control for acquire target
-			if (is_bci  & abs(bciPosition.x - targetPos.x) < 15 & abs(bciPosition.y  - targetPos.y) < 15 & stage == 2)
+			if (is_bci  & abs(bciPosition.x - targetPos.x) < target_radius & abs(bciPosition.y  - targetPos.y) < target_radius & stage == 2)
 			{
 
 				stage = 3;
@@ -199,6 +206,16 @@ int main()
 
 			}
 
+			//handle timeout in the first stage to avoid BCI buffer to be full
+			if (stage == 1 & elapsed1.asSeconds() > 10)
+			{
+				//target.setFillColor(sf::Color(0, 0, 0));
+				//fixPoint.setFillColor(sf::Color(150, 150, 150));
+				stage = 1;
+				trial_counter += 1;
+				vrpn_server->send_message("TRIAL," + std::to_string(trial_counter));
+				clock.restart();
+			}
 
 
 			//handle timeout during movement
@@ -207,6 +224,8 @@ int main()
 				//target.setFillColor(sf::Color(0, 0, 0));
 				//fixPoint.setFillColor(sf::Color(150, 150, 150));
 				stage = 1;
+				trial_counter += 1;
+				vrpn_server->send_message("TRIAL," + std::to_string(trial_counter));
 				clock.restart();
 			}
 
@@ -217,6 +236,7 @@ int main()
 				Sleep(10);
 				is_bci = true;
 				std::cout << "BCI_stat: "<< is_bci << std::endl;
+				message = "";//clear nessage once received
 			
 			
 			}
@@ -226,6 +246,7 @@ int main()
 				Sleep(10);
 				is_bci = false;
 				std::cout << "BCI_stat: " << is_bci << std::endl;
+				message = "";//clear nessage once received
 
 
 			}

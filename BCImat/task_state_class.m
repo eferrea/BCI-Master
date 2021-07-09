@@ -21,13 +21,17 @@ classdef task_state_class < handle
             obj.trial_index=0;
             obj.history={};
             obj.new_trial_callback=@(tmp)disp('new_trial');
-%             obj.parameters = [];
-%             obj.parameters = [];
-             obj.parameters.REFERENCE_X_DIRECTION = nan;
-             obj.parameters.REFERENCE_Y_DIRECTION = nan;
-             obj.parameters.REFERENCE_Z_DIRECTION = nan;
-               obj.iseye = [];
-                obj.trial_index_TC = 0;
+            %             obj.parameters = [];
+            %             obj.parameters = [];
+            obj.parameters.REFERENCE_X_DIRECTION = nan;
+            obj.parameters.REFERENCE_Y_DIRECTION = nan;
+            obj.parameters.REFERENCE_Z_DIRECTION = nan;
+            
+            obj.parameters.X_FIXATION = 0;
+            obj.parameters.Y_FIXATION = 0;
+            
+            obj.iseye = [];
+            obj.trial_index_TC = 0;
             
         end
         
@@ -50,9 +54,9 @@ classdef task_state_class < handle
                     %Look if we are at trial start
                     if strcmp(C{1}{1},'TRIAL')
                       %  obj.parameters=[];
-                         obj.parameters.REFERENCE_X_DIRECTION = nan;
-                         obj.parameters.REFERENCE_Y_DIRECTION = nan;
-                         obj.parameters.REFERENCE_Z_DIRECTION = nan;
+%                          obj.parameters.REFERENCE_X_DIRECTION = nan;
+%                          obj.parameters.REFERENCE_Y_DIRECTION = nan;
+%                          obj.parameters.REFERENCE_Z_DIRECTION = nan;
                        
                         obj.new_trial_callback(obj);
                         obj.new_trial=true;
