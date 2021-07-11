@@ -12,7 +12,7 @@ and the preferred direction scaled by the modulation depth and summed to the bas
 The program make uses of callback function associated to button presses to interact with the task.
 These GUI include:
 1) Check correlation button: to check in open loop correlation among decoded and real movement signals
-2) BCIIDLE
+2) BCIIDLE: allow to perform openloop evaluation of decoder performance. It stores real movements and decoded movements. Once pressiong the check correlation button a Pearson correlation coefficient is output for each dimension individually.
 3) Update regression button: to update calibration of the decoder
 4) Load decoder button: to load a previous calibrated decoder. Note that if used among different experimental sessions
 the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
@@ -29,5 +29,5 @@ It is useful during subject' training phases.
   
 
 How to build BCImat example
-BCImat comes with a c++ a simple task controller interfacing with the BCImat. allowing users to perform sequential reacheas always starting from a cenral fixation point.
-The c++ 
+BCImat comes with a c++ a simple task controller interfacing with the BCImat. allowing users to perform sequential reacheas always starting from a central fixation point.
+The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki
