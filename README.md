@@ -9,7 +9,7 @@ The simulated set of units class generate spikes according to a poisson distribu
 For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the dot products of the actual movement direction 
 and the preferred direction scaled by the modulation depth and summed to the baseline foring rate. 
      
-The program make uses of callback function associated to bur presses to interact with the task.
+The program make uses of callback function associated to button presses to interact with the task.
 These GUI include:
 1) Check correlation button: to check in open loop correlation among decoded and real movement signals
 2) BCIIDLE
