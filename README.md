@@ -28,6 +28,10 @@ It is useful during subject' training phases.
 12) After correlation button is pressed once a 
   
 
-How to build BCImat example
-BCImat comes with a c++ a simple task controller interfacing with the BCImat. allowing users to perform sequential reacheas always starting from a central fixation point.
-The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki
+**How to build the task controller**
+BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation point.
+The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki. It consist of a main program containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
+
+**How to use BCImat framework**
+The BCI framework used mexed versions of the VRPN client and server applications. Therefore the vrpn_server.cpp and vrpn_client-cpp cointained in the BCI-Matlab folder need to be mexed with also the vrpn library (see mex_vrpn_example.mat on how to fdo it in mac and window) 
+
