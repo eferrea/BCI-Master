@@ -1,4 +1,10 @@
 # BCImat a Matlab Brain Computer Interface
+
+**Contetnt of the package*
+
+1. A Matlab BCI framework (BCI-Mat)
+2. A task controller in c++ for testing purposes
+
 **Description**
 
 BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movement intetions via two types of interfaces:
