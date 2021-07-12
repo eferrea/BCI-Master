@@ -2,8 +2,8 @@
 
 **Contetnt of the package*
 
-1. A Matlab BCI framework (BCI-Mat)
-2. A task controller in c++ for testing purposes
+1. A Matlab BCI framework (BCIMat)
+2. A task controller in c++ for testing purposes (TrackM)
 
 **Description**
 
