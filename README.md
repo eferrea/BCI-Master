@@ -18,14 +18,13 @@ The BCI framework used mexed versions of the VRPN client and server applications
 
 **Running the BCI framework**
 
-1. Set 
-2. Start the task controller program
-3. Run the function BCI_loop.m with the following arguments for the simulated neural network:
-BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
+1. Start the task controller program
+2. Run the function BCI_loop.m with the following arguments for the simulated neural network:
+* BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
 
 BCI_Loop(false,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-and with the folling arguments in case of using Blackrock hardware
+* and with the folling arguments in case of using Blackrock hardware
 BCI_Loop(true,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
 note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server. The matlab server here uses the default port so it is not necessary to specify it. 
