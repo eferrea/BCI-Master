@@ -30,16 +30,21 @@ The BCI framework used mexed versions of the VRPN client and server applications
 
 BCI_Loop(false,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-Note that the server_address correspondsto the client server address on the TC control side qhereas the client address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
+
 
 * and with the following arguments in case of using Blackrock hardware
 BCI_Loop(true,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
+Note that the server_address correspondsto the client server address on the TC control side whreaslient address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
 
-note that in case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
 
-The classical BCI use  
+In case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+
+The classical BCI use  requires to:
+1. calibrate the decoder: perform reaches on the task controller and then press the update regression button.
+2. select the units in used for decoding. The intensity of the color represents the tuning strength.
+3. After collecting enough samples (shown on the right table) press the start BCI buttonto start the decoder. In this condition mouse movements are used to make the neuron firing according to the direction of movements. Movements are guided by neurons but should follow the mouse pointer (this depends on the quality of the calibration that is number of units and number of samples). Additional but less relevant functionalities are listen in the next paragraph.
 
 **Description**
 
