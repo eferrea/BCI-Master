@@ -2,27 +2,34 @@
 
 **Content of the package*
 
-1. A Matlab BCI framework (BCIMat)
+1. A Matlab BCI framework (BCImat)
 2. A task controller written c++ for testing purposes (TrackM)
 
-**How to build the task controller**
+**How to build the task controller TrackM**
 
 BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation point.
 The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki to be linked to the project. It consist of a main program containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
 
 After compiling, in the main.cpp file it is needed to specify the IP address of the server (same address of the computer running the task conroller program) and of the client (computer running the BCI, can also be the same computer). 
 
-**How to mex vrpn matlab client and server**
+**How to mex vrpn matlab client and server BCImat**
 
 The BCI framework used mexed versions of the VRPN client and server applications. Therefore the vrpn_server.cpp and vrpn_client-cpp cointained in the BCI-Matlab folder need to be mexed with together with the vrpn library (see mex_vrpn_example.mat on how to fdo it in mac and window). 
 
 **Running the BCI framework**
 
-1. Start the task controller program
-2. Run the function BCI_loop.m with the following arguments for the simulated neural network:
-BCI_loop(50,false,1,0)
+1. Set 
+2. Start the task controller program
+3. Run the function BCI_loop.m with the following arguments for the simulated neural network:
+BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
+
+BCI_Loop(false,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+
 and with the folling arguments in case of using Blackrock hardware
-BCI_loop(50,true,1,0)
+BCI_Loop(true,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+
+note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server. The matlab server here uses the default port so it is not necessary to specify it. 
+
 note that in this letter case a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 **Description**
