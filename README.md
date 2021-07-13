@@ -5,7 +5,7 @@
 1. A Matlab BCI framework (BCImat)
 2. A task controller written c++ for testing purposes (TrackM)
 
-**How to build the task controller TrackM**
+**Build the task controller project TrackM**
 
 BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation point.
 The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki to be linked to the project. It consist of a main program containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
