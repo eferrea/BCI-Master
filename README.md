@@ -19,6 +19,11 @@ The BCI framework used mexed versions of the VRPN client and server applications
 **Running the BCI framework**
 
 1. Start the task controller program
+
+* specify client and server addresses
+* specify server port (here used 6666 vcan be kept but if changed need to me done also on the BCImat side)
+* specify dpi of your screen for pixel to mm conversion
+ 
 2. Run the function BCI_loop.m with the following arguments for the simulated neural network:
 * BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
 
