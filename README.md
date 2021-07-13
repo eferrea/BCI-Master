@@ -2,15 +2,14 @@
 
 **Content of the package*
 
-1. A Matlab BCI framework (BCImat)
-2. A task controller written c++ for testing purposes (TrackM)
+1. A Matlab BCI framework (BCImat).
+2. A task controller written in c++ for testing BCImat (TrackM).
 
 **Build the task controller project TrackM**
 
-BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation point.
-The c++ program requires the graphic library SFML https://www.sfml-dev.org/download.php and the virtual reality peripheral network library (VRPN) https://github.com/vrpn/vrpn/wiki to be linked to the project. It consist of a main program containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
+BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
+The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. The project consist of a main.cpp to run the task also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn_server class.
 
-After compiling, in the main.cpp file it is needed to specify the IP address of the server (same address of the computer running the task conroller program) and of the client (computer running the BCI, can also be the same computer). 
 
 **How to mex vrpn matlab client and server BCImat**
 
@@ -20,21 +19,27 @@ The BCI framework used mexed versions of the VRPN client and server applications
 
 1. Start the task controller program
 
-* specify client and server addresses
-* specify server port (here used 6666 vcan be kept but if changed need to me done also on the BCImat side)
+* specify client address (same as server address on the BCImat side)
+* specify server address (same as the client address on the BCImat side)
+* specify server port (here used 6666, it can be kept but if changed need to me done also on the BCImat side)
 * specify dpi of your screen for pixel to mm conversion
  
 2. Run the function BCI_loop.m with the following arguments for the simulated neural network:
+
 * BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
 
-BCI_Loop(false,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+BCI_Loop(false,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-* and with the folling arguments in case of using Blackrock hardware
-BCI_Loop(true,120,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+Note that the server_address correspondsto the client server address on the TC control side qhereas the client address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
 
-note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server. The matlab server here uses the default port so it is not necessary to specify it. 
+* and with the following arguments in case of using Blackrock hardware
+BCI_Loop(true,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-note that in this letter case a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
+
+note that in case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+
+The classical BCI use  
 
 **Description**
 
