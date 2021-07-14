@@ -4,7 +4,6 @@ classdef Kalman_calibrator_class < handle
         t_movement;
         t_movement_bci;
         directions;
-        dimensions;
         sample;
         position;
         is_movement;
@@ -50,14 +49,13 @@ classdef Kalman_calibrator_class < handle
     methods (Access=public)
         
         %Constructor class
-        function obj = Kalman_calibrator_class(dimensions, sample_size,max_exp_duration,delay)
+        function obj = Kalman_calibrator_class(sample_size,max_exp_duration,delay)
             
             obj.delay = delay;
             obj.load = false;
             obj.expected_total_samples = ceil(max_exp_duration/sample_size);
             obj.time = zeros(1, obj.expected_total_samples);
             obj.preferred_direction = zeros(768,3);
-            obj.dimensions = dimensions;
             obj.neurons = false(128,6);
             obj.position = zeros(2, obj.expected_total_samples);
             obj.velocity = zeros(2, obj.expected_total_samples);
@@ -85,7 +83,7 @@ classdef Kalman_calibrator_class < handle
         %this is the loop calibrator class to store the values (speeds and firing rates) that will be
         %used for regression depending on conditions. It saves
         %indexes for the movement time.
-        function obj = loop(obj,task_state,t,interval,spike_data,position,velocity,decoder_on,decoder_object,target_position,eye_fixation)
+        function obj = loop(obj,task_state,t,interval,spike_data,position,velocity,decoder_on,decoder_object,target_position)
             
             if ~isempty(task_state.new_stage)
                 %internally store useful values at every iteration

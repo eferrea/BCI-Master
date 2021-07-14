@@ -37,18 +37,21 @@ void VRPN_CALLBACK handle_message(void *userData, const vrpn_TEXTCB info)
 
 int main()
 {
-	//initialize vrpn client variables
-	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote("Tracker0@172.17.6.10");
-	vrpn_Text_Receiver* vrpnText = new vrpn_Text_Receiver("Tracker0@172.17.6.10");
+	char  client_address[] = "TrackerBCI@172.17.6.10";
+	char  server_address[] = "TrackerTC@172.17.6.10";
+	int server_port = 6666;
+	//initialize vrpn client variables.!!! change the address to match with ip address of computer running BCI framework
+	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(client_address);
+	vrpn_Text_Receiver* vrpnText = new vrpn_Text_Receiver(client_address);
 
 	vrpnTracker->register_change_handler(0, handle_tracker);
 	vrpnText->register_message_handler(0, handle_message);
 
 
 	//Create VRPN Server Connection
-	vrpn_Connection_IP* m_Connection = new vrpn_Connection_IP(6666);
-	//Create VRPN server Tracker
-	vrpn_server_class* vrpn_server = new vrpn_server_class("Tracker10@172.17.6.10", m_Connection);
+	vrpn_Connection_IP* m_Connection = new vrpn_Connection_IP(server_port);
+	//Create VRPN server Tracker. !!! Specify adrees of computer running the task controller and tracker name (can be freely choosen)
+	vrpn_server_class* vrpn_server = new vrpn_server_class(server_address, m_Connection);
 
 	//initializize graphic window values 
 	int window_length = 1200;
@@ -64,7 +67,7 @@ int main()
 
 	int trial_counter = 0;
 	//adjust screen resolution for pixel to mm conversion
-	int dpi = 108.79;
+	double dpi = 108.79;
 
 	//initialize objects 
 	sf::RenderWindow window(sf::VideoMode(window_length, window_height), "Task Window");

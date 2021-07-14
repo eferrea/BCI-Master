@@ -1,4 +1,4 @@
-function BCI_Loop(isBrain,neurons,dimensions,delay,use_eye_fixation)
+function BCI_Loop(isBrain,neurons,delay,server_address,client_address)
 
 clc
 close all
@@ -85,17 +85,20 @@ fixation_position = [0 0];
 d2s=@(t)t*86400;
 
 %% initialize VRPN matlab server
-vrpn_server('start_server','Tracker0@172.17.6.10')
+
+%server_address = 'TrackerBCI@172.17.6.10';
+vrpn_server('start_server',server_address)
 %% %initialize VRPN matlab client
-vrpn_client('open_connection','Tracker10@172.17.6.10:6666') %same computer
+%client_address = 'TrackerTC@172.17.6.10:6666';
+vrpn_client('open_connection',client_address ) %same computer
 
 %% initialize objects
 tp=task_state_class();
 tp.set_new_trial_callback(@(tmp)[]);
 %max number of idle correlated samples
 max_corr_samples = 200;
-cal = Kalman_calibrator_class(dimensions,BCI_update_time,max_experiment_duration,delay);
-bci = Kalman_decoder_class(dimensions,BCI_update_time,max_experiment_duration,delay,max_corr_samples);
+cal = Kalman_calibrator_class(BCI_update_time,max_experiment_duration,delay);
+bci = Kalman_decoder_class(BCI_update_time,max_experiment_duration,delay,max_corr_samples);
 perc = 0; % shared control starting value
 %%  use a simple GUI to do the switch the function that get used (it is defined
 % at the end of the code)
@@ -164,12 +167,12 @@ while (task_running)
     elapsed_time(counter) = d2s( now - start_time);
     global_time =  d2s( now - start_time);
     %read robot/markers position from MOROCO
-    a=vrpn_client('get_positions','Tracker10@172.17.6.10:6666'); %same
+    a=vrpn_client('get_positions',client_address); %same
     %computer local
     %a=vrpn_client('get_positions','Tracker10@172.17.6.10:6666'); %my computer
     
     %read task controller state
-    [b,t]=vrpn_client('get_messages','Tracker10@172.17.6.10:6666'); %same
+    [b,t]=vrpn_client('get_messages',client_address); %same
     %computer local
     %[b,t]=vrpn_client('get_messages','Tracker10@172.17.6.10:6666'); %my computer
     %parse task controller messages
@@ -284,7 +287,7 @@ while (task_running)
     %store variables for displaying correlation values in the IDLE mode.
     bci.OnlineCorrelation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
     %run a calibration step if the target was hit (inside the function regression is done at the reward stage)
-    cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector,use_eye_fixation);
+    cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector);
     
     %send decoder info to TC
     pos = bci.get_position();

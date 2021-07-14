@@ -4,7 +4,6 @@ classdef Kalman_decoder_class < handle;
         
         K;
         iteration_step;
-        dimensions;
         X_prior;
         firing_rate;
         Z;
@@ -61,7 +60,7 @@ classdef Kalman_decoder_class < handle;
     methods (Access=public)
         
         %Constructor class -> initialize parameters used for decoding
-        function obj = Kalman_decoder_class(dimensions,sample_size,max_exp_duration,delay,max_samples)
+        function obj = Kalman_decoder_class(sample_size,max_exp_duration,delay,max_samples)
             
             obj.expected_total_samples = ceil(max_exp_duration/sample_size);
             obj.K = 0;
@@ -69,11 +68,10 @@ classdef Kalman_decoder_class < handle;
             obj.velocity = zeros(obj.expected_total_samples,2);
             %             obj.X_decoder = zeros(7,obj.expected_total_samples);
             %             obj.Z_decoder = zeros(7,obj.expected_total_samples);
-            obj.preferred_direction = zeros(768,dimensions);
+            obj.preferred_direction = zeros(768,2);
             obj.baseline_rate = zeros(1,768);
             obj.modulation_depth = ones(1,768);
             obj.iteration_step = 0;
-            obj.dimensions = dimensions;
             obj.neurons = false(128,6);
             obj.P = 0;
             obj.X_update = zeros(5,1);
