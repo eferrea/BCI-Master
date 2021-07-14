@@ -47,17 +47,17 @@ BCI_Loop(false,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 * and with the following arguments in case of using Blackrock hardware
 BCI_Loop(true,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-Note that the server_address corresponds to the client server address on the TC control side whereas client address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
+Note that the server address corresponds to the client address on the TC control side while the opposite is true from the TC side. Additionally the server and clients addresses contain also the names of the trackers here named TrackerBCI and TrackerTC.
 
-Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
+Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different servers with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
 
 In case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 **Start to use the BCI**
 The simplest use of the BCI requires to:
-1. calibrate the decoder: perform reaches on the task controller and then press the Update Regression button.
-2. select the units in used for decoding. The intensity of the color represents the tuning strength. click to select one unit.
-3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition movements  are guided by neurons but should follow the mouse pointer (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+1. calibrate the decoder: perform reaches on the task controller side and then press the Update Regression button.
+2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression Button.
+3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
 
 Additional but less relevant functionalities are listed in the next paragraph.
 
@@ -67,20 +67,20 @@ Additional but less relevant functionalities are listed in the next paragraph.
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUI include:
-1) *Check Correlation*: to check in open loop correlation among decoded and real movement signals
+1) *Check Correlation*: to check open-loop correlation among decoded and real movements.
 2) *BCIIDLE*: allow to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. Once pressiong the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
-3) *Update regression*: to update calibration of the decoder
+3) *Update regression*: to update calibration of the decoder.
 4) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
 the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
-5) *Update Decoder*: to be used after an updated regression in closed-loop mode. It is meant to be used 
-for calibrations in closed-loop mode (see Gilja et al 2012)
-6) *Switch BCI*: after successful calibration to switch to close loop control
-7) *Stop BCI*: stop the program loop
-8) *Reset calibrator*: to reset the calibration if something went wrong. 
-9) *Shared control*: the control is shared among the computer directly pointing at the target and the neurons specify a number between 0-1.
-    It is useful during subject' training phases.
+5) *Update Decoder*: to be used after an Updated Regression in closed-loop mode. It is meant to be used 
+for retraineing calibrations in closed-loop mode. More useful for real applications than in the simulation mode.  
+6) *Switch BCI*: after successful calibration to switch to close loop control.
+7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
+8) *Reset Calibrator*: to reset the calibration if something went wrong. 
+9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases.
 11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. 
   
+  Have fun!
 
 
 
