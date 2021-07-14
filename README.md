@@ -7,7 +7,7 @@
 
 **Build the task controller project TrackM**
 
-BCImat comes with a c++ a simple task controller interfacing with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
+BCImat comes with a simple task controller writte in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. The project consist of a main.cpp to run the task also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn_server class.
 
 
