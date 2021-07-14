@@ -75,6 +75,7 @@ for calibrations in closed-loop mode (see Gilja et al 2012)
 It is useful during subject' training phases.
 11) perturbation panel: rotate units preferred direction . It needs to specify the  angle of rotation as well as the percentage of random units that will be rotated 
   
+![BCImat](https://user-images.githubusercontent.com/40661882/125582844-48d7406e-c0f1-404a-8047-a63615ed8ab2.png)
 
 
 
