@@ -16,7 +16,7 @@ The project consist of a main.cpp running the task and also containing the vrpn 
 
 The BCI framework uses mexed versions of the VRPN client and server applications to exchange informations with the task controller. Therefore the vrpn_server.cpp and vrpn_client.cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). 
 
-**Description**
+**Description of the BCI framework**
 
 BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movement intentions and convert them into cursor movements via two types of interfaces:
 1. a simulated set of cosine tuned neurons
