@@ -67,20 +67,19 @@ Additional but less relevant functionalities are listed in the next paragraph.
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUI include:
-1) +Check Correlation+ button: to check in open loop correlation among decoded and real movement signals
-2) BCIIDLE: allow to perform openloop evaluation of decoder performance. It stores real movements and decoded movements. Once pressiong the check correlation button a Pearson correlation coefficient is output for each dimension individually.
-3) Update regression button: to update calibration of the decoder
-4) Load decoder button: to load a previous calibrated decoder. Note that if used among different experimental sessions
+1) *Check Correlation*: to check in open loop correlation among decoded and real movement signals
+2) *BCIIDLE*: allow to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. Once pressiong the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
+3) *Update regression*: to update calibration of the decoder
+4) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
 the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
-5) Update decoder: to be used after an updated regression in closed-loop mode. It is meant to be used 
+5) *Update Decoder*: to be used after an updated regression in closed-loop mode. It is meant to be used 
 for calibrations in closed-loop mode (see Gilja et al 2012)
-6) Switch BCI: after successful calibration to switch to close loop control
-7) Stop BCI: stop the program loop
-8) Reset calibrator: to reset the calibration if something went wrong. 
-9) to reset the decoder. It should be applied if a reset calibration occurred.
-10) Shared control: the control is shared among the computer directly pointing at the target and the neurons.
-It is useful during subject' training phases.
-11) perturbation panel: rotate units preferred direction . It needs to specify the  angle of rotation as well as the percentage of random units that will be rotated 
+6) *Switch BCI*: after successful calibration to switch to close loop control
+7) *Stop BCI*: stop the program loop
+8) *Reset calibrator*: to reset the calibration if something went wrong. 
+9) *Shared control*: the control is shared among the computer directly pointing at the target and the neurons specify a number between 0-1.
+    It is useful during subject' training phases.
+11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. 
   
 
 
