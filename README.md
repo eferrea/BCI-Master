@@ -1,6 +1,6 @@
-# BCImat: a Matlab Brain Computer Interface
+# BCImat: a Matlab Intracortical Brain Computer Interface
 
-**Content of the package*
+**Content of the package**
 
 1. A Matlab BCI framework (BCImat).
 2. A task controller written in c++ for testing BCImat (TrackM).
