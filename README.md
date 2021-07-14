@@ -1,4 +1,4 @@
-# BCImat a Matlab Brain Computer Interface
+# BCImat: a Matlab Brain Computer Interface
 
 **Content of the package*
 
@@ -7,14 +7,14 @@
 
 **Build the task controller project TrackM**
 
-BCImat comes with a simple task controller writte in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
+BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
 The project consist of a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn_server class.
 
 
 **Mex vrpn matlab client and server BCImat**
 
-The BCI framework used mexed versions of the VRPN client and server applications. Therefore the vrpn_server.cpp and vrpn_client-cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (see mex_vrpn_example.mat on how to do it in mac and windows). 
+The BCI framework uses mexed versions of the VRPN client and server applications to exchange informations with the task controller. Therefore the vrpn_server.cpp and vrpn_client.cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). 
 
 **Description**
 
@@ -25,29 +25,29 @@ BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movem
 The simulated set of units class generate spikes according to a Poisson distribution whose rate is dictated by actual mouse movement performed in a basic c++ interface.
 For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
 
+At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). When the decoder is calibrated it can be used to control cursor positions and perform the task (decoding phase). In this phase mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
 
 
 **Running the BCI framework**
 
-1. Start the task controller program
+1. Start the task controller program TrackM
 
 * specify client address (same as server address on the BCImat side)
 * specify server address (same as the client address on the BCImat side)
 * specify server port (here used 6666, it can be kept but if changed need to me done also on the BCImat side)
 * specify dpi of your screen for pixel to mm conversion
  
-2. Run the function BCI_loop.m with the following arguments for the simulated neural network:
+2. Run the function BCI_loop.m inside BCImat with the following arguments for the simulated neural network:
 
 * BCI_Loop(isBrain,neurons,delay,server_address,client_address) so practically will look like that
 
 BCI_Loop(false,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
 
-
 * and with the following arguments in case of using Blackrock hardware
 BCI_Loop(true,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-Note that the server_address correspondsto the client server address on the TC control side whreaslient address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
+Note that the server_address corresponds to the client server address on the TC control side whereas client address to the server address on the TC side. Additionally the server and clients addresses contain also the names of the trackers.
 
 Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different server with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
 
@@ -55,9 +55,11 @@ In case of use of a Blackrock recording system a cbmex code to stream spikes fro
 
 **Start to use the BCI**
 The simplest use of the BCI requires to:
-1. calibrate the decoder: perform reaches on the task controller and then press the Update regression button.
-2. select the units in used for decoding. The intensity of the color represents the tuning strength.
-3. After collecting enough samples (shown on the right table) press the start BCI buttonto start the decoder. In this condition mouse movements are used to make the neuron firing according to the direction of movements. Movements are guided by neurons but should follow the mouse pointer (this depends on the quality of the calibration that is number of units and number of samples). Additional but less relevant functionalities are listed in the next paragraph.
+1. calibrate the decoder: perform reaches on the task controller and then press the Update Regression button.
+2. select the units in used for decoding. The intensity of the color represents the tuning strength. click to select one unit.
+3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition movements  are guided by neurons but should follow the mouse pointer (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+
+Additional but less relevant functionalities are listed in the next paragraph.
 
 ![BCImat](https://user-images.githubusercontent.com/40661882/125582844-48d7406e-c0f1-404a-8047-a63615ed8ab2.png)
 
@@ -65,7 +67,7 @@ The simplest use of the BCI requires to:
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUI include:
-1) Check correlation button: to check in open loop correlation among decoded and real movement signals
+1) +Check Correlation+ button: to check in open loop correlation among decoded and real movement signals
 2) BCIIDLE: allow to perform openloop evaluation of decoder performance. It stores real movements and decoded movements. Once pressiong the check correlation button a Pearson correlation coefficient is output for each dimension individually.
 3) Update regression button: to update calibration of the decoder
 4) Load decoder button: to load a previous calibrated decoder. Note that if used among different experimental sessions
