@@ -37,9 +37,16 @@ void VRPN_CALLBACK handle_message(void *userData, const vrpn_TEXTCB info)
 
 int main()
 {
+	//adjust addresses before starting
 	char  client_address[] = "TrackerBCI@172.17.6.10";
 	char  server_address[] = "TrackerTC@172.17.6.10";
+	//port can be adjusted but is not necsssary
 	int server_port = 6666;
+	//adjust screen resolution for pixel to mm conversion
+	double dpi = 108.79;
+
+
+
 	//initialize vrpn client variables.!!! change the address to match with ip address of computer running BCI framework
 	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(client_address);
 	vrpn_Text_Receiver* vrpnText = new vrpn_Text_Receiver(client_address);
@@ -66,8 +73,7 @@ int main()
 	bool is_bci = false;
 
 	int trial_counter = 0;
-	//adjust screen resolution for pixel to mm conversion
-	double dpi = 108.79;
+	
 
 	//initialize objects 
 	sf::RenderWindow window(sf::VideoMode(window_length, window_height), "Task Window");
