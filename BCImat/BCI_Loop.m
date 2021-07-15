@@ -41,7 +41,7 @@ if (isBrain)
     cbmex('trialconfig',1);
 else
     %initialize Fake monkey (poisson process spike generator)
-    fake_monkey= simNeurons_2D_velocity(neurons); % number of neurons
+    artificial_NN= simNeurons_2D_velocity(neurons); % number of neurons
 end
 %set_the waiting time in seconds
 BCI_update_time = 0.05 %in secs. As described in papers KF usually uses 50 ms.
@@ -145,7 +145,7 @@ g1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Calibrator', 'Units','
     'Callback',@ResetCalibrator,'Position',[0 .12 1 .7]);
 
 %% Log in the task controller the property of the fake monkey
-p2 = uipanel('Title','Shared Control','FontSize',8,'Position',[0.89 0.25 .1 .10])
+p2 = uipanel('Title','Shared Control','FontSize',8,'Position',[0.89 0.25 .1 .10]);
 %shared control button
 g2 = uicontrol(p2,'style','edit',...
     'Units','normalized',...
@@ -153,7 +153,7 @@ g2 = uicontrol(p2,'style','edit',...
     'foregroundcolor','black',...
     'callback',@Temp_call);
 % perturabation panel
-Control_perturbation(bci,cal,fh,0.1,0.01,0.3,0.3)
+Control_perturbation(bci,cal,fh,0.1,0.01,0.3,0.3);
 
 %% start to count the time
 start_time = now;
@@ -168,8 +168,7 @@ while (task_running)
     global_time =  d2s( now - start_time);
     %read robot/markers position from MOROCO
     a=vrpn_client('get_positions',client_address); %same
-    %computer local
-    %a=vrpn_client('get_positions','Tracker10@172.17.6.10:6666'); %my computer
+   
     
     %read task controller state
     [b,t]=vrpn_client('get_messages',client_address); %same
@@ -259,8 +258,8 @@ while (task_running)
         end
     else
         % event_data = cbmex('trialdata',flush);%real data
-        fake_monkey.generate_poisson(velocity_vector(counter,:),flush); % gernerate fake monkey data
-        event_data = fake_monkey.poisson_spike;%store fake monkey data;
+        artificial_NN.generate_poisson(velocity_vector(counter,:),flush); % gernerate fake monkey data
+        event_data = artificial_NN.poisson_spike;%store fake monkey data;
     end
     % disp(num2str(elapsed_time(counter)))
     %A =  cell2mat(cellfun(@length,event_data(1:128,2:7),'UniformOutput', false));

@@ -1,6 +1,6 @@
 function Control_perturbation(obj_dec,obj_cal,h,x_pos,y_pos,x_lenght,y_length)
 %initialize values
-perturbation_vector = zeros(1,3)
+perturbation_vector = zeros(1,3);
 perturbation_angle = 0;
 perturbation_percent = 0;
 

@@ -371,8 +371,8 @@ classdef Kalman_calibrator_class < handle
             obj.time = zeros(1, obj.expected_total_samples);
             obj.preferred_direction = zeros(768,3);  
             obj.neurons = false(128,6);
-            obj.position = zeros(3, obj.expected_total_samples);
-            obj.velocity = zeros(3, obj.expected_total_samples);
+            obj.position = zeros(2, obj.expected_total_samples);
+            obj.velocity = zeros(2, obj.expected_total_samples);
             obj.firing_rate = zeros(obj.expected_total_samples,768);
             obj.sample = 1;
             obj.is_decoder_on = false(obj.expected_total_samples,1);
