@@ -33,7 +33,7 @@ isIDLE = false;
 parity_idle = 0; %parity check for IDLE state
 decoder_on = false;
 task_running = true;%value to run the loop
-check_correlation = false; % check_correlation in IDLE_state;
+%%check_correlation = false; % check_correlation in IDLE_state;
 
 %initialize Blackrock mex file for sending data
 if (isBrain)
