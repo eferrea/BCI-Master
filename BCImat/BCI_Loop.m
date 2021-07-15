@@ -151,7 +151,7 @@ g2 = uicontrol(p2,'style','edit',...
     'Units','normalized',...
     'Position',[0.1 0.1 0.8 0.8],...
     'foregroundcolor','black',...
-    'callback',@Temp_call);
+    'callback',@Shared_control);
 % perturabation panel
 Control_perturbation(bci,cal,fh,0.1,0.01,0.3,0.3);
 
@@ -364,25 +364,19 @@ close all
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
         display_table(fh,0.45, 0.00, .42, 1,cal,cal);
-        
-        
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
     function LoadDecoder(hObj,event)
         
-        
         cal.LoadDecoder(bci);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
         display_table(fh,0.45, 0.00, .42, 1,cal,cal);
-        
-        
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
     function UpdateDecoder(hObj,event)
-        
         
         cal.UpdateDecoder(bci,decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
@@ -398,9 +392,9 @@ close all
         
     end
 
-   
 
-    function Temp_call(src,eventdata)
+
+    function Shared_control(src,eventdata)
         str=get(src,'String')
         
         if isempty(str2num(str))
