@@ -74,10 +74,12 @@ classdef Kalman_calibrator_class < handle
             
         end
         
-%         function obj = set_decoder_dynamic()
-%             decoder_object.A = A;
-%             decoder.object.W = W;
-%         end
+        %         function obj = set_decoder_dynamic()
+        
+        %             decoder_object.A = A;
+        %             decoder.object.W = W;
+        %
+        %end
             
         
         %this is the loop calibrator class to store the values (speeds and firing rates) that will be
@@ -91,7 +93,7 @@ classdef Kalman_calibrator_class < handle
                 obj.firing_rate(obj.sample,:) = spike_data./interval;
                 obj.is_decoder_on(obj.sample) = decoder_on; %used for boolean operations
                 
-                %if we are in BCI mode positions and velocieties are dictated by the
+                %if we are in BCI mode positions and velocities are dictated by the
                 %the DECODER
                 if(obj.is_decoder_on(obj.sample))
                     obj.position(:,obj.sample) = decoder_object.position(decoder_object.sample,:);
@@ -115,8 +117,8 @@ classdef Kalman_calibrator_class < handle
                     
                     obj.is_movement(obj.sample,1)  = true;
                     display(task_state.stage_type)
-                    %store the internal timestamp when the movement is supposed to start
-                    %  if strcmp(task_state.stage_type,'LEAVE_FIX_MEM') && (task_state.new_stage == 1)
+                    %store the internal timestamp when the movement is
+                    %supposed to start
                     if strcmpi(task_state.stage_type,'1') && (task_state.new_stage == 1)
                         obj.start_index = obj.sample;
                     end
@@ -205,7 +207,7 @@ classdef Kalman_calibrator_class < handle
             decoder_object.neurons = obj.neurons;
             
             
-            %   end
+           
             
             obj.SaveCalibration(decoder_object);
         end
@@ -245,13 +247,7 @@ classdef Kalman_calibrator_class < handle
                 pos = obj.position(:,obj.is_movement_and_hit_and_BCI);
                 
                 vel = obj.velocity(:,obj.is_movement_and_hit_and_BCI);
-                
-                %                 norm_of_vel = arrayfun(@(fix) norm(vel(:,fix)), 1:size(vel,2));
-                %               norm_vel = vel./repmat(norm_of_vel,3,1);
-                
-                % obj.X = [];
-                %obj.Z = [];
-                
+
                 obj.X = [ones(sum(obj.is_movement_and_hit_and_BCI),1)'; pos; vel];
                 
                 
@@ -266,11 +262,7 @@ classdef Kalman_calibrator_class < handle
                 
                 vel = obj.velocity(:,obj.is_movement_and_hit);
                 
-                %                 aaa = ones(3,length(find(obj.is_movement_and_hit==1)));
-                %
-                %                 norm_of_vel = arrayfun(@(fix) norm(vel(:,fix)), 1:size(vel,2));
-                %                 norm_vel = vel./repmat(norm_of_vel,3,1);
-                
+              
                 %Build State matrix with first row set to one to take
                 %into account baseline firing rate in regression
                 %obj.X = [ones(sum(obj.is_movement_and_hit),1)'; pos; vel];
