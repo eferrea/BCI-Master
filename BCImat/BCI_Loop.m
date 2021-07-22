@@ -15,10 +15,16 @@ fileID_track = fopen(filename_track,'at');
 fileID_task = fopen(filename_task,'at');
 fileID_spikes = fopen(filename_spikes,'at');
 
-printfFormatTrackHeader = ['%6s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s\n'];
-printfFormatTrackBody = ['%6.3f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f\n'];
-fprintf(fileID_track,printfFormatTrackHeader,'time','pos_x','pos_y','pos_z','vel_x','vel_y','vel_z',...
-    'BCI_pos_x','BCI_pos_y','BCI_pos_z','BCI_vel_x','BCI_vel_y','BCI_vel_z');
+%Header or tracker infos 
+% printfFormatTrackHeader = ['%6s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s\n'];
+% printfFormatTrackBody = ['%6.3f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f\n'];
+% fprintf(fileID_track,printfFormatTrackHeader,'time','pos_x','pos_y','pos_z','vel_x','vel_y','vel_z',...
+%     'BCI_pos_x','BCI_pos_y','BCI_pos_z','BCI_vel_x','BCI_vel_y','BCI_vel_z');
+printfFormatTrackHeader = ['%6s %12s %12s %12s %12s %12s %12s %12s %12s\n'];
+printfFormatTrackBody = ['%6.3f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f\n'];
+fprintf(fileID_track,printfFormatTrackHeader,'time','pos_x','pos_y','vel_x','vel_y',...
+    'BCI_pos_x','BCI_pos_y','BCI_vel_x','BCI_vel_y');
+
 %header of task controller file
 fprintf(fileID_task,'%6s %12s %25s %12s %12s %12s %12s %12s %12s %12s\n','time','Trial','Stage','BCI_on', 'IDLE_on', 'tgt_x','tgt_y','tgt_z','Hit', 'EYE_on');
 printfFormatSpikesHeader = ['%6s' repmat('%6d ',1,767) '%6d\n'];
@@ -248,7 +254,7 @@ while (task_running)
         end
     end
     
-    %% ############ Generate the spikes##########
+    %% ############ Retrieve spike counts from artificial NN or Blackrock##########
     if (isBrain)
         if counter > 1
             event_data = cbmex('trialdata',0);%real data
@@ -258,18 +264,18 @@ while (task_running)
         end
     else
         % event_data = cbmex('trialdata',flush);%real data
-        artificial_NN.generate_poisson(velocity_vector(counter,:),flush); % gernerate fake monkey data
+        artificial_NN.generate_poisson(velocity_vector(counter,:),flush); % generate fake monkey data
         event_data = artificial_NN.poisson_spike;%store fake monkey data;
     end
-    % disp(num2str(elapsed_time(counter)))
-    %A =  cell2mat(cellfun(@length,event_data(1:128,2:7),'UniformOutput', false));
-    A =  cellfun(@length,event_data(1:128,2:7));%take the length of each class element
+    %Extract spikes count from cell like format used in cbmexcode() and
+    %artificial NN
+    A =  cellfun(@length,event_data(1:128,2:7));%take the length of each cell element
     
-    %arrange data in an Array of Firing rate
+    %arrange data in an Array of Firing rates
     B = A(:)'; %reshape(A',1,[]);%
     
-    %Keep trace on a trial basis of the firing rate of neurons
-    %spike_data(counter,1:length(B)) = B;
+    %Trial spike buffer (note that counter is erased at every new trial to
+    %maintain variable size small)
     spike_data(counter,1:768) = B;
     
     
@@ -332,6 +338,9 @@ while (task_running)
     bci.SaveDecoder();
     counter = counter +1;
     pause(waiting_time) %wait the additional amount of time
+    
+  
+    
 end
 
 %% Close the cbmex connection and vrpn connection

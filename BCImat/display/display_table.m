@@ -14,7 +14,7 @@ data{i,4} = calibrator.modulation_depth(index(i));
 data{i,5} = calibrator.training_sample_number;
 end
      
-       colnames = {'neuron', 'R', 'b0','MD','Samples/Hit'};
+       colnames = {'neuron', 'R', 'b0','MD','Samples'};
       t =  uitable(f,'Data', data, 'ColumnName', colnames, 'Units','normalized',...
                    'Position', [position_x position_y length_x length_y]);
                

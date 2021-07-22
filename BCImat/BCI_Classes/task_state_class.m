@@ -1,6 +1,7 @@
 classdef task_state_class < handle
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %This class handles messages coming from the task controller , many of
+    %the parameters listed below are not used with the basic provided task
+    %controller
     
     properties
         stage_type
@@ -16,20 +17,16 @@ classdef task_state_class < handle
     end
     
     methods
-        
+        %constructor Initialize
         function obj=task_state_class()
             obj.trial_index=0;
             obj.history={};
             obj.new_trial_callback=@(tmp)disp('new_trial');
-            %             obj.parameters = [];
-            %             obj.parameters = [];
             obj.parameters.REFERENCE_X_DIRECTION = nan;
             obj.parameters.REFERENCE_Y_DIRECTION = nan;
             obj.parameters.REFERENCE_Z_DIRECTION = nan;
-            
             obj.parameters.X_FIXATION = 0;
             obj.parameters.Y_FIXATION = 0;
-            
             obj.iseye = [];
             obj.trial_index_TC = 0;
             
@@ -52,12 +49,7 @@ classdef task_state_class < handle
                 if numel(C{:})==2
 
                     %Look if we are at trial start
-                    if strcmp(C{1}{1},'TRIAL')
-                      %  obj.parameters=[];
-%                          obj.parameters.REFERENCE_X_DIRECTION = nan;
-%                          obj.parameters.REFERENCE_Y_DIRECTION = nan;
-%                          obj.parameters.REFERENCE_Z_DIRECTION = nan;
-                       
+                    if strcmp(C{1}{1},'TRIAL')                       
                         obj.new_trial_callback(obj);
                         obj.new_trial=true;
                         obj.trial_type=C{1}{2};

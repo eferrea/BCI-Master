@@ -117,6 +117,7 @@ classdef Kalman_calibrator_class < handle
                     
                     obj.is_movement(obj.sample,1)  = true;
                     display(task_state.stage_type)
+                    %display(['sampling', num2str(rand(1,1))])
                     %store the internal timestamp when the movement is
                     %supposed to start
                     if strcmpi(task_state.stage_type,'1') && (task_state.new_stage == 1)

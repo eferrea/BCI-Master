@@ -97,7 +97,7 @@ classdef Kalman_decoder_class < handle;
             
             obj.fileID_decoder = fopen(filename_decoder,'at');
             obj.printfFormatHeader = ['%6s' '%6s\n'];
-            obj.printfFormatBody = ['%12.3f %25.3f %12.3f\n'];
+            obj.printfFormatBody = ['%12.3f  %12.3f\n'];
             fprintf(obj.fileID_decoder,obj.printfFormatHeader,'time','K');
             
             
@@ -236,8 +236,9 @@ classdef Kalman_decoder_class < handle;
         
         %the decoder is saved at the end of the experiment
         function obj = SaveDecoder(obj)
-          
-            fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),2,3); 
+          %!!here only K is saved a full list of decoder parameters can be
+          %also retrieved offline by using the spikes and the calibrated_values
+            fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),obj.K); 
         end
         
         %send the cursor position to th etask controller
