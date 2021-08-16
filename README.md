@@ -1,4 +1,4 @@
-# BCImat: a Matlab Intracortical Brain Computer Interface
+# BCImat: a Matlab Intracortical Brain-Computer Interface
 
 **Content of the package**
 
@@ -9,7 +9,7 @@
 
 BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas always starting from a central fixation circle.
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
-The project consist of a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn_server class.
+The project consist of a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
 
 
 **Mex vrpn matlab client and server BCImat**
