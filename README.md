@@ -14,7 +14,7 @@ The project consist of a main.cpp running the task and also containing the vrpn 
 
 **Mex vrpn matlab client and server BCImat**
 
-The BCI framework uses mexed versions of the VRPN client and server applications to exchange informations with the task controller. Therefore the vrpn_server.cpp and vrpn_client.cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). 
+The BCI framework uses Matlab executable (mex) version of the VRPN client and server applications to exchange informations with the task controller. Therefore the vrpn_server.cpp and vrpn_client.cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). 
 
 **Description of the BCI framework**
 
