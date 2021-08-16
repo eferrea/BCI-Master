@@ -1,5 +1,6 @@
 function SelectUnits (object, eventdata)
-%function mouseClick (object)
+%to display and select units
+% @E.Ferrea,2015
 
 C = get (gca, 'CurrentPoint');
 activated_channel = int16(C(1,1));

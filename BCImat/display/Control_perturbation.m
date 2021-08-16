@@ -1,4 +1,7 @@
 function Control_perturbation(obj_dec,obj_cal,h,x_pos,y_pos,x_lenght,y_length)
+% this function display a GUI to perturnb the preferred direction of a subset of units parameters ,
+
+%@ E.Ferrea, 2017
 %initialize values
 perturbation_vector = zeros(1,3);
 perturbation_angle = 0;

@@ -1,5 +1,6 @@
 function display_array_properties(position_x,position_y, length_x,length_y,array_data,active_array)
-
+% this function display array layout,
+%@ E.Ferrea, 2015
 
 [r,c] = find(active_array~= 0);
 d= uipanel('Position',[position_x position_y length_x length_y]);

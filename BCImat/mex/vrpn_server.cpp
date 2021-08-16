@@ -1,4 +1,5 @@
 // Mex glue for VRPN trakcer server (+ability to send text)
+//@ P.Morel,E.Ferrea 2015
 #include "mex.h"
 #include <stdio.h>
 #include <string.h>

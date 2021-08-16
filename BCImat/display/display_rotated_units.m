@@ -1,4 +1,7 @@
 function display_rotated_units(position_x,position_y, length_x,length_y,array_data,active_array,rotated_units)
+% this function display rotated units,
+%@ E.Ferrea, 2017
+
 
 
 [r,c] = find(active_array ~= 0);

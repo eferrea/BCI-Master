@@ -1,3 +1,5 @@
+%test connection with Blackrock cereplex system
+%@ E. Ferrea,  2015
 clc
 cbmex('open')
 cbmex('trialconfig',1)

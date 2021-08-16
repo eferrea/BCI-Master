@@ -1,4 +1,9 @@
 %%%%%% class for simulate fake monkey neurons
+% It randomly generates modulation depth, preferred direction and
+%baseline rate of a specified number of cells. The cell firing dynamic is
+%dictate by a cosine model (Georgopoulos et al., 1982).
+% @ E.Ferrea ,2015 .
+
 classdef simNeurons_2D_velocity < handle  % class should be implemented as a handle class. 
     % All copies of a given handle object refer to the same data.
     

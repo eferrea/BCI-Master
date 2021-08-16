@@ -1,3 +1,10 @@
+% Decoder class for Kalman Filter decoding approach as described in Wu et
+% al., 2006. 
+% Decoder position is updated only during stage number 2. This value in
+% hard coded here but should be ideally placed in the construcotr.
+% We decided to update the vdelocity values only during stage 2 (line 129 in loop function) as for
+% some standard BCI control experiments.
+%@E.Ferrea, 2015
 classdef Kalman_decoder_class < handle;
     properties (Access=private)
         
@@ -163,37 +170,21 @@ classdef Kalman_decoder_class < handle;
             % I. time update the equations
             obj.X_prior = obj.A*obj.X; %a priori estimate of the state
             obj.P = obj.A*obj.P*obj.A' + obj.W; %error covariance matrix
-            
-            %We presume that the user internalize the filter's estimate of
-            %cursor position  with complete certainty at time t.
-%             obj.P (:,1) = 0;
-%             obj.P (:,2) = 0;
-%             obj.P (3,:) = 0;
-%             obj.P (4,:) = 0;
-%             obj.P (5,:) = 0;
-            
-            
+
+              
             
             % II Measurements update equations
             obj.K = obj.P*obj.H'*inv(obj.H*obj.P*obj.H' + obj.Q);
             obj.X_update = obj.X_prior + obj.K*(obj.Z-obj.H*obj.X_prior);
             
             obj.P = (eye(size(obj.W)) -obj.K*obj.H)*obj.P;
-            
-            
-            
-            %dt =0.05;
+
             obj.velocity(obj.sample,:) = obj.X_update(4:5)';
            obtimal_vector = -obj.position(obj.sample-1,:) +  target_position;
-            %obtimal_vector = target_position;
-           
-            %obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + dt*(1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
+     
             obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + (1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
-            %obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*obj.velocity(obj.sample,:);
             obj.X_update(2:3) = obj.position(obj.sample,:)';
-           %  obj.X_update(4:5) = obj.velocity(obj.sample-delay,:)';
-            
-          % disp([num2str(obj.velocity(obj.sample,1)/1000),'tt', num2str(obj.velocity(obj.sample,2)/1000)])
+
             
         end
         
@@ -210,14 +201,7 @@ classdef Kalman_decoder_class < handle;
                 
                 obj.bci_correlation_velocity(1,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,1);
                 obj.bci_correlation_velocity(2,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,2);
-              %  obj.bci_correlation_velocity(3,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,3);
-                % disp(num2str(vx_bci(obj.correlation_counter)))
-                %         if(task_state.new_stage && (strcmp(task_state.stage_type,'ACQUIRE_MEM_TGT')))
-                %             internal_hit_counter = internal_hit_counter +1
-                %
-                %         end
-                
-                % display correlation values every ten trials
+
                 if(obj.check_correlation || obj.correlation_counter >= obj.max_corr_samples)
                     % check_correlation = false;
                     rx = corr(obj.correlation_velocity(1,1:obj.correlation_counter )', obj.bci_correlation_velocity(1,1:obj.correlation_counter )');

@@ -1,24 +1,26 @@
-﻿Build started 7/15/2021 3:30:22 PM.
+﻿Build started 8/16/2021 3:58:16 PM.
      1>Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp vrpn_server_class.cpp
+         vrpn_server_class.cpp
          main.cpp
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(83): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(85): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(86): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(88): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(89): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(91): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(92): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(94): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(143): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(144): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(157): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(158): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(164): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(169): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(192): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(205): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(219): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
-     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(231): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(97): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(100): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(149): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(150): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(163): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(164): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(170): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(175): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(198): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(211): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(225): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(237): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\LAB\Libraries\SFML-2.5.1\build\lib\Debug" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" vrpn.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.lib" /MACHINE:X86 Debug\main.obj
          Debug\vrpn_server_class.obj
@@ -27,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.74
+Time Elapsed 00:00:03.62

@@ -1,6 +1,7 @@
-% this function display a table in a GUI
-function display_table(f,position_x,position_y, length_x,length_y,decoder,calibrator)
 
+function display_table(f,position_x,position_y, length_x,length_y,decoder,calibrator)
+% this function display a table in a GUI,
+%@ E.Ferrea, 2015
 
 [row,col] = find(decoder.neurons > 0);
 index = find(decoder.neurons > 0);

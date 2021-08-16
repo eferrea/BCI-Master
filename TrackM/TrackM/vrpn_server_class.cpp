@@ -1,6 +1,6 @@
 //
 //  vrpn_server_class.cpp
-//  MOROCO
+// 
 //
 //  Created by Pierre Morel on 28/11/2014.
 //  Copyright (c) 2014 DPZ. All rights reserved.
