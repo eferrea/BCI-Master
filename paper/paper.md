@@ -11,9 +11,9 @@ authors:
   - name: Enrico Ferrea^[corresponding author]
     affiliation: 1
   - name: Pierre Morel
-    affiliation: "1, 4" 
+    affiliation: "1,4" 
   - name: Alexander Gail
-    affiliation: "1, 2,3" # (Multiple affiliations must be quoted)
+    affiliation: "1,2,3" # (Multiple affiliations must be quoted)
 
 affiliations:
  - name: German Primate Center, Sensorimotor Group, Goettingen, Germany
