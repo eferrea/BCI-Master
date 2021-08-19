@@ -7,9 +7,23 @@ function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_ad
 %The calibrated parameters are instead saved in .mat files
 
 %INPUT
-%isBrain: 0 for simulation mode. 1 for application mode
+
+%isBrain: 0 for simulation mode. 1 for application mode.
+
 %neurons: specify a number of units to perform decoding. Valid only in simulation mode but needs to be specified anyhow (choose in range 20-80 to start).
-%BCI_update_time: choose in seconds the rate of BCI. (0.05 s is suggested).
+
+%BCI_update_time: choose in seconds the rate of the BCI. (0.05 s is suggested).
+
+%delay: number of time bins (!!! not ms) of BCI_update_times to shift the neural activty relative to motor output. This can be used in real experiments to make up for delays 
+%in transmission of the neural signal through the spinal cord. Phisiological values are in the range of 100-150 ms). For testing purposes use 0 (0 ms no delay)
+%or 1 (1*BCI_update_time ms).
+
+%server_address: specify the name of the BCI server (including the tracker name) that is going to be established.
+
+%client address: specify the name of the server (including the tracker name) that the BCI client is reading from.
+
+%E.Ferrea, 2015
+
 
 %%
 clc

@@ -117,7 +117,7 @@ classdef Kalman_calibrator_class < handle
                         & (norm(velocity) > 0.2) & (norm(velocity) < 500);
                     
                     obj.is_movement(obj.sample,1)  = true;
-                    display(task_state.stage_type)
+                    display(['stage:',task_state.stage_type])
                     %display(['sampling', num2str(rand(1,1))])
                     %store the internal timestamp when the movement is
                     %supposed to start

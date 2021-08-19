@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source Files\main.cpp" />
+    <ClCompile Include="Source Files\vrpn_server_class.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source Files\vrpn_server_class.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{78842499-72E5-4AE7-8F72-1A38EDC1424A}</ProjectGuid>
     <RootNamespace>TrackM</RootNamespace>
@@ -129,13 +136,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="vrpn_server_class.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="vrpn_server_class.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

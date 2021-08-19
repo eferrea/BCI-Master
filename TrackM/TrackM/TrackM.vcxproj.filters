@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source Files\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vrpn_server_class.cpp">
+    <ClCompile Include="Source Files\vrpn_server_class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vrpn_server_class.h">
+    <ClInclude Include="Source Files\vrpn_server_class.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
