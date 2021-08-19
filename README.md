@@ -44,11 +44,11 @@ At the beginning of the session the user performs reaches to the target by movin
 
 so practically will look like that:
 
-BCI_Loop(false,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
 
 * and with the following arguments in case of using Blackrock hardware:
-BCI_Loop(true,60,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+BCI_Loop(true,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
 Note that the server address corresponds to the client address on the TC control side while the opposite is true from the TC side. Additionally the server and clients addresses contain also the names of the trackers here named TrackerBCI and TrackerTC.
 
