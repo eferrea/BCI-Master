@@ -4,7 +4,7 @@ function display_array_properties(position_x,position_y, length_x,length_y,array
 
 [r,c] = find(active_array~= 0);
 d= uipanel('Position',[position_x position_y length_x length_y]);
-d.Title = 'Intracortical arrays - Click on colored unit and push calibration button ';
+%d.Title = 'Intracortical arrays - Click on colored unit and push calibration button ';
 s1 = subplot(4,1,1,'Parent',d);
 imagesc(array_data)
 hold on; plot(c,r,'.r','Markersize',20)

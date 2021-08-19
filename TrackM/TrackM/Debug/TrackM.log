@@ -1,4 +1,4 @@
-﻿Build started 8/19/2021 3:37:08 PM.
+﻿Build started 8/19/2021 3:40:05 PM.
      1>Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt "Source Files\main.cpp" "Source Files\vrpn_server_class.cpp"
@@ -29,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.17
+Time Elapsed 00:00:03.07
