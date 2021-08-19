@@ -1,4 +1,4 @@
-# BCImat: a Matlab Intracortical Brain-Computer Interface
+# BCImat:  a Matlab-based framework for Intracortical Brain-Computer Interfaces and their simulation with an artificial spiking neural network
 
 **Content of the package**
 
