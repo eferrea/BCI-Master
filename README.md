@@ -3,8 +3,8 @@
 **Description of the BCI framework**
 
 BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movement intentions from intracortival neural activity and convert them into cursor movements via two types of interfaces:
-1. a simulated set of cosine tuned neurons for testing purposes,
-2. a real neural interface from Blackrock 128 channel recording system using the cbmex for real experiments.
+1. a simulated set of cosine tuned neurons for testing purposes (simulation mode),
+2. a real neural interface from Blackrock 128 channel recording system using the cbmex for real experiments (application mode).
 
 
 **Content of the package**
@@ -35,7 +35,7 @@ Here, we tested the vrpn version 7.33 in Windows and Mac.
 * specify server port at line 48 (here used 6666, it can be kept but if changed need to me done also on the BCImat side)
 * specify dpi of your screen for pixel to mm conversion at line 49.
  
-2. Run the function BCI_loop.m inside BCImat with the following arguments for the simulated neural network:
+2. Run the function BCI_loop.m inside BCImat with the following arguments for the simulation mode:
 
 * BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address)
 
@@ -46,26 +46,28 @@ BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 The simulated set of unit spikes are generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
 For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
 
-* and with the following arguments in case of using Blackrock hardware:
+* and with the following arguments in case of application mode:
 BCI_Loop(true,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
-Note that the server address corresponds to the client address on the TC control side while the opposite is true from the TC side. Additionally the server and clients addresses contain also the names of the trackers here named TrackerBCI and TrackerTC.
 
-Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different servers with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
 
-In case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally the server and clients addresses contain the names of the trackers named in the example TrackerBCI and TrackerTC and precediing the IP addresses.
+
+Also note that the client address has a specified port that has been assigned on the task controller side since the same port cannot be used by two different servers with the same IP. The matlab server here uses the default port so it is not necessary to specify it independently. 
+
+In case of use of a Blackrock recording system the cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 
 **Start to use the BCI**
 
-At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated it can be used to control cursor positions and perform the task (decoding phase). In this phase mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
+At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase and in the simulation mode, mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
 
 Therefore, the simplest use of the BCI requires to:
 1. calibrate the decoder: perform reaches on the task controller side and then press the Update Regression button.
 2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression Button.
-3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
 
-Additional but less relevant functionalities are listed in the next paragraph.
+Additional functionalities are listed in the next paragraph.
 
 ![BCImat](https://user-images.githubusercontent.com/40661882/125582844-48d7406e-c0f1-404a-8047-a63615ed8ab2.png)
 
