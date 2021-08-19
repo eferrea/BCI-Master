@@ -6,10 +6,6 @@ BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movem
 1. a simulated set of cosine tuned neurons for testing purposes,
 2. a real neural interface from Blackrock 128 channel recording system using the cbmex for real experiments.
 
-The simulated set of unit spikes are generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
-For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
-
-At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated it can be used to control cursor positions and perform the task (decoding phase). In this phase mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
 
 **Content of the package**
 
@@ -47,6 +43,10 @@ so practically will look like that:
 
 BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
+The simulated set of unit spikes are generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
+For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
+
+At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated it can be used to control cursor positions and perform the task (decoding phase). In this phase mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
 
 * and with the following arguments in case of using Blackrock hardware:
 BCI_Loop(true,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
@@ -56,6 +56,7 @@ Note that the server address corresponds to the client address on the TC control
 Also note that the client address has a specified port that has been assigned on the TC side since the same port cannot be used by two different servers with the same IP. The matlab server here uses the default port so it is not necessary to specify it. 
 
 In case of use of a Blackrock recording system a cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+
 
 **Start to use the BCI**
 The simplest use of the BCI requires to:
