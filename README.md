@@ -3,18 +3,19 @@
 **Content of the package**
 
 1. A Matlab BCI framework (BCImat).
-2. A task controller written in c++ for testing BCImat (TrackM).
+2. A Visual Studio project containing a task controller written in c++ for testing BCImat (TrackM).
 
 **Build the task controller project TrackM**
 
 BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas to green targets always starting from a central fixation gray circle.
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
-The project contains a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) as well as an implemented vrpn server class.
+The project contains a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) as well as an implemented vrpn server class. These files can be also used to build the project in other integrated development environment (we also tested Xcode). 
 
 
-**Mex vrpn matlab client and server BCImat**
+**Get Vrpn matlab client and server BCImat**
 
-The BCI framework uses Matlab executable (mex) version of the VRPN client and server applications to exchange informations with the task controller. Therefore the vrpn_server.cpp and vrpn_client.cpp cointained in the BCI-Matlab folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). 
+The BCI framework uses Matlab executable (mex) version of the VRPN client and server applications to exchange informations with the task controller. We provide here precompiled versions of the vrpn_serve.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServer.m example on how to do it on windows). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib need to be compiled. 
+Matlab code for mexing both Mac and Window versions is provided. A known issue for mexing the vrpn server and clients under Windows is that while building the the vrpn project to obtain the vrpn.lib a the Runtime library  Multi-threaded DLL (/MD) should be used. In addidition we tested the vrpn version 7.33 in Windows and Mac. 
 
 **Description of the BCI framework**
 
