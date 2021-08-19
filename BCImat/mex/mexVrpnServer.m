@@ -6,7 +6,7 @@ mex -ID:\LAB\VRPN_SERVER\vrpn_07_30\vrpn -LD:\LAB\VRPN_SERVER\vrpn_07_30\vrpn\pc
 
 
 
-\
+mex -ID:\LAB\Libraries\vrpn_07_33\vrpn -LD:\LAB\Libraries\vrpn_07_33\vrpn\pc_win32\Debug vrpn_server.cpp vrpn.lib
 
 
 

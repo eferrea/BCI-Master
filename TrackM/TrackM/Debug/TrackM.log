@@ -1,7 +1,8 @@
-﻿Build started 8/18/2021 4:48:38 PM.
-     1>Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" on node 2 (Build target(s)).
+﻿Build started 8/19/2021 11:40:32 AM.
+     1>Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\LAB\Libraries\SFML-2.5.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp vrpn_server_class.cpp
+         vrpn_server_class.cpp
          main.cpp
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(89): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(91): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
@@ -19,12 +20,13 @@
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(212): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(226): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
      1>c:\users\e.ferrea\documents\github\bci-master\trackm\trackm\main.cpp(238): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\LAB\Libraries\SFML-2.5.1\build\lib\Debug" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" vrpn.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.lib" /MACHINE:X86 Debug\main.obj
          Debug\vrpn_server_class.obj
          TrackM.vcxproj -> C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\Debug\TrackM.exe
-     1>Done Building Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\E.Ferrea\Documents\GitHub\BCI-Master\TrackM\TrackM\TrackM.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.90
+Time Elapsed 00:00:02.70

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 DPZ. All rights reserved.
 //
 
-#ifndef __MOROCO__vrpn_server_class__
-#define __MOROCO__vrpn_server_class__
 
 #include <stdio.h>
 #include "vrpn_Text.h"
@@ -38,4 +36,4 @@ protected:
 
 
 
-#endif /* defined(__MOROCO__vrpn_server_class__) */
+
