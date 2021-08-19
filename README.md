@@ -73,7 +73,7 @@ Additional but less relevant functionalities are listed in the next paragraph.
 The program make uses of callback function associated to button presses to interact with the task.
 These GUIS include:
 1) *Check Correlation*: to check open-loop correlation among decoded and real movements.
-2) *BCIIDLE*: allow to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. Once pressiong the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
+2) *BCIIDLE*: allow to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. By pressing the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
 3) *Update regression*: to update calibration of the decoder.
 4) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
 the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
