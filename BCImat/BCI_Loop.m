@@ -1,5 +1,17 @@
-function BCI_Loop(isBrain,neurons,delay,server_address,client_address)
+function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address)
+%%This is the mail loop function that receive and stream via VRPN the information to the task controller.
+%It is also displaying the GUI allowing the experimenter to change the
+%various phases (calibration, decoding).
+%The function also produces text files information about real and decoded
+%movements, task stages and firing rates
+%The calibrated parameters are instead saved in .mat files
 
+%INPUT
+%isBrain: 0 for simulation mode. 1 for application mode
+%neurons: specify a number of units to perform decoding. Valid only in simulation mode but needs to be specified anyhow (choose in range 20-80 to start).
+%BCI_update_time: choose in seconds the rate of BCI. (0.05 s is suggested).
+
+%%
 clc
 close all
 %warning('off','MATLAB:singularMatrix')
@@ -50,7 +62,7 @@ else
     artificial_NN= simNeurons_2D_velocity(neurons); % number of neurons
 end
 %set_the waiting time in seconds
-BCI_update_time = 0.05 %in secs. As described in papers KF usually uses 50 ms.
+
 counter = 1;
 corr_counter =0;% this counter count the number of iterations per trial
 internal_hit_counter =0;

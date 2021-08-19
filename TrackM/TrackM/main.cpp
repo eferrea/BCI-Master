@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
 #include <cmath> 
 #include "vrpn_server_class.h"
 
@@ -154,7 +154,8 @@ int main()
 		//std::cout << "x: " << localPosition.x*25.4/dpi << " y: " << localPosition.y*25.4/dpi << std::endl;
 		
 
-		Sleep(2);
+		//Sleep(2);
+		sf::sleep(sf::milliseconds(2));
 
 		elapsed1 = clock.getElapsedTime();
 
@@ -248,7 +249,8 @@ int main()
 
 			if (message.compare("BCION") == 0)
 			{
-				Sleep(10);
+				//Sleep(10);
+				sf::sleep(sf::milliseconds(10));
 				is_bci = true;
 				std::cout << "BCI_stat: "<< is_bci << std::endl;
 				message = "";//clear nessage once received
@@ -258,7 +260,8 @@ int main()
 
 			if (message.compare("BCIOFF") == 0)
 			{
-				Sleep(10);
+				//Sleep(10);
+				sf::sleep(sf::milliseconds(10));
 				is_bci = false;
 				std::cout << "BCI_stat: " << is_bci << std::endl;
 				message = "";//clear nessage once received

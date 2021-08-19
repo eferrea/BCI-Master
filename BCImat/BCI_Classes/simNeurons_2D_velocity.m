@@ -108,10 +108,9 @@ classdef simNeurons_2D_velocity < handle  % class should be implemented as a han
               
                velocity_vector = [0 0];
            end
-           % rate = obj.baseline_rate + (obj.modulation_depth).* (direction_vector * (repmat(obj.speed,3,1).*obj.preferred_direction)) + obj.noise;
+           
             rate = obj.baseline_rate + (obj.modulation_depth).* (velocity_vector * obj.preferred_direction) + obj.noise;
            
-            % rate = obj.baseline_rate + norm(velocity_vector).* (velocity_vector * obj.preferred_direction) + obj.noise;
             rate(rate<0)=0; % firing rate of all neurons in specific direction should >0
             obj.Firing_rate=rate;
             % obj.TimeSinceLastCall is the duration of spike train
@@ -135,7 +134,7 @@ classdef simNeurons_2D_velocity < handle  % class should be implemented as a han
             end
             obj.time = tic; % re-timing duration of spike train
             %%% generate spike
-            delta_time=1/30000; % sec
+            delta_time=1/30000; % sec. Fs chosen to keep same sampling as cereplex.
             for i=1:obj.Number_of_neurons % traverse each neuron
                random_num=unifrnd(0,1,[1, ceil(obj.TimeSinceLastCall/delta_time)]); % random number
                timestamp = startGenerateTime : delta_time : endGenerateTime; 

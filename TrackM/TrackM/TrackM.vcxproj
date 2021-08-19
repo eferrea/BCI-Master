@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>D:\LAB\Libraries\SFML-2.5.1\build\lib\Debug;D:\LAB\Moroco_libraries\vrpn_07_30\vrpn\pc_win32\Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\LAB\Moroco_libraries\vrpn_07_30\vrpn;D:\LAB\Moroco_libraries\eigen_3.3;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\LAB\Libraries\SFML-2.5.1\build\lib\Debug;D:\LAB\Libraries\vrpn-version_07.30\vrpn-version_07.30\build\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\LAB\Libraries\vrpn-version_07.30\vrpn-version_07.30;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

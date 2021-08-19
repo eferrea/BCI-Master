@@ -1,9 +1,11 @@
 % Calibrator class for Kalman Filter decoding approach as described in Wu et
 % al., 2006 and implementing retraining approach as described in Gilja et al., 2012.
 % Note that the stages for calibration are hard coded in this class in the
-% loop function (line 119).Only trial that are successful are used for calibration (see line 138). The name of the calibration stage (or stages) can be ideally placed in
-% the constructor
-%@E.Ferrea 2015
+% loop function (line 116).Only trial that are successful are used for calibration (see line 134). The name of the calibration stage (or stages) can be ideally 
+%placed in the constructor. In this example stage 1 and 2 are used for callibration and data are stored only if stage 3 is reached (indicating a sucessfull trial). 
+%@E.Ferrea, 2015
+
+
 classdef Kalman_calibrator_class < handle
     properties (Access=private)
         time;
@@ -54,7 +56,7 @@ classdef Kalman_calibrator_class < handle
     
     methods (Access=public)
         
-        %Constructor class
+        %Constructor 
         function obj = Kalman_calibrator_class(sample_size,max_exp_duration,delay)
             
             obj.delay = delay;
@@ -79,15 +81,7 @@ classdef Kalman_calibrator_class < handle
             obj.filename = 'xxx';
             
         end
-        
-        %         function obj = set_decoder_dynamic()
-        
-        %             decoder_object.A = A;
-        %             decoder.object.W = W;
-        %
-        %end
-            
-        
+                
         %this is the loop calibrator class to store the values (speeds and firing rates) that will be
         %used for regression depending on conditions. It saves
         %indexes for the movement time.
@@ -191,12 +185,9 @@ classdef Kalman_calibrator_class < handle
             
             
             
-            
             decoder_object.Q = (obj.Y-decoder_object.H*obj.X)*(obj.Y-decoder_object.H*obj.X)'./sample_number;
             decoder_object.neurons = obj.neurons;
-            
-            
-           
+              
             
             obj.SaveCalibration(decoder_object);
         end
@@ -252,16 +243,12 @@ classdef Kalman_calibrator_class < handle
                 vel = obj.velocity(:,obj.is_movement_and_hit);
                 
               
-                %Build State matrix with first row set to one to take
+                %Construct State matrix with first row set to one to take
                 %into account baseline firing rate in regression
-                %obj.X = [ones(sum(obj.is_movement_and_hit),1)'; pos; vel];
-                
-                %obj.X = [];
-                %obj.Z = [];
+
                 obj.X = [ones(sum(obj.is_movement_and_hit),1)'; pos; vel];
                 
-                
-                
+                                
                 obj.Z = obj.firing_rate(obj.is_movement_and_hit,:);
                 obj.t_movement = obj.time(obj.is_movement_and_hit);
                 disp('Manual Control Regression')
@@ -290,17 +277,12 @@ classdef Kalman_calibrator_class < handle
                 %(check for this as weel)
                 
                 obj.preferred_direction = (obj.H(:,4:end)./repmat(obj.modulation_depth',1,2))';
-                % obj.preferred_direction = (obj.H(:,2:end)./repmat(obj.modulation_depth',1,3))';
                 
                 %Calculate regression coefficient
                 residuals = obj.Z - obj.H*obj.X;
                 SSresiduals = sum(residuals.^2,2);
                 SStotal = (obj.training_sample_number-1) * var(obj.Z');
                 obj.correlation_tuning = 1 - SSresiduals./SStotal';
-                %Find how many samples were used for regression
-                %sample_number = obj.training_sample_number;
-                
-                %  sample_number
                 
             end
         end
@@ -309,7 +291,6 @@ classdef Kalman_calibrator_class < handle
         function obj = LoadDecoder(obj,decoder_object)
             
             uiopen('.mat')
-            %obj.load = true;
             %Load calibrator parameters
             obj.neurons = N_stored;
             obj.H = cH_stored;

@@ -1,10 +1,11 @@
-% Decoder class for Kalman Filter decoding approach as described in Wu et
-% al., 2006. 
+% Decoder class for Kalman Filter decoding approach as described in Wu et al., 2006.
 % Decoder position is updated only during stage number 2. This value in
-% hard coded here but should be ideally placed in the construcotr.
-% We decided to update the vdelocity values only during stage 2 (line 129 in loop function) as for
+% hard coded here but should be ideally placed in the constructor.
+% We decided to update the velocity values only during stage 2 (line 128 in loop function) as for
 % some standard BCI control experiments.
+
 %@E.Ferrea, 2015
+
 classdef Kalman_decoder_class < handle;
     properties (Access=private)
         
@@ -29,10 +30,6 @@ classdef Kalman_decoder_class < handle;
         fileID_decoder;
         printfFormatHeader;
         printfFormatBody;
-        
-        
-        
-        
         
         
     end
@@ -60,7 +57,7 @@ classdef Kalman_decoder_class < handle;
         X_update;
         sample;
         check_correlation;
-         
+        
         
     end
     
@@ -73,8 +70,6 @@ classdef Kalman_decoder_class < handle;
             obj.K = 0;
             obj.position = zeros(obj.expected_total_samples,2);
             obj.velocity = zeros(obj.expected_total_samples,2);
-            %             obj.X_decoder = zeros(7,obj.expected_total_samples);
-            %             obj.Z_decoder = zeros(7,obj.expected_total_samples);
             obj.preferred_direction = zeros(768,2);
             obj.baseline_rate = zeros(1,768);
             obj.modulation_depth = ones(1,768);
@@ -121,7 +116,11 @@ classdef Kalman_decoder_class < handle;
             pos = [obj.position(obj.sample-obj.delay,1) obj.position(obj.sample-obj.delay,2)];
         end
         
-        %This function get called ever iteration and does something after a certain amount of time.
+        %This function get called every iteration and update the does the
+        %decoding depending of the stage. Please note that the stage is
+        %hard coded: movement decoding happens in stage two whereas in
+        %stage 1 and 3 the decoder always output a zero velocity and a
+        %fixed position
         function obj = loop(obj,task_state,t,interval,spike_data,decoder_on,target_position,p)
             obj.sample = obj.sample +1;
             obj.time(obj.sample) = t;
@@ -129,9 +128,6 @@ classdef Kalman_decoder_class < handle;
             if (~isempty(task_state.new_stage) && decoder_on) && (strcmp(task_state.stage_type,'2') || strcmp(task_state.stage_type,'2'))
                 obj.time(obj.sample) = t;
                 obj.firing_rate(obj.sample,:) = spike_data./interval; %firing rates are stored only when the cursor is supposed to move
-%                  if (strcmp(task_state.stage_type,'1') )
-%                      obj.P = 0;
-%                  end
                 obj.UpdateVelocity(target_position,p);
                 
                 %Stop the cursor when hit the target
@@ -145,7 +141,7 @@ classdef Kalman_decoder_class < handle;
                 % Put cursur at zero position at the beginning of the trial
                 % and when BCI is not running
                 
-                obj.position(obj.sample,:) = obj.fixation_position';%% read from TC 
+                obj.position(obj.sample,:) = obj.fixation_position';%% read from TC
                 obj.velocity(obj.sample,:) = [0 0];
                 obj.X_update = [1; obj.position(obj.sample,:)'; obj.velocity(obj.sample,:)'];
                 obj.P = 0;
@@ -170,21 +166,21 @@ classdef Kalman_decoder_class < handle;
             % I. time update the equations
             obj.X_prior = obj.A*obj.X; %a priori estimate of the state
             obj.P = obj.A*obj.P*obj.A' + obj.W; %error covariance matrix
-
-              
+            
+            
             
             % II Measurements update equations
             obj.K = obj.P*obj.H'*inv(obj.H*obj.P*obj.H' + obj.Q);
             obj.X_update = obj.X_prior + obj.K*(obj.Z-obj.H*obj.X_prior);
             
             obj.P = (eye(size(obj.W)) -obj.K*obj.H)*obj.P;
-
+            
             obj.velocity(obj.sample,:) = obj.X_update(4:5)';
-           obtimal_vector = -obj.position(obj.sample-1,:) +  target_position;
-     
+            obtimal_vector = -obj.position(obj.sample-1,:) +  target_position;
+            
             obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + (1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
             obj.X_update(2:3) = obj.position(obj.sample,:)';
-
+            
             
         end
         
@@ -197,11 +193,11 @@ classdef Kalman_decoder_class < handle;
                 obj.correlation_counter = obj.correlation_counter +1;
                 obj.correlation_velocity(1,obj.correlation_counter) =  velocity_vector(1,1);
                 obj.correlation_velocity(2,obj.correlation_counter) =  velocity_vector(2,1);
-%                obj.correlation_velocity(3,obj.correlation_counter) =  velocity_vector(3,1);
+                %                obj.correlation_velocity(3,obj.correlation_counter) =  velocity_vector(3,1);
                 
                 obj.bci_correlation_velocity(1,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,1);
                 obj.bci_correlation_velocity(2,obj.correlation_counter) = obj.velocity(obj.sample-obj.delay,2);
-
+                
                 if(obj.check_correlation || obj.correlation_counter >= obj.max_corr_samples)
                     % check_correlation = false;
                     rx = corr(obj.correlation_velocity(1,1:obj.correlation_counter )', obj.bci_correlation_velocity(1,1:obj.correlation_counter )');
@@ -220,19 +216,11 @@ classdef Kalman_decoder_class < handle;
         
         %the decoder is saved at the end of the experiment
         function obj = SaveDecoder(obj)
-          %!!here only K is saved a full list of decoder parameters can be
-          %also retrieved offline by using the spikes and the calibrated_values
-            fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),obj.K); 
+            %!!here only K is saved a full list of decoder parameters can be
+            %also retrieved offline by using the spikes and the calibrated_values
+            fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),obj.K);
         end
         
-        %send the cursor position to th etask controller
-%         function obj = send_position(obj)
-%             
-%             vrpn_server('set_position',obj.position(obj.sample-obj.delay,1),obj.position(obj.sample-obj.delay,2),0);
-%          %disp([num2str(obj.position(obj.sample-obj.delay,1)/1000),'tt', num2str(obj.position(obj.sample-obj.delay,2)/1000)])
-%         end
-        
-  
         
         %apply rotation to prefer directions of a subset of neurons
         function obj = UpdateRotation(obj,reshaped_correlation,theta,percent)
@@ -253,8 +241,8 @@ classdef Kalman_decoder_class < handle;
             %         rotation_matrix = [unit_vector(1)^2 + (1-unit_vector(1)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(1)*unit_vector(2) - sind(theta)*unit_vector(3), (1 - cosd(theta))*unit_vector(1)*unit_vector(3) + sind(theta)*unit_vector(2);...
             %             (1 - cosd(theta))*unit_vector(2)*unit_vector(1) + sind(theta)*unit_vector(3), unit_vector(2)^2 + (1 - unit_vector(2)^2)*cosd(theta), (1 - cosd(theta))*unit_vector(2)*unit_vector(3) - sind(theta)*unit_vector(1);...
             %             (1 - cosd(theta))*unit_vector(3)*unit_vector(1) - sind(theta)*unit_vector(2), (1 - cosd(theta))*unit_vector(3)*unit_vector(2) + sind(theta)*unit_vector(1), unit_vector(3)^2 + (1 - unit_vector(3)^2)*cosd(theta) ];
-            %matrix of rotation in 2D
             
+            %matrix of rotation in 2D
             rotation_matrix = [cosd(theta),-sind(theta); sind(theta), cosd(theta)];
             % obj.H(selected_units,5:7) = obj.H(selected_units,5:7)*rotation_matrix;
             temp = rotation_matrix*obj.H(selected_units,4:5)';
@@ -264,26 +252,10 @@ classdef Kalman_decoder_class < handle;
         end
         
         function obj = ResetRotation(obj,reshaped_correlation)
-        selected_unit_matrix = false(128,6);
+            selected_unit_matrix = false(128,6);
             obj.H = obj.H_reset;
             display_rotated_units(0.01, 0.35, .42, .6,reshaped_correlation',obj.neurons',selected_unit_matrix')
         end
-        %         %this function is accesed from outside to modify the matrix of
-        %         %neurons to control the cursor. In this specific decoder it is not
-        %         %used and it has moved to the calibrator.
-        %         function set_neurons(obj,channel,unit)
-        %             if (channel>0 & channel<=128 & unit> 0 & unit<= 6 )
-        %                 % disp('ok')
-        %                 if obj.neurons(channel,unit) == false
-        %                     obj.neurons(channel,unit) = true;
-        %                 else
-        %                     obj.neurons(channel,unit) = false;
-        %                 end
-        %             end
-        %
-        %         end
-        %
-        
         
     end % for methods
 end %for class
