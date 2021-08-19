@@ -9,7 +9,7 @@
 
 BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows uers to perform sequential reacheas to green targets always starting from a central fixation gray circle.
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
-The project consist of a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) and an implemented vrpn server class.
+The project contains a main.cpp running the task and also containing the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) as well as an implemented vrpn server class.
 
 
 **Mex vrpn matlab client and server BCImat**
