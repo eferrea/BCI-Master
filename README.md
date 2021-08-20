@@ -2,15 +2,15 @@
 
 **Description of the BCI framework**
 
-BCImat is a Matlab GUI based program implementinhg a BCI decoder to decode movement intentions from intracortival neural activity and convert them into cursor movements via two types of interfaces:
+BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder to decode movement intentions from intracortival neural activity and convert them into cursor movements via two types of interfaces:
 1. a simulated set of cosine tuned neurons for testing purposes (simulation mode),
-2. a real neural interface from Blackrock 128 channel recording system using the cbmex for real experiments (application mode).
+2. a real neural interface using Blackrock 128 channel recording system (https://www.blackrockmicro.com/) via the cbmex code for real intracortical control (application mode).
 
 
 **Content of the package**
 
 1. A Matlab BCI framework (BCImat).
-2. A Visual Studio project containing a task controller written in c++ for testing BCImat (TrackM).
+2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
 
 **Build the task controller project TrackM**
 
