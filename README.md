@@ -4,7 +4,7 @@
 
 BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
 1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
-2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via the cbmex code for real intracortical control (application mode).
+2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
 
 
 **Content of the package**
@@ -14,15 +14,16 @@ BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (B
 
 **Build the task controller project TrackM**
 
-BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows users to perform sequential reacheas to  a target (green circle) always starting from a central fixation circle (gray circle).
+BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows users to perform sequential reacheas to  a target (green circle) starting from a central fixation circle (gray).
 The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
 The project contains a main.cpp running the task including the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) as well as an implemented vrpn server class. These files are contained in the "Source Files" folder of the project and can be also used to make a project from scratch in other integrated development environment (we also tested Xcode). 
 
 
 **VRPN matlab client and server for BCImat**
 
-The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully producing the Matlab executable of the vrpn server and client, the vrpn.lib needs to me build with the Runtime library Multi-threaded DLL (/MD).
-Here, we tested the vrpn version 7.33 in Windows and Mac. 
+The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully producing the Matlab executable of the vrpn server and client, the vrpn.lib needs to me build with the Runtime library Multi-threaded DLL (/MD).
+
+Here, vrpn version 7.33 in Windows and Mac was tested. 
 
 
 
@@ -50,12 +51,11 @@ For each neuron a random modulation depth, a baseline firing rate and a preferre
 BCI_Loop(true,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
 
 
+Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceeding the IP addresses.
 
-Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally the server and clients addresses contain the names of the trackers named in the example TrackerBCI and TrackerTC and precediing the IP addresses.
+Also note that the client address has a specified port that has been assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the matlab server uses the default port so it is not necessary to specify it independently. 
 
-Also note that the client address has a specified port that has been assigned on the task controller side since the same port cannot be used by two different servers with the same IP. The matlab server here uses the default port so it is not necessary to specify it independently. 
-
-In case of use of a Blackrock recording system the cbmex code to stream spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+In case of use of a Blackrock recording system the cbmex code streaming spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 
 **Start to use the BCI**
@@ -64,8 +64,8 @@ At the beginning of the session the user performs reaches to the target by movin
 
 Therefore, the simplest use of the BCI requires to:
 1. calibrate the decoder: perform reaches on the task controller side and then press the Update Regression button.
-2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression Button.
-3. After collecting enough samples (shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression button.
+3. After collecting enough samples (samples are shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
 
 Additional functionalities are listed in the next paragraph.
 
@@ -74,7 +74,7 @@ Additional functionalities are listed in the next paragraph.
 **Matlab Graphical user interface extended functionalities**
 
 The program make uses of callback function associated to button presses to interact with the task.
-These GUIS include:
+These GUIs include:
 1) *Check Correlation*: to check open-loop correlation among decoded and real movements.
 2) *BCIIDLE*:  to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. By pressing the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
 3) *Update regression*: to update calibration of the decoder.
