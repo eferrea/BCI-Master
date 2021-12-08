@@ -1,0 +1,1 @@
+  time        Trial                     Stage       BCI_on      IDLE_on        tgt_x        tgt_y        tgt_z          Hit       EYE_on

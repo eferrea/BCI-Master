@@ -1,4 +1,4 @@
-function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address)
+function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
 %%This is the mail loop function that receive and stream via VRPN the information to the task controller.
 %It is also displaying the GUI allowing the experimenter to change the
 %various phases (calibration, decoding).
@@ -21,6 +21,8 @@ function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_ad
 %server_address: specify the name of the BCI server (including the tracker name) that is going to be established.
 
 %client address: specify the name of the server (including the tracker name) that the BCI client is reading from.
+
+%port: specify the name of the port (the use of a specific  port is needed in case the task controller profram and the BCI framewor run on the same computer)  
 
 %E.Ferrea, 2015
 
@@ -121,7 +123,7 @@ d2s=@(t)t*86400;
 %server_address = 'TrackerBCI@172.17.6.10';
 vrpn_server('start_server',server_address)
 %% %initialize VRPN matlab client
-%client_address = 'TrackerTC@172.17.6.10:6666';
+client_address = [client_address ':' num2str(port)];
 vrpn_client('open_connection',client_address ) %same computer
 
 %% initialize objects

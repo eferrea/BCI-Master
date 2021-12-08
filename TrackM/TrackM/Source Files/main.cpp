@@ -6,10 +6,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <cmath> 
 #include "vrpn_server_class.h"
+//using namespace std;
 
-static  std::vector<double> temp{ 0, 0, 0, 0, 0 }; //static variable used to retrieve tracker positional values
+static std::vector<double> temp{ 0, 0, 0, 0, 0 }; //static variable used to retrieve tracker positional values
 static std::string message;
 
 void VRPN_CALLBACK handle_tracker(void* userData, const vrpn_TRACKERCB t)
@@ -43,28 +47,45 @@ void VRPN_CALLBACK handle_message(void *userData, const vrpn_TEXTCB info)
 
 int main()
 {
-	//adjust addresses before starting
-	char  client_address[] = "TrackerBCI@172.17.6.10";
-	char  server_address[] = "TrackerTC@172.17.6.10";
+	//Read data from configuration file
+	std::ifstream fin("config.txt");
+	std::string line,client_address,server_address, tracker_name,bci_name;
 	//port can be adjusted but is not necsssary
-	int server_port = 6666;
+	int port = 0000;
 	//adjust screen resolution for pixel to mm conversion
 	double dpi = 108.79;
+	while (getline(fin, line)) {
+		std::istringstream sin(line.substr(line.find("=") + 1));
+		if (line.find("IP_address_server") != -1)
+			sin >> server_address;
+		else if (line.find("IP_address_client") != -1)
+			sin >> client_address;
+		else if (line.find("port") != -1)
+			sin >> port;
+		else if (line.find("dpi") != -1)
+			sin >> dpi;
+	}
 
+	std::cout << "IP_server: " << server_address << '\n';
+	std::cout << "IP_client: " << client_address << '\n';
+	std::cout << "Port: " << port<< '\n';
+	std::cout << "dpi screen: " << dpi << '\n';
+	
 
+	
 
 	//initialize vrpn client variables.!!! change the address to match with ip address of computer running BCI framework
-	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(client_address);
-	vrpn_Text_Receiver* vrpnText = new vrpn_Text_Receiver(client_address);
+	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(client_address.c_str());
+	vrpn_Text_Receiver* vrpnText = new vrpn_Text_Receiver(client_address.c_str());
 
 	vrpnTracker->register_change_handler(0, handle_tracker);
 	vrpnText->register_message_handler(0, handle_message);
 
 
 	//Create VRPN Server Connection
-	vrpn_Connection_IP* m_Connection = new vrpn_Connection_IP(server_port);
+	vrpn_Connection_IP* m_Connection = new vrpn_Connection_IP(port);
 	//Create VRPN server Tracker. !!! Specify adrees of computer running the task controller and tracker name (can be freely choosen)
-	vrpn_server_class* vrpn_server = new vrpn_server_class(server_address, m_Connection);
+	vrpn_server_class* vrpn_server = new vrpn_server_class(server_address.c_str(), m_Connection);
 
 	//initializize graphic window values 
 	int window_length = 1200;
