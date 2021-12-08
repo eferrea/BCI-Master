@@ -32,9 +32,9 @@ Here, vrpn version 7.33 in Windows and Mac was tested.
 
 **Running the BCI framework**
 
-1. Edit the provided configuration file by providing a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. The IP adresses specify the IP adresses were the task controller and the BCImat framework runs.  
-Note that the task controller stream the information of the mouse pointer (TrackerTC here) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via TrackerBCI) by implementing a vrpn client.
-Also a name of a port needs to be added to avoid conflictts when task controller and BCI framework run on the same computer. The provided entry <6666> can be left untouched.
+1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. They specify the adresses of the computers were the task controller and the BCImat framework run.  
+Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client.
+Also a name of a port needs to be added to avoid conflictts when task controller and BCI framework run on the same computer. The provided entry <6666> can be left unchanged.
 Also the number of dots per inch for the specific used screen should be specified for pixel to mm conversions (not critical)
 In summary the configuration file should look like that:
 
