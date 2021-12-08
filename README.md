@@ -40,7 +40,7 @@ In summary the configuration file should look like that:
 
 IP_address_server = TrackerTC@127.0.0.1\
 IP_address_client = TrackerBCI@127.0.0.1\ 
-port = 6666\
+port = 6666 \
 dpi = 108.79 
 
 
