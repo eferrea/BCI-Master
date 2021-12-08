@@ -1,16 +1,19 @@
 # BCImat:  a Matlab-based framework for Intracortical Brain-Computer Interfaces and their simulation with an artificial spiking neural network
 
+
+**Content of the package**
+
+1. A Matlab BCI framework (BCImat).
+2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
+
 **Description of the BCI framework**
 
 BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
 1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
 2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
 
-
-**Content of the package**
-
-1. A Matlab BCI framework (BCImat).
-2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
+**Description of the Visual Studio Project**
+TrackM is an example software written in C++ implementing a standard reaching task. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop framework by running the main.cpp and after linking to VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). This part of the code (task controller) can also be written in any other programming language as far as the vrpn methods are used to send and read the data to and from the BCImat interface. The project contained a main.cpp together with a class implementation of the vrpn server method and that should be build together when using other operating system architectures. 
 
 **Build the task controller project TrackM**
 
@@ -24,7 +27,6 @@ The project contains a main.cpp running the task including the vrpn client callb
 The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully producing the Matlab executable of the vrpn server and client, the vrpn.lib needs to me build with the Runtime library Multi-threaded DLL (/MD).
 
 Here, vrpn version 7.33 in Windows and Mac was tested. 
-
 
 
 **Running the BCI framework**
