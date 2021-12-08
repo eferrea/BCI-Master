@@ -400,7 +400,7 @@ close all
         cal.UpdateRegression(decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
-        display_table(fh,0.45, 0.00, .42, 1,cal,cal);
+        display_table(fh,0.45, 0.00, .35, 1,cal,cal);
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
@@ -409,7 +409,7 @@ close all
         cal.LoadDecoder(bci);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
-        display_table(fh,0.45, 0.00, .42, 1,cal,cal);
+        display_table(fh,0.45, 0.00, .35, 1,cal,cal);
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
@@ -418,7 +418,7 @@ close all
         cal.UpdateDecoder(bci,decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
-        display_table(fh,0.45, 0.00, .42, 1,cal,cal);
+        display_table(fh,0.45, 0.00, .35, 1,cal,cal);
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
         vrpn_server('send_message',cal.filename)
     end
