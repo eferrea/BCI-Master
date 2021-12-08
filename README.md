@@ -6,13 +6,13 @@
 1. A Matlab BCI framework (BCImat).
 2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
 
-**Description of the BCI framework**
+**Purpose of the BCI framework (BCIMat)**
 
 BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
 1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
 2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
 
-**Description of the Visual Studio Project**
+**Purpose of the task controller (TrackM)**
 
 TrackM is an example software written in C++ implementing a standard task controller for a reaching task to displayed targets. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running this project simultaneously with the BCI matlab framework. TrackM can also be written in any other programming language as far as the vrpn methods are used to send and read the data to and from the BCImat interface. The project contains a main.cpp together with a class implementation of the vrpn server method which should be build with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
 
