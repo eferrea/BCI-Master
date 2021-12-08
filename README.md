@@ -13,6 +13,7 @@ BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (B
 2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
 
 **Description of the Visual Studio Project**
+
 TrackM is an example software written in C++ implementing a standard reaching task. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop framework by running the main.cpp and after linking to VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). This part of the code (task controller) can also be written in any other programming language as far as the vrpn methods are used to send and read the data to and from the BCImat interface. The project contained a main.cpp together with a class implementation of the vrpn server method and that should be build together when using other operating system architectures. 
 
 **Build the task controller project TrackM**
