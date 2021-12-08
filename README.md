@@ -32,16 +32,23 @@ Here, vrpn version 7.33 in Windows and Mac was tested.
 
 **Running the BCI framework**
 
-1. Start the task controller program TrackM
+1. Edit the provided configuration file by providing a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. The IP adresses specify the IP adresses were the task controller and the BCImat framework runs.  
+Note that the task controller stream the information of the mouse pointer (TrackerTC here) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via TrackerBCI) by implementing a vrpn client.
+Also a name of a port needs to be added to avoid conflictts when task controller and BCI framework run on the same computer. The provided entry <6666> can be left untouched.
+Also the number of dots per inch for the specific used screen should be specified for pixel to mm conversions (not critical)
+In summary the configuration file should look like that:
 
-* specify client address at line 47 of main.cpp (same as server address on the BCImat side)
-* specify server address at line 48 of main.cpp (same as the client address on the BCImat side)
-* specify server port at line 48 (here used 6666, it can be kept but if changed need to me done also on the BCImat side)
-* specify dpi of your screen for pixel to mm conversion at line 49.
+IP_address_server = TrackerTC@127.0.0.1 
+IP_address_client = TrackerBCI@127.0.0.1 
+port = 6666 
+dpi = 108.79 
+
+
+2. Run the task controller program TrackM
  
-2. Run the function BCI_loop.m inside BCImat with the following arguments for the simulation mode:
+3. Run the function BCI_loop.m inside BCImat with the following arguments for the simulation mode:
 
-* BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address)
+* BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
 
 so practically will look like that:
 
