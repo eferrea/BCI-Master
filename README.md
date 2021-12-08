@@ -46,19 +46,21 @@ dpi = 108.79
 
 2. Run the task controller program TrackM
  
-3. Run the function BCI_loop.m inside BCImat with the following arguments for the simulation mode:
+3. Run the function BCI_loop.m inside BCImat with the following arguments:
 
-* BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
+* for the simulation mode:
+BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
 
-so practically will look like that:
+practically it will look like that:
 
-BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10',6666)
 
 The simulated set of unit spikes are generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
 For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
 
+
 * and with the following arguments in case of application mode:
-BCI_Loop(true,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10:6666')
+BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1:6666')
 
 
 Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceeding the IP addresses.
