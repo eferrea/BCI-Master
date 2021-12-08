@@ -79,7 +79,7 @@ Therefore, the simplest use of the BCI requires to:
 2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression button.
 3. After collecting enough samples (samples are shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
 
-Extended explanation of the additional functionalities is provided in the next paragraph.
+Extended explanation of all functionalities is provided in the next paragraph.
 
 
 ![layoutBCI](https://user-images.githubusercontent.com/40661882/145232704-86035c3a-d15d-4000-82b9-643736b52dd1.jpg)
@@ -88,18 +88,18 @@ Extended explanation of the additional functionalities is provided in the next p
 *Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode-arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged as column while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data in six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selectcted unit is displayed (ch = channel identity, U = unit identity)* together with the its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of each single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface extended functionalities* paragraph and determine the behavior of the BCI.   
 
 
-**Matlab Graphical user interface extended functionalities**
+**Matlab Graphical user interface functionalities**
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUIs include:
-1) *Check Correlation*: to check open-loop correlation among decoded and real movements.
+1) *Update regression*: to update calibration of the decoder.
 2) *BCIIDLE*:  to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. By pressing the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
-3) *Update regression*: to update calibration of the decoder.
-4) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
-the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
+3) *Check Correlation*: to be used in BCIIDLE mode, by prssing the button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where prior to allow the user to control the decoder a decent performance
+4) *Switch BCI*: after successful calibration to switch to close loop control. 
 5) *Update Decoder*: to be used after an Updated Regression in closed-loop mode. It is meant to be used 
 for retraineing calibrations in closed-loop mode. More useful for real applications than in the simulation mode.  
-6) *Switch BCI*: after successful calibration to switch to close loop control.
+6) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
+the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
 7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
 8) *Reset Calibrator*: to reset the calibration if something went wrong. 
 9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases.
