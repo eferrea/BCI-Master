@@ -39,8 +39,11 @@ Also the number of dots per inch for the specific used screen should be specifie
 In summary the configuration file should look like that:
 
 IP_address_server = TrackerTC@127.0.0.1 
+
 IP_address_client = TrackerBCI@127.0.0.1 
+
 port = 6666 
+
 dpi = 108.79 
 
 
