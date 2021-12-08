@@ -81,9 +81,11 @@ Therefore, the simplest use of the BCI requires to:
 
 Additional functionalities are listed in the next paragraph.
 
-![BCImat](https://user-images.githubusercontent.com/40661882/125582844-48d7406e-c0f1-404a-8047-a63615ed8ab2.png)
 
-*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all possible recorded units arranged to reflect our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total 128 of recording sites), we clearly separate each array from the other in the visualization. The identity of the channel is arranged as column while each row represents a different unit (or spike) for that channel. For each electrode array, we split the data in six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column the name of the selectcted unit is displayed (ch = channel identity, U = unit identity)* together with the its tuning properties calculated after the specific calibration intervals (samples/Hit) of the decoder. R represents the explained variance (R2) of fitting a cosine tuned model to the firing rate of each single cell. This value is also color coding the GUI on the left column. For this reason strongly tuned cells are identified with warmer columns.  
+![layoutBCI](https://user-images.githubusercontent.com/40661882/145232704-86035c3a-d15d-4000-82b9-643736b52dd1.jpg)
+
+
+*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all possible recorded units arranged to reflect our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total 128 of recording sites), we clearly separate each array from the other in the visualization. The identity of the channel is arranged as column while each row represents a different unit (or spike) for that channel. For each electrode array, we split the data in six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column the name of the selectcted unit is displayed (ch = channel identity, U = unit identity)* together with the its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a cosine tuned model to the firing rate of each single cell. This value is also color coding the GUI on the left column. For this reason strongly tuned cells are identified with warmer columns.  
 
 
 **Matlab Graphical user interface extended functionalities**
