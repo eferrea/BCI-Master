@@ -83,6 +83,9 @@ Additional functionalities are listed in the next paragraph.
 
 ![BCImat](https://user-images.githubusercontent.com/40661882/125582844-48d7406e-c0f1-404a-8047-a63615ed8ab2.png)
 
+Fig 1. •	The GUI layout reflects our experimental settings.  We used six electrode arrays each of them containing 32 channels (total128 of recording sites). The online recorded spikes were streamed with a128 channel Cerebus recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/). In the GUI, the channel count is displayed and six units for that specific channel. In fact, the recording system streams up to six units per channel that can be identified online. 
+
+
 **Matlab Graphical user interface extended functionalities**
 
 The program make uses of callback function associated to button presses to interact with the task.
