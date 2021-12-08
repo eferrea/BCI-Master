@@ -38,9 +38,9 @@ Also a name of a port needs to be added to avoid conflictts when task controller
 Also the number of dots per inch for the specific used screen should be specified for pixel to mm conversions (not critical)
 In summary the configuration file should look like that:
 
-IP_address_server = TrackerTC@127.0.0.1\
-IP_address_client = TrackerBCI@127.0.0.1\ 
-port = 6666\
+IP_address_server = TrackerTC@127.0.0.1  
+IP_address_client = TrackerBCI@127.0.0.1   
+port = 6666  
 dpi = 108.79 
 
 
