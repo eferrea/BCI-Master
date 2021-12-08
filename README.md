@@ -92,18 +92,19 @@ Extended explanation of all functionalities is provided in the next paragraph.
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUIs include:
-1) *Update regression*: to update calibration of the decoder.
-2) *BCIIDLE*:  to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. By pressing the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
-3) *Check Correlation*: to be used in BCIIDLE mode, by prssing the button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where prior to allow the user to control the decoder a decent performance
-4) *Switch BCI*: after successful calibration to switch to close loop control. 
-5) *Update Decoder*: to be used after an Updated Regression in closed-loop mode. It is meant to be used 
-for retraineing calibrations in closed-loop mode. More useful for real applications than in the simulation mode.  
+
+1) Single Unit GUI (left column): click on single units to select them to be part of the decoder. This panel is first displayed after pressing the Update Regression button for the first time. Selecting units with warmer color (higher R2) provides better decoding performance.
+2)  *Update Regression*: to update calibration of the decoder after performing movements. This button should be pressed everytime a substantial amount of samples is performed.It can be used during calibration to control which units give a better tuning (higher R2) or during BCI online mode to improve the calibration. The online mode calibration assume that the movement is always pointing to the target. (Gjlia et al 2012).Internally calibrations done with real movements and during closed loop are kept separated so it is possible to retrieve data automatically when switching from one modality of calibration to another.  
+3) *BCIIDLE*:  to perform evaluation of decoder performance without closing the BCI loop (open loop). It stores internally real speeds and decoded speeds. 
+4) *Check Correlation*: to be used in BCIIDLE mode, by pressing this button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where prior allowing users to control the decoder a decent (offline) performance needs to be achieved.
+5) *Switch BCI*: after successful calibration to switch to close loop control. It switch to the BCI closed-loop mode. A decent amount of units (min 30-40) and a decent amount of samples (200-300) needs to be acuired to achieve a decent performance (in offline mode the green cursor should be reliably controlled with the mouse pointer).
+6) *Update Decoder*: to be used after a recalibration in closed-loop mode with Updated Regression. Important for real applications not in the simulation mode.  
 6) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
-the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
+the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session but potentially useful to use the same decoder across many days.
 7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
-8) *Reset Calibrator*: to reset the calibration if something went wrong. 
-9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases.
-11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. 
+8) *Reset Calibrator*: to reset the calibration if something went wrong during calibration. It starts to recollect speed and neural samples.  
+9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases and to recalibrate the decoder during closed loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as subject acquire proficiency with the control the amount of control from the computer side is reduced.
+11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control movemnt direction deviate from the intended movement directions. This panel is intended for motor learning studies.   
   
   Have fun!
 
