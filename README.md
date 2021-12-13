@@ -60,7 +60,7 @@ For each neuron a random modulation depth, a baseline firing rate and a preferre
 
 
 * and with the following arguments in case of application mode:
-BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1:6666')
+BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1',6666)
 
 
 Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceeding the IP addresses.
