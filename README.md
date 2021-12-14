@@ -60,7 +60,7 @@ For each neuron a random modulation depth, a baseline firing rate and a preferre
 
 
 * and with the following arguments in case of application mode:
-BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1:6666')
+BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1',6666)
 
 
 Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceeding the IP addresses.
@@ -70,40 +70,44 @@ Also note that the client address has a specified port that has been assigned on
 In case of use of a Blackrock recording system the cbmex code streaming spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 
-**Start to use the BCI**
+**Test procedure**
 
-At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase and in the simulation mode, mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
+The user should performs reaches to the visual targets in the TrackM program by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase and in the simulation mode, mouse movements are used to elicit neuronal responses according to each neuron preferred direction while the decoder converts this activity into movements. The task is a center out reach task so movements are required to always start at the center of the workspace. This means that to start reaches to a new target, the user should point the mouse to the gray target at the centre of the workspace. In this way at the beginning of the reach, the mouse pointer and the cursor are maximally aligned.    
 
 Therefore, the simplest use of the BCI requires to:
-1. calibrate the decoder: perform reaches on the task controller side and then press the Update Regression button.
-2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression button.
-3. After collecting enough samples (samples are shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+1. Perform several (e.g.10) reaches to the targets. 
+2. Press the Update Regression button to open the single unit GUI.The intensity of the color represents the tuning strength.
+3. Select several (e.g.30-40 for good decoder performance) units used for decoding by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
+4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
 
-Extended explanation of the additional functionalities is provided in the next paragraph.
 
 
-![layoutBCI](https://user-images.githubusercontent.com/40661882/145232704-86035c3a-d15d-4000-82b9-643736b52dd1.jpg)
+
+
+![layoutBCI](https://user-images.githubusercontent.com/40661882/145967910-9d38d0a2-9b4b-426e-9fd3-167733019df8.jpg)
+
 
 
 *Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode-arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged as column while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data in six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selectcted unit is displayed (ch = channel identity, U = unit identity)* together with the its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of each single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface extended functionalities* paragraph and determine the behavior of the BCI.   
 
 
-**Matlab Graphical user interface extended functionalities**
+**Matlab Graphical user interface functionalities**
 
 The program make uses of callback function associated to button presses to interact with the task.
 These GUIs include:
-1) *Check Correlation*: to check open-loop correlation among decoded and real movements.
-2) *BCIIDLE*:  to perform openloop evaluation of decoder performance. It stores internally real movements and decoded movements. By pressing the Check Correlation button a Pearson correlation coefficient is output for each dimension individually among decoded and real movements.
-3) *Update regression*: to update calibration of the decoder.
-4) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
-the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session.
-5) *Update Decoder*: to be used after an Updated Regression in closed-loop mode. It is meant to be used 
-for retraineing calibrations in closed-loop mode. More useful for real applications than in the simulation mode.  
-6) *Switch BCI*: after successful calibration to switch to close loop control.
+
+1) Single Unit GUI (left column): click on single units to select them to be part of the decoder. This panel is first displayed after pressing the Update Regression button for the first time. Selecting units with warmer color (higher R2) provides better decoding performance.
+2)  *Update Regression*: to update calibration of the decoder after performing movements. This button should be pressed everytime a substantial amount of samples is performed.It can be used during calibration to control which units give a better tuning (higher R2) or during BCI online mode to improve the calibration. The online mode calibration assume that the movement is always pointing to the target. (Gjlia et al 2012).Internally calibrations done with real movements and during closed loop are kept separated so it is possible to retrieve data automatically when switching from one modality of calibration to another.  
+3) *BCIIDLE*:  to evaluate decoder performance without closing the BCI loop (open loop). It stores internally real speeds and decoded speeds. 
+4) *Check Correlation*: to be used in BCIIDLE mode, by pressing this button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where prior allowing users to control the decoder a decent (offline) performance needs to be achieved.
+5) *Switch BCI*: after successful calibration to switch to close loop control. It switch to the BCI closed-loop mode. A decent amount of units (30-40) and a decent amount of samples (200-300) needs to be acuired to achieve a decent performance (in offline mode the green cursor should be reliably controlled with the mouse pointer).
+6) *Update Decoder*: to be used after a recalibration in closed-loop mode with Updated Regression. Important for real applications not in the simulation mode.  
+6) *Load Decoder*: to load a previous calibrated decoder. Note that if used among different experimental sessions
+the number of units should correspond as well as their tuning characteristics. Useful for now to restore previous decoders in the same session but potentially useful to use the same decoder across many days.
 7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
-8) *Reset Calibrator*: to reset the calibration if something went wrong. 
-9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases.
-11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. 
+8) *Reset Calibrator*: to reset the calibration if something went wrong during calibration. It starts to recollect speed and neural samples.  
+9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases and to recalibrate the decoder during closed loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as subject acquire proficiency with the control the amount of control from the computer side is reduced.
+11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.   
   
   Have fun!
 
