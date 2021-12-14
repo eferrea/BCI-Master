@@ -77,8 +77,9 @@ The user should performs reaches to the visual targets in the TrackM program by 
 Therefore, the simplest use of the BCI requires to:
 1. Perform several (e.g.10) reaches to the targets. 
 2. Press the Update Regression button to open the single unit GUI.The intensity of the color represents the tuning strength.
-3. Select several (e.g.30-40 for good decoder performance) units used for decoding by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
-4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+3. Select several units for decoding (e.g.30-40 for good performance) by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
+4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples).
+5 After a successfull target acquisition, the mouse pointer should be positioned at the gray target to start a new reach.
 
 
 
