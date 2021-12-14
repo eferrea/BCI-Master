@@ -1,4 +1,5 @@
 %test connection with Blackrock cereplex system
+%Check that spike_data get filled during signal acquisition  
 %@ E. Ferrea,  2015
 clc
 cbmex('open')

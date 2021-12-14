@@ -10,7 +10,9 @@ function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_ad
 
 %isBrain: 0 for simulation mode. 1 for application mode.
 
-%neurons: specify a number of units to perform decoding. Valid only in simulation mode but needs to be specified anyhow (choose in range 20-80 to start).
+%neurons: specify a number of units to perform decoding. Valid only in
+%simulation mode but needs to be specified anyhow (choose in range 20-80 to
+%start). This argument is used as unique input for the class simNeurons_2D_velocity. 
 
 %BCI_update_time: choose in seconds the rate of the BCI. (0.05 s is suggested).
 
@@ -144,16 +146,16 @@ h = uicontrol(p,'Style', 'PushButton', 'String', 'Stop BCI','Units','normalized'
     'Callback', @StopBCI,'Position',[0 .01 1 .12]);
 %Configure Switch window
 g = uicontrol(p,'Style', 'PushButton', 'String', 'Switch BCI', 'Units','normalized',...
-    'Callback',@SwitchBCI,'Position',[0 .14 1 .12]);
+    'Callback',@SwitchBCI,'Position',[0 .41 1 .12]);
 
 v = uicontrol(p,'Style', 'PushButton', 'String', 'UpdateDecoder', 'Units','normalized',...
     'Callback',@UpdateDecoder,'Position',[0 .27 1 .12]);
 
 f = uicontrol(p,'Style', 'PushButton', 'String', 'Load Decoder', 'Units','normalized',...
-    'Callback',@LoadDecoder,'Position',[0 .41 1 .12]);
+    'Callback',@LoadDecoder,'Position',[0 .14 1 .12]);
 
 u = uicontrol(p,'Style', 'PushButton', 'String', 'Update Regression', 'Units','normalized',...
-    'Callback',@UpdateRegression,'Position',[0 .55 1 .12]);
+    'Callback',@UpdateRegression,'Position',[0 .83 1 .12]);
 
 id = uicontrol(p,'Style', 'PushButton', 'String', 'BCIIDLE', 'Units','normalized',...
     'Callback',@BCIIDLE,'Position',[0 .69 1 .12]);
@@ -164,7 +166,7 @@ hndl=@(object,eventdata)SelectUnits(cal,'WindowButtonDownFcn');
 hndl1=@(object,eventdata)CheckCorrelation(bci,'PushButton');
 
 hl1  = uicontrol(p,'Style', 'PushButton', 'String', 'Check Correlation','Units','normalized',...
-    'Callback', hndl1,'Position',[0 .83 1 .12]);
+    'Callback', hndl1,'Position',[0 .55 1 .12]);
 
 set (gcf, 'WindowButtonDownFcn', hndl);
 

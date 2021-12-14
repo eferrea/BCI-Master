@@ -1,8 +1,10 @@
-classdef task_state_class < handle
-    %This class handles messages coming from the task controller , many of
+   %This class handles messages coming from the task controller , many of
     %the parameters listed below are not used with the basic provided task
     %controller but were used during our experiments 
     % @ P.Morel, 2015
+
+classdef task_state_class < handle
+ 
     
     properties
         stage_type
