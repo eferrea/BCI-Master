@@ -70,16 +70,17 @@ Also note that the client address has a specified port that has been assigned on
 In case of use of a Blackrock recording system the cbmex code streaming spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
 
-**Start to use the BCI**
+**Test procedure**
 
-At the beginning of the session the user performs reaches to the target by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase and in the simulation mode, mouse movements are used to make neurons firing according to the cosine model while the decoder converts this activity into movements. 
+The user should performs reaches to the visual targets in the TrackM program by moving the cursor with the mouse (decoder calibration phase). Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase and in the simulation mode, mouse movements are used to elicit neuronal responses according to each neuron preferred direction while the decoder converts this activity into movements. The task is a center out reach task so movements are required to always start at the center of the workspace. This means that to start reaches to a new target, the user should point the mouse to the gray target at the centre of the workspace. In this way at the beginning of the reach, the mouse pointer and the cursor are maximally aligned.    
 
 Therefore, the simplest use of the BCI requires to:
-1. calibrate the decoder: perform reaches on the task controller side and then press the Update Regression button.
-2. select the units used for decoding. The intensity of the color represents the tuning strength. Click to select one unit and update with the Update Regression button.
-3. After collecting enough samples (samples are shown on the right table) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+1. Perform several (e.g.10) reaches to the targets. 
+2. Press the Update Regression button to open the single unit GUI.The intensity of the color represents the tuning strength.
+3. Select several (e.g.30-40 for good decoder performance) units used for decoding by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
+3. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+4. Always start a new reach by positioning the mouse to the center of the gray target. This allow to align the cursor 
 
-Extended explanation of all functionalities is provided in the next paragraph.
 
 ![layoutBCI](https://user-images.githubusercontent.com/40661882/145967910-9d38d0a2-9b4b-426e-9fd3-167733019df8.jpg)
 
