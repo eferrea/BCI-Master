@@ -78,8 +78,10 @@ Therefore, the simplest use of the BCI requires to:
 1. Perform several (e.g.10) reaches to the targets. 
 2. Press the Update Regression button to open the single unit GUI.The intensity of the color represents the tuning strength.
 3. Select several (e.g.30-40 for good decoder performance) units used for decoding by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
-3. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are guided by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
-4. Always start a new reach by positioning the mouse to the center of the gray target. This allow to align the cursor 
+4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+
+
+
 
 
 ![layoutBCI](https://user-images.githubusercontent.com/40661882/145967910-9d38d0a2-9b4b-426e-9fd3-167733019df8.jpg)
