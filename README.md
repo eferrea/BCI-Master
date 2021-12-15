@@ -25,7 +25,7 @@ The project contains a main.cpp running the task including the vrpn client callb
 
 **VRPN matlab client and server for BCImat**
 
-The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully producing the Matlab executable of the vrpn server and client, the vrpn.lib needs to me build with the Runtime library Multi-threaded DLL (/MD).
+The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully obtaining the Matlab executable of the vrpn server and client, the vrpn.lib needs to be build with the Runtime library Multi-threaded DLL (/MD).
 
 Here, vrpn version 7.33 in Windows and Mac was tested. 
 
@@ -77,8 +77,9 @@ The user should performs reaches to the visual targets in the TrackM program by 
 Therefore, the simplest use of the BCI requires to:
 1. Perform several (e.g.10) reaches to the targets. 
 2. Press the Update Regression button to open the single unit GUI.The intensity of the color represents the tuning strength.
-3. Select several (e.g.30-40 for good decoder performance) units used for decoding by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
-4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples). 
+3. Select several units for decoding (e.g.30-40 for good performance) by clicking on the colored square of the GUI and update with the Update Regression button to update visualization.
+4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on number of units and number of samples).
+5 After a successfull target acquisition, the mouse pointer should be positioned at the gray target to start a new reach.
 
 
 
@@ -107,7 +108,22 @@ the number of units should correspond as well as their tuning characteristics. U
 7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
 8) *Reset Calibrator*: to reset the calibration if something went wrong during calibration. It starts to recollect speed and neural samples.  
 9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases and to recalibrate the decoder during closed loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as subject acquire proficiency with the control the amount of control from the computer side is reduced.
-11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.   
+11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.
+
+**Detailed explanation of other contents of the package**
+### 1) Inside BCI_classes folder ###
+
+ ### 1) simNeurons_2D_velocity.m class that is used inside BCI_loop.m to generate firing rates of artificial neurons according to a Poisson distribution. During each small  movement (e.g 50 ms timestamp), the mean of each poisson neuron is determined by the baseline firing rate plus the cosine of the actual moving direction and the neuron prefered direction moltiplied by the modulation depth. Each neuron preferred direction is determined according to a circular uniform distribution.  This class also uses an hard coded modulation depth in the physiological range of 4-18 Hz and a baseline firing rates in the range 4-20.  Future realease of this classes could include the possibility of specifying these ranges. ###
+
+ 2) task_parser.m: this simple class is used to handle messages coming from the task controller. It is important for the BCImat to know information about the state of the task    to adapt its behaviour accordingly. For example it could be useful to collect samples of firing rates and positional samples only when the users are engaged with the motor task. In this case we decided to store the values for calibration online during the last stage of the task (stage 3). 
+
+ 3) Kalman_calibrator_class.m: this class is used to internally store samples for calibrating a BCI decoder according to the following paper (Wu et al. 2006).
+ 4) Kalman_decoder_class.m: it uses the calibration matrix generated by the the Kalman_calibration class to generate position estimation online. Ideally this class and the calibrator class could be replaced with any other decoder type implementing a similar behaviour. 
+
+2) Inside  Test 
+
+  
+
   
   Have fun!
 
