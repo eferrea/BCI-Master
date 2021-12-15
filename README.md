@@ -108,7 +108,15 @@ the number of units should correspond as well as their tuning characteristics. U
 7) *Stop BCI*: stop the program loop. Should this operation not being successfull, to restart the BCImat the vrpn server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
 8) *Reset Calibrator*: to reset the calibration if something went wrong during calibration. It starts to recollect speed and neural samples.  
 9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases and to recalibrate the decoder during closed loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as subject acquire proficiency with the control the amount of control from the computer side is reduced.
-11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.   
+11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.
+
+**Detailed explanation of other contents of the package**
+1) simNeurons_2D_velocity.m class that is used inside BCI_loop.m to generate firing rates of artificial neurons according to a Poisson distribution. During each small  movement (e.g 50 ms timestamp), the mean of each poisson neuron is determined by the baseline firing rate plus the cosine of the actual moving direction and the neuron prefered direction moltiplied by the modulation depth. Each neuron preferred direction is determined according to a circular uniform distribution.  This class also uses an hard coded modulation depth in the physiological range of 4-18 Hz and a baseline firing rates in the range 4-20.  Future realease of this classes could include the possibility of specifying these ranges. 
+
+2) task_parser.m: this simple class is used to handle messages coming from the task controller. It is important for the BCImat to know information about the state of the task to adapt its behaviour accordingly. For example it could be useful to collect samples of firing rates and positional samples only when the users are engaged with the motor task. In this case we decided to store the values for calibration online during the last stage of the task (stage 3). 
+
+3) Kalman  
+
   
   Have fun!
 
