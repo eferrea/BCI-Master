@@ -110,8 +110,9 @@ the number of units should correspond as well as their tuning characteristics. U
 9) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during subject' training phases and to recalibrate the decoder during closed loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as subject acquire proficiency with the control the amount of control from the computer side is reduced.
 11) *Perturbation panel*: rotate units preferred direction . It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.
 
-**Explanation of other contents of the package**
-1. Inside BCI_classes folder 
+**Other contents of the package**
+
+1. Inside BCI_classes folder: 
 
  * simNeurons_2D_velocity.m class that is used inside BCI_loop.m to generate firing rates of artificial neurons according to a Poisson distribution. During each small  movement (e.g 50 ms timestamp), the mean of each poisson neuron is determined by the baseline firing rate plus the cosine of the actual moving direction and the neuron prefered direction moltiplied by the modulation depth. Each neuron preferred direction is determined according to a circular uniform distribution.  This class also uses an hard coded modulation depth in the physiological range of 4-18 Hz and a baseline firing rates in the range 4-20.  Future realease of this classes could include the possibility of specifying these ranges. ###
 
