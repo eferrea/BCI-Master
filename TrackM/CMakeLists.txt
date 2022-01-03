@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.12.0)
 #set include folders for Windows only 
-SET(SFML_INCLUDE_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/include)
-SET(VRPN_INCLUDE_PATH D:/LAB/Libraries/vrpn_07_33/vrpn)
+SET(SFML_INCLUDE_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/include) #change to the full path of your SFML include directory
+SET(VRPN_INCLUDE_PATH D:/LAB/Libraries/vrpn_07_33/vrpn) #change to the full path of your VRPN include directory
 #set library folders for Windows only
-SET(SFML_LIBRARY_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/lib)
-SET(VRPN_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/pc_win32/Debug)
-SET(VRPN_QUAT_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/quat/pc_win32/Debug)
+SET(SFML_LIBRARY_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/lib) #change to the full path of your SFML lib directory>
+SET(VRPN_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/pc_win32/Debug) #change here to the full path containing vrpn.lib
+SET(VRPN_QUAT_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/quat/pc_win32/Debug) #change here to the full path containing quat.lib
 
 project(TrackM)
 
