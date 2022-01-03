@@ -4,7 +4,7 @@
 **Content of the package**
 
 1. A Matlab BCI framework (BCImat).
-2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
+2. A c++ project implementing a task controller for testing the Matlab BCI framework  (TrackM).
 
 **Purpose of the BCI framework (BCIMat)**
 
