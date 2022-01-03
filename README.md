@@ -10,7 +10,7 @@
 
 BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
 1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
-2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
+2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode). In the actual version the "Statistics and Machine Learning Toolbox" is needed. In future releases I will remove functionalities from this toolbox.
 
 **Purpose of the task controller (TrackM)**
 
@@ -42,7 +42,7 @@ The BCImat framework is a Matlab program that uses Matlab executable (mex) versi
 Here, vrpn version 7.33 in Windows and Mac was tested. 
 
 
-**Running the BCI framework**
+**Running the full BCI loop (TrackM + BCImat)**
 
 1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. They specify the adresses of the computers were the task controller and the BCImat framework run.  
 Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client.
@@ -58,7 +58,7 @@ dpi = 108.79
 
 2. Run the task controller program TrackM
  
-3. Run the function BCI_loop.m inside BCImat with the following arguments:
+3. Run the function BCI_loop.m inside BCImat with the following arguments (add also subfolders of BCImat to Matlab path):
 
 * for the simulation mode:
 BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
