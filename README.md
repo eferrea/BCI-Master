@@ -25,8 +25,8 @@ In practice what you have to change in the CMakeLists.txt is the following:
 SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\>*)   
 SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
 SET(SFML_LIBRARY_PATH *\<change to the full path of your SFML lib directory\>*)  
-SET(VRPN_LIBRARY_PATH *\<change here to the full path containing vrpn.lib\>*)  
-SET(VRPN_QUAT_LIBRARY_PATH *\<change here to the full path containing quat.lib\>*)
+SET(VRPN_LIBRARY_PATH *\<change to the full path containing vrpn.lib\>*)  
+SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)
  
 In Linux, it is not neccessary to specify these folders unless libraries are installed in custom locations.
 
