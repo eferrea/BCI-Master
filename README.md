@@ -30,7 +30,7 @@ SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)
  
 In Linux, it is not neccessary to specify these folders unless libraries are installed in custom locations.
 
-In Windows, after making and bulding the Project  don't forget to copy the SFML DLLs (they are in <sfml-install-path/bin>) into the folder containing your executable (see also https://www.sfml-dev.org/tutorials/2.5/start-vc.php) 
+In Windows, after making and bulding the Project, don't forget to copy the SFML DLLs (they are in <sfml-install-path/bin>) into the folder containing your executable (see also https://www.sfml-dev.org/tutorials/2.5/start-vc.php) 
 
 
 **VRPN matlab client and server for BCImat**
