@@ -1,0 +1,8 @@
+# Configuration file for TrackM; the following arguments need to be specified 
+IP_address_server = TrackerTC@127.0.0.1 #client address
+IP_address_client = TrackerBCI@127.0.0.1 #server address
+port = 6666 #a port need to be specified when task controller and BCI framework run on the same computer
+dpi = 108.79 #set your screen dots per ich for a inch to mm conversion,data are sent to the bci in mm
+
+
+
