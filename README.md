@@ -4,23 +4,37 @@
 **Content of the package**
 
 1. A Matlab BCI framework (BCImat).
-2. A Visual Studio project implementing a task controller written in c++ for testing the Matlab BCI framework  (TrackM).
+2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in closed-loop fashion.
 
 **Purpose of the BCI framework (BCIMat)**
 
-BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
-1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
-2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
+BCImat is a Matlab GUI-based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
+1. a simulated set of cosine tuned neurons for testing purposes(simulation mode) before using it under real brain control,
+2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).  
+
+In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
 
 **Purpose of the task controller (TrackM)**
 
-TrackM is an example software written in C++ implementing a standard task controller for a reaching task with the mouse pointer to displayed targets. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI matlab framework. This part of the project can also be written in any other programming language as far as the vrpn methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the vrpn server method which should be build with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
+TrackM is an example software written in C++ implementing a standard task controller for a reaching task. The task controller allows users to perform sequential reaches to  a target (green circle) starting from a central fixation circle (gray) with the mouse. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI Matlab framework. This part of the project can also be written in any other programming language as far as the VRPN methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the vrpn server method (vrpn_server_class) which should be built with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
 
 **Build the task controller project TrackM**
 
-BCImat comes with a simple task controller written in c++ to interface with the BCImat. The task controller allows users to perform sequential reacheas to  a target (green circle) starting from a central fixation circle (gray).
-The c++ project requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn/wiki) to be linked to the project. 
-The project contains a main.cpp running the task including the vrpn client callback functions (similar to http://www.vrgeeks.org/vrpn/tutorial---use-vrpn) as well as an implemented vrpn server class. These files are contained in the "Source Files" folder of the project and can be also used to make a project from scratch in other integrated development environment (we also tested Xcode). 
+The task controller folder TrackM contains the source code and a CMakeLists.txt to build the project under different OS architectures. 
+Before using cmake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
+After doing that, in Windows, it is necessary to specify the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (5 lines in total).
+In practice what you have to change in the CMakeLists.txt is the following:  
+SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\>*)   
+SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
+SET(SFML_LIBRARY_PATH *\<change to the full path of your SFML lib directory\>*)  
+SET(VRPN_LIBRARY_PATH *\<change to the full path containing vrpn.lib\>*)  
+SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)
+ 
+In Linux, it is not necessary to specify these folders unless libraries are installed in custom locations.
+
+In Windows, after making and building the Project, don't forget to copy the SFML DLLs (they are in <sfml-install-path/bin>) into the folder containing your executable (see also https://www.sfml-dev.org/tutorials/2.5/start-vc.php) 
+
+At the end both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
 
 
 **VRPN matlab client and server for BCImat**
@@ -30,7 +44,7 @@ The BCImat framework is a Matlab program that uses Matlab executable (mex) versi
 Here, vrpn version 7.33 in Windows and Mac was tested. 
 
 
-**Running the BCI framework**
+**Running the full BCI loop (TrackM + BCImat)**
 
 1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. They specify the adresses of the computers were the task controller and the BCImat framework run.  
 Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client.
@@ -46,7 +60,7 @@ dpi = 108.79
 
 2. Run the task controller program TrackM
  
-3. Run the function BCI_loop.m inside BCImat with the following arguments:
+3. Run the function BCI_loop.m inside BCImat with the following arguments (add also subfolders of BCImat to Matlab path):
 
 * for the simulation mode:
 BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
