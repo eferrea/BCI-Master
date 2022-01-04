@@ -37,20 +37,20 @@ In Windows, after making and building the Project, don't forget to copy the SFML
 At the end both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
 
 
-**VRPN matlab client and server for BCImat**
+**VRPN Matlab client and server for BCImat**
 
-The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and  vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp cointained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successsfully obtaining the Matlab executable of the vrpn server and client, the vrpn.lib needs to be build with the Runtime library Multi-threaded DLL (/MD).
+The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp contained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successfully obtaining the Matlab executable of the VRPN server and client, the vrpn.lib needs to be built with the Runtime library Multi-threaded DLL (/MD).
 
 Here, vrpn version 7.33 in Windows and Mac was tested. 
 
 
 **Running the full BCI loop (TrackM + BCImat)**
 
-1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (trackM) followed by @*<server_address>*. Also a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP adresses. They specify the adresses of the computers were the task controller and the BCImat framework run.  
-Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a vrpn server to the BCI framework and read the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client.
-Also a name of a port needs to be added to avoid conflictts when task controller and BCI framework run on the same computer. The provided entry <6666> can be left unchanged.
-Also the number of dots per inch for the specific used screen should be specified for pixel to mm conversions (not critical)
-In summary the configuration file should look like that:
+1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (TrackM) followed by @*<server_address>*. Also, a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP addresses. They specify the addresses of the computers where the task controller and the BCImat framework run.  
+Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a VRPN server to the BCI framework and reads the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client to update the position of the controlled cursor.
+A name of a port needs to be added to avoid conflicts when the task controller and BCI framework run on the same computer. The provided entry <6666> can be left unchanged.
+Also, the number of dots per inch for the specific screen resolution should be specified for pixel to mm conversions (not critical)
+In summary, the configuration file should look like that (when TrackM and BCImat run on the same computer):
 
 IP_address_server = TrackerTC@127.0.0.1  
 IP_address_client = TrackerBCI@127.0.0.1   
@@ -58,7 +58,7 @@ port = 6666
 dpi = 108.79 
 
 
-2. Run the task controller program TrackM
+2. Run the task controller program TrackM.
  
 3. Run the function BCI_loop.m inside BCImat with the following arguments (add also subfolders of BCImat to Matlab path):
 
@@ -69,8 +69,8 @@ practically it will look like that:
 
 BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10',6666)
 
-The simulated set of unit spikes are generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
-For each neuron a random modulation depth, a baseline firing rate and a preferred direction is randomly chosen. During real movements the rate is determined by the baseline firing rate summed to  the modulation depth scaled by the angle of the actual movement direction an the preferred direction of the neuron.
+The simulated set of spikes is generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
+For each neuron a random modulation depth, a baseline firing rate, and a preferred direction are randomly chosen. During real movements, the rate is determined by the baseline firing rate summed to the modulation depth scaled by the cosine of the angle between the actual movement direction and the preferred direction of the neuron.
 
 
 * and with the following arguments in case of application mode:
@@ -79,7 +79,7 @@ BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1',6666)
 
 Note that the server address corresponds to the client address on the  task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceeding the IP addresses.
 
-Also note that the client address has a specified port that has been assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the matlab server uses the default port so it is not necessary to specify it independently. 
+Also note that the client address has a specified port that has been assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the Matlab server uses the default port so it is not necessary to specify it independently. 
 
 In case of use of a Blackrock recording system the cbmex code streaming spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
 
