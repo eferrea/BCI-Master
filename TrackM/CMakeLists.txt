@@ -18,5 +18,11 @@ if (WIN32)
 endif (WIN32)
 
 if (UNIX)
-   target_link_libraries(${PROJECT_NAME} PUBLIC sfml-graphics sfml-graphics sfml-window sfml-system vrpn quat pthread)
+   target_link_libraries(${PROJECT_NAME} PUBLIC sfml-graphics sfml-window sfml-system vrpn quat pthread)
 endif (UNIX)
+
+if(APPLE)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${SFML_INCLUDE_PATH}  ${VRPN_INCLUDE_PATH})
+    
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${SFML_LIBRARY_PATH}/sfml-graphics ${SFML_LIBRARY_PATH}/sfml-window ${SFML_LIBRARY_PATH}/sfml-system ${VRPN_LIBRARY_PATH}/vrpn${VRPN_QUAT_LIBRARY_PATH}/quat)
+endif (APPLE)
