@@ -8,9 +8,10 @@
 
 **Purpose of the BCI framework (BCIMat)**
 
-BCImat is a Matlab GUI based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
-1. a simulated set of cosine tuned neurons for testing purposes prior to real brain control (simulation mode),
-2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode). In the actual version the "Statistics and Machine Learning Toolbox" is needed. In future releases I will remove functionalities from this toolbox.
+BCImat is a Matlab GUI-based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
+1. a simulated set of cosine tuned neurons for testing purposes(simulation mode) before using it under real brain control,
+2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).
+In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove functionalities from this toolbox.
 
 **Purpose of the task controller (TrackM)**
 
