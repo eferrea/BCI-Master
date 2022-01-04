@@ -34,7 +34,7 @@ In Linux, it is not necessary to specify these folders unless libraries are inst
 
 In Windows, after making and building the Project, don't forget to copy the SFML DLLs (they are in <sfml-install-path/bin>) into the folder containing your executable (see also https://www.sfml-dev.org/tutorials/2.5/start-vc.php) 
 
-At the end both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
+At the end, both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
 
 
 **VRPN Matlab client and server for BCImat**
