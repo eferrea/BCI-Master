@@ -21,6 +21,7 @@ if (UNIX)
    target_link_libraries(${PROJECT_NAME} PUBLIC sfml-graphics sfml-window sfml-system vrpn quat pthread)
 endif (UNIX)
 
+#not tested on mac
 if(APPLE)
     target_include_directories(${PROJECT_NAME} PUBLIC ${SFML_INCLUDE_PATH}  ${VRPN_INCLUDE_PATH})
     
