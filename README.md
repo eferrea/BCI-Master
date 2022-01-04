@@ -36,6 +36,8 @@ In Windows, after "making" and "building" the Project, don't forget to copy the 
 
 At the end, both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
 
+macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
+
 
 **VRPN Matlab client and server for BCImat**
 
