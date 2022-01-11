@@ -105,7 +105,7 @@ Therefore, the simplest use of the BCI requires to:
 
 
 
-*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface extended functionalities* paragraph and determine the behavior of the BCI.   
+*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface functionalities* paragraph and determine the behavior of the BCI.   
 
 
 **Matlab Graphical user interface functionalities**
@@ -142,6 +142,8 @@ the same number of units should be maintained. Useful for now to restore previou
  * Test_Blackrock: is used to test if a connection can be established with the Cereplex system.
 
   
+**References**
+WU, W., GAO, Y., BIENENSTOCK, E., DONOGHUE, J. P. & BLACK, M. J. 2006. Bayesian population decoding of motor cortical activity using a Kalman filter. Neural computation, 18, 80-118.
 
   
   Have fun!
