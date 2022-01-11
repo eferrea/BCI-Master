@@ -142,7 +142,7 @@ the same number of units should be maintained. Useful for now to restore previou
  * Test_Blackrock: is used to test if a connection can be established with the Cereplex system.
 
   
-**References**
+**References**  
 WU, W., GAO, Y., BIENENSTOCK, E., DONOGHUE, J. P. & BLACK, M. J. 2006. Bayesian population decoding of motor cortical activity using a Kalman filter. Neural computation, 18, 80-118.
 
   
