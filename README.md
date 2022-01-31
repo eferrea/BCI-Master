@@ -38,6 +38,9 @@ At the end, both in Linux and Windows, copy the config.txt contained in the Trac
 
 macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
 
+We tested vrpn version 7.33 and SFML version 2.5.1 
+
+
 
 **VRPN Matlab client and server for BCImat**
 
