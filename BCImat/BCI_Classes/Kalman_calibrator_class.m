@@ -1,8 +1,8 @@
 % Calibrator class for Kalman Filter decoding approach as described in Wu et
 % al., 2006 and implementing retraining approach as described in Gilja et al., 2012.
 % Note that the stages for calibration are hard coded in this class in the
-% loop function (line 116).Only trial that are successful are used for calibration (see line 134). The name of the calibration stage (or stages) can be ideally 
-%placed in the constructor. In this example stage 1 and 2 are used for callibration and data are stored only if stage 3 is reached (indicating a sucessfull trial). 
+% loop function (line 116).Only trial that are successful are used for calibration (see line 134). The name of the calibration stage (or stages) can be ideally
+%placed in the constructor. In this example stage 1 and 2 are used for callibration and data are stored only if stage 3 is reached (indicating a sucessfull trial).
 %@E.Ferrea, 2015
 
 
@@ -56,7 +56,7 @@ classdef Kalman_calibrator_class < handle
     
     methods (Access=public)
         
-        %Constructor 
+        %Constructor
         function obj = Kalman_calibrator_class(sample_size,max_exp_duration,delay)
             
             obj.delay = delay;
@@ -81,7 +81,7 @@ classdef Kalman_calibrator_class < handle
             obj.filename = 'xxx';
             
         end
-                
+        
         %this is the loop calibrator class to store the values (speeds and firing rates) that will be
         %used for regression depending on conditions. It saves
         %indexes for the movement time.
@@ -112,7 +112,7 @@ classdef Kalman_calibrator_class < handle
                 %two stages calibration. We use stages 1 and 2 to regress
                 %firing rates and velocities. Ideally the stages should be
                 %specified in the class constructor
-            
+                
                 if  ( strcmp(task_state.stage_type,'1') |  strcmp(task_state.stage_type,'2')) ...
                         & (norm(velocity) > 0.2) & (norm(velocity) < 500);
                     
@@ -166,14 +166,14 @@ classdef Kalman_calibrator_class < handle
                 %We costrain A matrix reflectig Kinematic values
                 %Calculate final Kalman parameters with the selected neurons only
                 decoder_object.W = (obj.X2-decoder_object.A*obj.X1)*(obj.X2-decoder_object.A*obj.X1)'./(obj.training_sample_number-1);
-
+                
                 
             end
             %Select parameters
             obj.Y = obj.Z(find(obj.neurons ==1),:);
             [decoder_object.n_neurons,sample_number] =  size(obj.Y);
             decoder_object.H = zeros(decoder_object.n_neurons,5);
-
+            
             
             % Do regression only on velocity changes
             obj.X_red = [obj.X(1,:); obj.X(4:5,:)];
@@ -187,7 +187,7 @@ classdef Kalman_calibrator_class < handle
             
             decoder_object.Q = (obj.Y-decoder_object.H*obj.X)*(obj.Y-decoder_object.H*obj.X)'./sample_number;
             decoder_object.neurons = obj.neurons;
-              
+            
             
             obj.SaveCalibration(decoder_object);
         end
@@ -219,7 +219,7 @@ classdef Kalman_calibrator_class < handle
         
         % Update Kalman Filter calibrator paramaters during manual control
         function obj = UpdateRegression(obj,decoder_on)
-         
+            
             % obj.load = false;
             
             if (decoder_on)
@@ -227,7 +227,7 @@ classdef Kalman_calibrator_class < handle
                 pos = obj.position(:,obj.is_movement_and_hit_and_BCI);
                 
                 vel = obj.velocity(:,obj.is_movement_and_hit_and_BCI);
-
+                
                 obj.X = [ones(sum(obj.is_movement_and_hit_and_BCI),1)'; pos; vel];
                 
                 
@@ -242,13 +242,13 @@ classdef Kalman_calibrator_class < handle
                 
                 vel = obj.velocity(:,obj.is_movement_and_hit);
                 
-              
+                
                 %Construct State matrix with first row set to one to take
                 %into account baseline firing rate in regression
-
+                
                 obj.X = [ones(sum(obj.is_movement_and_hit),1)'; pos; vel];
                 
-                                
+                
                 obj.Z = obj.firing_rate(obj.is_movement_and_hit,:);
                 obj.t_movement = obj.time(obj.is_movement_and_hit);
                 disp('Manual Control Regression')
@@ -262,7 +262,7 @@ classdef Kalman_calibrator_class < handle
                 obj.X_red = [obj.X(1,:); obj.X(4:5,:)];
                 H_new = obj.Z(:,1:end-obj.delay)/obj.X_red(:,1+obj.delay:end);
                 obj.H(:,1) = H_new(:,1);
-                obj.H(:,4:5) = H_new(:,2:3);         
+                obj.H(:,4:5) = H_new(:,2:3);
                 % Explicit other relevant parameters for tuning.
                 obj.baseline_rate = obj.H(:,1);
                 
@@ -323,7 +323,7 @@ classdef Kalman_calibrator_class < handle
         function ResetCalibrator(obj)
             
             obj.time = zeros(1, obj.expected_total_samples);
-            obj.preferred_direction = zeros(768,3);  
+            obj.preferred_direction = zeros(768,3);
             obj.neurons = false(128,6);
             obj.position = zeros(2, obj.expected_total_samples);
             obj.velocity = zeros(2, obj.expected_total_samples);

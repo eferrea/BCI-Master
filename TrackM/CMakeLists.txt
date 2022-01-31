@@ -7,14 +7,27 @@ SET(SFML_LIBRARY_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1
 SET(VRPN_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/pc_win32/Debug) #change here to the full path containing vrpn.lib
 SET(VRPN_QUAT_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/quat/pc_win32/Debug) #change here to the full path containing quat.lib
 
+
+
 project(TrackM)
 
 add_executable(${PROJECT_NAME} main.cpp vrpn_server_class.cpp)
+
+
+
+file(GLOB CONF config.txt)
+
 
 if (WIN32)
     target_include_directories(${PROJECT_NAME} PUBLIC ${SFML_INCLUDE_PATH}  ${VRPN_INCLUDE_PATH})
     
     target_link_libraries(${PROJECT_NAME} PUBLIC ${SFML_LIBRARY_PATH}/sfml-graphics-d.lib ${SFML_LIBRARY_PATH}/sfml-window-d.lib ${SFML_LIBRARY_PATH}/sfml-system-d.lib ${VRPN_LIBRARY_PATH}/vrpn.lib ${VRPN_QUAT_LIBRARY_PATH}/quat.lib)
+
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CONF} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+
+
 endif (WIN32)
 
 if (UNIX)

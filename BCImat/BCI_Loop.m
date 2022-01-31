@@ -77,7 +77,7 @@ if (isBrain)
     cbmex('trialconfig',1);
 else
     %initialize Fake monkey (poisson process spike generator)
-    artificial_NN= simNeurons_2D_velocity(neurons); % number of neurons
+    artificial_NN= SimNeurons_2D_velocity(neurons); % number of neurons
 end
 %set_the waiting time in seconds
 
@@ -299,14 +299,14 @@ while (task_running)
     end
     %Extract spikes count from cell like format used in cbmexcode() and
     %artificial NN
-    A =  cellfun(@length,event_data(1:128,2:7));%take the length of each cell element
+    temp =  cellfun(@length,event_data(1:128,2:7));%take the length of each cell element
     
     %arrange data in an Array of Firing rates
-    B = A(:)'; %reshape(A',1,[]);%
+    temp1 = temp(:)'; %reshape(A',1,[]);%
     
     %Trial spike buffer (note that counter is erased at every new trial to
     %maintain variable size small)
-    spike_data(counter,1:768) = B;
+    spike_data(counter,1:768) = temp1;
     
     
 %% accumulate spike counts   
@@ -320,7 +320,7 @@ while (task_running)
     %% ###Execute the main calibrator,BCI loops and send 
     bci.loop(tp,global_time,interval,number_of_spikes,decoder_on,direction_vector,perc);
     %store variables for displaying correlation values in the IDLE mode.
-    bci.OnlineCorrelation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
+    bci.online_correlation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
     %run a calibration step if the target was hit (inside the function regression is done at the reward stage)
     cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector);
     

@@ -1,35 +1,43 @@
 %Check if VRPN messages and cursor positions are transmitted
 %@ E.Ferrea, 2015
+function TestVRPNConnection(server_address,ismessage)
+% input arguments:
+%server_address: a vrpn server address from where to read the data;
+%ismessage: if =1 display messages read from the server, if =0
+%display curosr position
 
-tp=task_state_class();
+
+
 fh = figure('Position',[1300 800 400 300])
 h = uicontrol('Style', 'PushButton', 'String', 'Stop BCI', ...
     'Callback', 'delete(gcbo)','Position',[100 100 200 100]);
-   
-server = 'TrackerTC@127.0.0.1:6666';%local computer
-    vrpn_client('open_connection',server)
-   
+
+%server_address = 'TrackerTC@127.0.0.1:6666';%local computer
+vrpn_client('open_connection',server_address)
+
+
+
+while ishandle(h)
     
-   
-    while ishandle(h)
-        
-        pause(0.02)
-
-      b=vrpn_client('get_messages',server); 
-      a=vrpn_client('get_positions',server)
-      
-%       if ~isempty(b)
-%          
-%        % tp.parse_messages(b);
-%           %b
-%       end
-      
+    pause(0.02)
+    
+    message= vrpn_client('get_messages',server_address);
+    position =vrpn_client('get_positions',server_address);
+    
+    if(ismessage)
+        display(message)
+    else
+        display(position)
     end
+    
+    
+end
 
-vrpn_client('close_connection',server)
-  %  vrpn_server('stop_server')
-    if ishandle(fh)
+vrpn_client('close_connection',server_address)
+%  vrpn_server('stop_server')
+if ishandle(fh)
     close(fh)
 end
-    
+
+end
     

@@ -128,7 +128,7 @@ classdef Kalman_decoder_class < handle;
             if (~isempty(task_state.new_stage) && decoder_on) && (strcmp(task_state.stage_type,'2') || strcmp(task_state.stage_type,'2'))
                 obj.time(obj.sample) = t;
                 obj.firing_rate(obj.sample,:) = spike_data./interval; %firing rates are stored only when the cursor is supposed to move
-                obj.UpdateVelocity(target_position,p);
+                obj.update_velocity(target_position,p);
                 
                 %Stop the cursor when hit the target
             elseif (~isempty(task_state.new_stage) && decoder_on) && strcmp(task_state.stage_type,'3')
@@ -155,7 +155,7 @@ classdef Kalman_decoder_class < handle;
         end
         
         %Velocity Kalman Filter function
-        function obj = UpdateVelocity(obj,target_position,p)
+        function obj = update_velocity(obj,target_position,p)
             %Kalman filter parameters:
             
             obj.Z = obj.firing_rate(obj.sample,find(obj.neurons ==1))'; %the delay takes into account the delay between firing rates and actuation
@@ -184,7 +184,7 @@ classdef Kalman_decoder_class < handle;
             
         end
         
-        function OnlineCorrelation(obj,task_state,velocity_vector,decoder_on,isIDLE)
+        function online_correlation(obj,task_state,velocity_vector,decoder_on,isIDLE)
             
             %Output the actual decoder performance stor values in two variables and compare them
             %in the future will be better to store indexes and retrieve
