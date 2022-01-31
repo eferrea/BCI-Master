@@ -38,6 +38,9 @@ At the end, both in Linux and Windows, copy the config.txt contained in the Trac
 
 macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
 
+We tested vrpn version 7.33 and SFML version 2.5.1 
+
+
 
 **VRPN Matlab client and server for BCImat**
 
@@ -76,7 +79,7 @@ For each neuron a random modulation depth, a baseline firing rate, and a preferr
 
 
 * and with the following arguments in case of application mode:
-BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerBCI@127.0.0.1',6666)
+BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerTC@127.0.0.1',6666)
 
 
 Note that the server address corresponds to the client address on the task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceding the IP addresses.
@@ -94,7 +97,7 @@ Therefore, the simplest use of the BCI requires to:
 1. Perform several (e.g.10) reaches to the targets. 
 2. Press the Update Regression button to open the single unit GUI. The intensity of the color represents the tuning strength.
 3. Select several units for decoding (e.g.30-40 for good performance) by clicking on the colored square of the GUI and updating with the Update Regression button to update visualization.
-4. After collecting enough samples (samples are shown on the right table, 150-200 for good performance) press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on the number of units and number of samples).
+4.  After collecting enough samples by continuously reaching the target and updating by pressing the Update Regression Button (samples are shown on the right table, 150-200 for good performance), press the Switch BCI button to start the decoder. In this condition, movements are controlled by neurons and should follow the mouse pointer in the simulation mode (this depends also on the quality of the calibration that is depending on the number of units and number of samples).
 5. To successfully acquire a target, move the mouse pointer inside the gray target to start a new reach. At this point, a green cursor will appear. Try to move the green cursor to the target by adjusting it with mouse movements.  
 
 
@@ -105,7 +108,7 @@ Therefore, the simplest use of the BCI requires to:
 
 
 
-*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface extended functionalities* paragraph and determine the behavior of the BCI.   
+*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface functionalities* paragraph and determine the behavior of the BCI.   
 
 
 **Matlab Graphical user interface functionalities**
@@ -137,14 +140,41 @@ the same number of units should be maintained. Useful for now to restore previou
  * Kalman_calibrator_class.m: this class is used to internally store samples for calibrating a BCI decoder according to the following paper (Wu et al. 2006).
  * Kalman_decoder_class.m: it uses the calibration matrix generated by the the Kalman_calibration class to generate position estimation online. Ideally, this class and the calibrator class could be replaced with any other decoder type implementing a similar behavior. 
 
-2. Inside  Test_connections:
+2. Inside Test_connections:
  * TestVRPNConnection.m: is used to test if a VRPN client connection can be established without implementing all the BCI closed-loop.
- * Test_Blackrock: is used to test if a connection can be established with the Cereplex system.
+ 
+ This function needs to be called with the following arguments:
+ 
+ TestVRPNConnection(server_address,ismessage).
+ 
+ *server_address* requires the name of the server where the task controller runs, whereas *ismessage* specifies whether we want to read a message from the task controller (ismessage =1) or positional data from the task controller (ismessage =0).  
+ 
+ In practce to check if we are able to retrieve messages it will look like that:  
+ 
+ TestVRPNConnection('TrackerTC@127.0.0.1:6666',0)  
+ 
+ In this case you should be able to read the stage of the task controller  
+ 
+ it will look like that if we read positional data:   
+ 
+ TestVRPNConnection('TrackerTC@127.0.0.1:6666',1)  
+ 
+ In this case you should be able to read the position of the cursor on the task controller screen.
+ 
+ * Test_Blackrock.m: is used to test if a connection can be established between the Cereplex system and BCImat .  
+This code snipped is based on how to read online data from cereplex system
+https://blackrockneurotech.com/research/wp-content/ifu/LB-0590-3.00-cbMEX-IFU.pdf
+the code reads spikes data for 5 seconds and restructure the data as used inside BCI mat. Importantly you must check that when spikes are online recorded the buffer is not empty.
+
+
+Have fun!
+
+  
+**References**    
+WU, W., GAO, Y., BIENENSTOCK, E., DONOGHUE, J. P. & BLACK, M. J. 2006. Bayesian population decoding of motor cortical activity using a Kalman filter. Neural computation, 18, 80-118.
 
   
 
-  
-  Have fun!
 
 
 
