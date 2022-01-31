@@ -147,7 +147,7 @@ the same number of units should be maintained. Useful for now to restore previou
  
  TestVRPNConnection(server_address,ismessage).
  
- *server_address* requires the name of the server were the task controller runs whereas *ismessage* specifies whether we want to read a message from the task controller   or (ismessage =1) positional data (ismessage =0).  
+ *server_address* requires the name of the server where the task controller runs, whereas *ismessage* specifies whether we want to read a message from the task controller (ismessage =1) or positional data from the task controller (ismessage =0).  
  
  In practce to check if we are able to retrieve messages it will look like that:  
  
