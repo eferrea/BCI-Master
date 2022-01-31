@@ -142,13 +142,21 @@ the same number of units should be maintained. Useful for now to restore previou
 
 2. Inside Test_connections:
  * TestVRPNConnection.m: is used to test if a VRPN client connection can be established without implementing all the BCI closed-loop.
+ 
  This function needs to be called with the following arguments:
+ 
  TestVRPNConnection(server_address,ismessage).
+ 
  server_address requires the name of the server were the task controller runs whereas ismessage specifies whether we want to read a message from the task controller or (ismessage =1) positional data (ismessage =0). In practce to check if we are able to retrieve messages it will look like that:
+ 
  TestVRPNConnection('TrackerTC@127.0.0.1:6666',0)
+ 
  In this case you should be able to read the stage of the task controller
+ 
  it will look like that if we read positional data: 
+ 
  TestVRPNConnection('TrackerTC@127.0.0.1:6666',1)
+ 
  In this case you should be able to read the position of the cursor on the task controller screen.
  
  * Test_Blackrock: is used to test if a connection can be established with the Cereplex system.  
