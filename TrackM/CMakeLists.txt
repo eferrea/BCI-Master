@@ -6,7 +6,7 @@ SET(VRPN_INCLUDE_PATH D:/LAB/Libraries/vrpn_07_33/vrpn) #change to the full path
 SET(SFML_LIBRARY_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/lib) #change to the full path of your SFML lib directory>
 SET(VRPN_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/pc_win32/Debug) #change here to the full path containing vrpn.lib
 SET(VRPN_QUAT_LIBRARY_PATH D:/LAB/Libraries/vrpn_07_33/vrpn/quat/pc_win32/Debug) #change here to the full path containing quat.lib
-
+#set DLLs folder for Windows only
 SET(SFML_DLL_PATH D:/LAB/Libraries/SFML-2.5.1-windows-vc12-64-bit/SFML-2.5.1/bin/)
 
 
