@@ -159,8 +159,8 @@ the same number of units should be maintained. Useful for now to restore previou
  
  * Test_Blackrock.m: is used to test if a connection can be established between the Cereplex system and BCImat .  
 This code snipped is based on how to read online data from cereplex system
-https://blackrockneurotech.com/research/wp-content/ifu/LB-0590-3.00-cbMEX-IFU.pdf
-the code reads spikes data for 5 seconds and restructure the data as used inside BCI mat. Importantly you must check that when spikes are online recorded the buffer is not empty.
+https://blackrockneurotech.com/research/wp-content/ifu/LB-0590-3.00-cbMEX-IFU.pdf.  
+The code reads spikes data for 5 seconds and restructures data as used inside BCImat. Importantly you should check that if spikes are recorded, the buffer is not empty.
 
 
 Have fun!
