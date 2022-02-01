@@ -28,13 +28,10 @@ SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\
 SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
 SET(SFML_LIBRARY_PATH *\<change to the full path of your SFML lib directory\>*)  
 SET(VRPN_LIBRARY_PATH *\<change to the full path containing vrpn.lib\>*)  
-SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)
+SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)   
+SET(SFML_DLL_PATH *\<change to SFML folder containig DLLs, they should be in sfml-install-path/bin\>*)
  
 In Linux, it is not necessary to specify these folders unless libraries are installed in custom locations.
-
-In Windows, after "making" and "building" the Project, don't forget to copy the SFML DLLs (they are in <sfml-install-path/bin>) into the folder containing your executable (see also https://www.sfml-dev.org/tutorials/2.5/start-vc.php) 
-
-At the end, both in Linux and Windows, copy the config.txt contained in the TrackM folder into the folder containing your executable.
 
 macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
 
@@ -46,7 +43,6 @@ We tested vrpn version 7.33 and SFML version 2.5.1
 
 The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp contained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successfully obtaining the Matlab executable of the VRPN server and client, the vrpn.lib needs to be built with the Runtime library Multi-threaded DLL (/MD).
 
-Here, vrpn version 7.33 in Windows and Mac was tested. 
 
 
 **Running the full BCI loop (TrackM + BCImat)**
@@ -163,8 +159,8 @@ the same number of units should be maintained. Useful for now to restore previou
  
  * Test_Blackrock.m: is used to test if a connection can be established between the Cereplex system and BCImat .  
 This code snipped is based on how to read online data from cereplex system
-https://blackrockneurotech.com/research/wp-content/ifu/LB-0590-3.00-cbMEX-IFU.pdf
-the code reads spikes data for 5 seconds and restructure the data as used inside BCI mat. Importantly you must check that when spikes are online recorded the buffer is not empty.
+https://blackrockneurotech.com/research/wp-content/ifu/LB-0590-3.00-cbMEX-IFU.pdf.  
+The code reads spikes data for 5 seconds and restructures data as used inside BCImat. Importantly you should check that if spikes are recorded, the buffer is not empty.
 
 
 Have fun!
