@@ -1,10 +1,11 @@
-function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
+function BCI_loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
 %%This is the mail loop function that receive and stream via VRPN the information to the task controller.
 %It is also displaying the GUI allowing the experimenter to change the
 %various phases (calibration, decoding).
 %The function also produces text files information about real and decoded
 %movements, task stages and firing rates
 %The calibrated parameters are instead saved in .mat files
+%E.Ferrea, 2015
 
 %INPUT
 
@@ -12,11 +13,11 @@ function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_ad
 
 %neurons: specify a number of units to perform decoding. Valid only in
 %simulation mode but needs to be specified anyhow (choose in range 20-80 to
-%start). This argument is used as unique input for the class simNeurons_2D_velocity. 
+%start). This argument is used as unique input for the class simNeurons_2D_velocity.
 
 %BCI_update_time: choose in seconds the rate of the BCI. (0.05 s is suggested).
 
-%delay: number of time bins (!!! not ms) of BCI_update_times to shift the neural activty relative to motor output. This can be used in real experiments to make up for delays 
+%delay: number of time bins (!!! not ms) of BCI_update_times to shift the neural activty relative to motor output. This can be used in real experiments to make up for delays
 %in transmission of the neural signal through the spinal cord. Phisiological values are in the range of 100-150 ms). For testing purposes use 0 (0 ms no delay)
 %or 1 (1*BCI_update_time ms).
 
@@ -24,9 +25,9 @@ function BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_ad
 
 %client address: specify the name of the server (including the tracker name) that the BCI client is reading from.
 
-%port: specify the name of the port (the use of a specific  port is needed in case the task controller profram and the BCI framewor run on the same computer)  
+%port: specify the name of the port (the use of a specific  port is needed in case the task controller profram and the BCI framewor run on the same computer)
 
-%E.Ferrea, 2015
+
 
 
 %%
@@ -45,7 +46,7 @@ fileID_track = fopen(filename_track,'at');
 fileID_task = fopen(filename_task,'at');
 fileID_spikes = fopen(filename_spikes,'at');
 
-%Header or tracker infos 
+%Header or tracker infos
 % printfFormatTrackHeader = ['%6s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s\n'];
 % printfFormatTrackBody = ['%6.3f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f %12.6f\n'];
 % fprintf(fileID_track,printfFormatTrackHeader,'time','pos_x','pos_y','pos_z','vel_x','vel_y','vel_z',...
@@ -77,7 +78,7 @@ if (isBrain)
     cbmex('trialconfig',1);
 else
     %initialize Fake monkey (poisson process spike generator)
-    artificial_NN= SimNeurons_2D_velocity(neurons); % number of neurons
+    artificial_NN= Simulate_neurons_2Dvelocity_class(neurons); % number of neurons
 end
 %set_the waiting time in seconds
 
@@ -112,9 +113,9 @@ task_buffer =  table(nan(ceil(max_trial_duration/BCI_update_time),1),nan(ceil(ma
 
 %% initialize dynamical vectors
 direction_vector = [0 0]; %to store target directions
-velocity_vector = zeros(ceil(max_trial_duration/BCI_update_time),2); 
+velocity_vector = zeros(ceil(max_trial_duration/BCI_update_time),2);
 position_vector = zeros(ceil(max_trial_duration/BCI_update_time),2);
-fixation_position = [0 0];    
+fixation_position = [0 0];
 
 
 %% define some inline function to retrieve right timings from the call to now
@@ -129,7 +130,7 @@ client_address = [client_address ':' num2str(port)];
 vrpn_client('open_connection',client_address ) %same computer
 
 %% initialize objects
-tp=task_state_class();
+tp=Task_state_class();
 tp.set_new_trial_callback(@(tmp)[]);
 %max number of idle correlated samples
 max_corr_samples = 200;
@@ -143,27 +144,27 @@ fh = figure('Position',[1300 200 1000 900]);
 p = uipanel('Position',[0.89 0.75 .1 .25]);
 %Configure stop window
 h = uicontrol(p,'Style', 'PushButton', 'String', 'Stop BCI','Units','normalized',...
-    'Callback', @StopBCI,'Position',[0 .01 1 .12]);
+    'Callback', @stop_BCI,'Position',[0 .01 1 .12]);
 %Configure Switch window
 g = uicontrol(p,'Style', 'PushButton', 'String', 'Switch BCI', 'Units','normalized',...
-    'Callback',@SwitchBCI,'Position',[0 .41 1 .12]);
+    'Callback',@switch_BCI,'Position',[0 .41 1 .12]);
 
 v = uicontrol(p,'Style', 'PushButton', 'String', 'UpdateDecoder', 'Units','normalized',...
-    'Callback',@UpdateDecoder,'Position',[0 .27 1 .12]);
+    'Callback',@update_decoder,'Position',[0 .27 1 .12]);
 
 f = uicontrol(p,'Style', 'PushButton', 'String', 'Load Decoder', 'Units','normalized',...
-    'Callback',@LoadDecoder,'Position',[0 .14 1 .12]);
+    'Callback',@load_decoder,'Position',[0 .14 1 .12]);
 
 u = uicontrol(p,'Style', 'PushButton', 'String', 'Update Regression', 'Units','normalized',...
-    'Callback',@UpdateRegression,'Position',[0 .83 1 .12]);
+    'Callback',@update_regression,'Position',[0 .83 1 .12]);
 
 id = uicontrol(p,'Style', 'PushButton', 'String', 'BCIIDLE', 'Units','normalized',...
-    'Callback',@BCIIDLE,'Position',[0 .69 1 .12]);
+    'Callback',@BCI_idle,'Position',[0 .69 1 .12]);
 
 
 %% Configure Button Press
-hndl=@(object,eventdata)SelectUnits(cal,'WindowButtonDownFcn');
-hndl1=@(object,eventdata)CheckCorrelation(bci,'PushButton');
+hndl=@(object,eventdata)select_units(cal,'WindowButtonDownFcn');
+hndl1=@(object,eventdata)check_correlation(bci,'PushButton');
 
 hl1  = uicontrol(p,'Style', 'PushButton', 'String', 'Check Correlation','Units','normalized',...
     'Callback', hndl1,'Position',[0 .55 1 .12]);
@@ -178,7 +179,7 @@ p1 = uipanel('Position',[0.89 0.55 .1 .05]);
 %     'Callback', @ResetDecoder,'Position',[0 .01 1 .45]);
 %clear the decoder window
 g1 = uicontrol(p1,'Style', 'PushButton', 'String', 'Reset Calibrator', 'Units','normalized',...
-    'Callback',@ResetCalibrator,'Position',[0 .12 1 .7]);
+    'Callback',@reset_calibrator,'Position',[0 .12 1 .7]);
 
 %% Log in the task controller the property of the fake monkey
 p2 = uipanel('Title','Shared Control','FontSize',8,'Position',[0.89 0.25 .1 .10]);
@@ -187,9 +188,9 @@ g2 = uicontrol(p2,'style','edit',...
     'Units','normalized',...
     'Position',[0.1 0.1 0.8 0.8],...
     'foregroundcolor','black',...
-    'callback',@Shared_control);
+    'callback',@shared_control);
 % perturabation panel
-Control_perturbation(bci,cal,fh,0.1,0.01,0.3,0.3);
+control_perturbation(bci,cal,fh,0.1,0.01,0.3,0.3);
 
 %% start to count the time
 start_time = now;
@@ -204,7 +205,7 @@ while (task_running)
     global_time =  d2s( now - start_time);
     %read robot/markers position from MOROCO
     a=vrpn_client('get_positions',client_address); %same
-   
+    
     
     %read task controller state
     [b,t]=vrpn_client('get_messages',client_address); %same
@@ -212,8 +213,8 @@ while (task_running)
     %[b,t]=vrpn_client('get_messages','Tracker10@172.17.6.10:6666'); %my computer
     %parse task controller messages
     tp.parse_messages(b)
-
-
+    
+    
     %% Generate spike data and flush spike buffer if a new trial has started.
     %Erase spike buffer and elapsed time counter.
     if tp.new_trial
@@ -309,7 +310,7 @@ while (task_running)
     spike_data(counter,1:768) = temp1;
     
     
-%% accumulate spike counts   
+    %% accumulate spike counts
     if counter > 1
         number_of_spikes = spike_data(counter,:) - spike_data(counter-1,:);
         interval =  elapsed_time(counter) - elapsed_time(counter-1);
@@ -317,7 +318,7 @@ while (task_running)
         number_of_spikes = spike_data(counter,:);
         interval =  elapsed_time(counter);
     end
-    %% ###Execute the main calibrator,BCI loops and send 
+    %% ###Execute the main calibrator,BCI loops and send
     bci.loop(tp,global_time,interval,number_of_spikes,decoder_on,direction_vector,perc);
     %store variables for displaying correlation values in the IDLE mode.
     bci.online_correlation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
@@ -332,14 +333,14 @@ while (task_running)
     %% #########send info to task controller relative to BCI status,
     %update the decoder when calibration is done
     if (isBCI==1)
-       
+        
         vrpn_server('send_message','BCION')
         pause(0.1) %pause to be sure the message does not get lost
         display('bci on')
-        cal.UpdateDecoder(bci,decoder_on);
+        cal.update_decoder(bci,decoder_on);
         
         decoder_on = true;
-       
+        
         isIDLE = false;
         isBCI=-1;
         vrpn_server('send_message',cal.filename)
@@ -359,29 +360,29 @@ while (task_running)
     fprintf(fileID_track,printfFormatTrackBody,[global_time position_vector(counter,:) velocity_vector(counter,:) bci.position(bci.sample-delay,:) bci.velocity(bci.sample-delay,:)]);
     fprintf(fileID_spikes,printfFormatSpikesBody,[global_time number_of_spikes]);
     %disp( num2str(bci.velocity(bci.sample,:)))
-
+    
     %% Calculate the duration of the loop so far
     loop_end_time = d2s( now - loop_start_time);
     waiting_time = BCI_update_time-loop_end_time; %how much time is left from the iteration time?
     %Finally update the iteration counter
     %display(waiting_time)
-    bci.SaveDecoder();
+    bci.save_decoder();
     counter = counter +1;
     pause(waiting_time) %wait the additional amount of time
     
-  
+    
     
 end
 
 %% Close the cbmex connection and vrpn connection
 if(isBrain)
-cbmex('close')
+    cbmex('close')
 end
 vrpn_server('stop_server')
 close all
 %% Define Callback functions when specific buttons are pressed
 
-    function SwitchBCI(hObj,event)
+    function switch_BCI(hObj,event)
         
         if mod(parity_check,2) == 0
             
@@ -396,28 +397,28 @@ close all
         parity_check = parity_check + 1;
     end
 
-    function UpdateRegression(hObj,event)
+    function update_regression(hObj,event)
         
         
-        cal.UpdateRegression(decoder_on);
+        cal.update_regression(decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
         display_table(fh,0.45, 0.00, .35, 1,cal,cal);
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
-    function LoadDecoder(hObj,event)
+    function load_decoder(hObj,event)
         
-        cal.LoadDecoder(bci);
+        cal.load_decoder(bci);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
         display_table(fh,0.45, 0.00, .35, 1,cal,cal);
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
-    function UpdateDecoder(hObj,event)
+    function update_decoder(hObj,event)
         
-        cal.UpdateDecoder(bci,decoder_on);
+        cal.update_decoder(bci,decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
         active_neurons = cal.neurons;
         display_table(fh,0.45, 0.00, .35, 1,cal,cal);
@@ -425,15 +426,15 @@ close all
         vrpn_server('send_message',cal.filename)
     end
 
-    function ResetCalibrator(hObj,event)
+    function reset_calibrator(hObj,event)
         
-        cal.ResetCalibrator();
+        cal.reset_calibrator();
         
     end
 
 
 
-    function Shared_control(src,eventdata)
+    function shared_control(src,eventdata)
         str=get(src,'String')
         
         if isempty(str2num(str))
@@ -454,8 +455,8 @@ close all
 
 
 
-    function StopBCI(hObj,event)
-        bci.SaveDecoder();
+    function stop_BCI(hObj,event)
+        bci.save_decoder();
         delete(bci) %destructor
         delete(cal) %destructor
         fclose(fileID_track);
@@ -465,12 +466,12 @@ close all
     end
 
 
-    function BCIIDLE(hObj,event)
+    function BCI_idle(hObj,event)
         vrpn_server('send_message','BCIIDLEON') %notify it to TC
         if mod(parity_idle,2) == 0
             display('BCI IDLE ON')
             id.ForegroundColor = 'red';
-            cal.UpdateDecoder(bci,decoder_on); % Update the decoder
+            cal.update_decoder(bci,decoder_on); % Update the decoder
             decoder_on = true; %set BCI state active
             vrpn_server('send_message',cal.filename) %notify TC the calibrator file in use
             isIDLE = true;

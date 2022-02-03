@@ -1,5 +1,6 @@
-function Control_perturbation(obj_dec,obj_cal,h,x_pos,y_pos,x_lenght,y_length)
-% this function display a GUI to perturnb the preferred direction of a subset of units parameters ,
+function control_perturbation(obj_dec,obj_cal,h,x_pos,y_pos,x_lenght,y_length)
+% this function display a GUI to perturb the preferred direction of a subset of units parameters ,
+% It rotates the preferred direction of a subset of units corresponding to the selected percentage 
 
 %@ E.Ferrea, 2017
 %initialize values
@@ -56,10 +57,10 @@ uicontrol(p_percentage ,'style','edit',...
     'callback',@set_percent_rotation);
 
 st = uicontrol('Parent',p_perturb,'String','Start','Units','normalized',...
-    'Position',[0.01 0.001 0.49 0.2],'callback',@Start_perturbation);
+    'Position',[0.01 0.001 0.49 0.2],'callback',@start_perturbation);
 
 sp = uicontrol('Parent',p_perturb,'String','Stop','Units','normalized',...
-    'Position',[0.50 0.001 0.49 0.2],'callback',@Stop_perturbation);
+    'Position',[0.50 0.001 0.49 0.2],'callback',@stop_perturbation);
 
 
     function set_X(src,eventdata)
@@ -175,23 +176,23 @@ sp = uicontrol('Parent',p_perturb,'String','Stop','Units','normalized',...
         % vrpn_server('send_message',['SC_' str])
     end
 
-    function Start_perturbation(hObj,event)
+    function start_perturbation(hObj,event)
         display('Start perturbation')
          reshaped_correlation = reshape(obj_cal.correlation_tuning,128,6);
          st.ForegroundColor = 'red';
          % active_neurons = obj_cal.neurons;
         %obj_dec.ResetRotation(reshaped_correlation);
          %obj_dec.UpdateRotation(reshaped_correlation,perturbation_vector,perturbation_angle,perturbation_percent); %for 3D
-         obj_dec.UpdateRotation(reshaped_correlation,perturbation_angle,perturbation_percent);
+         obj_dec.update_rotation(reshaped_correlation,perturbation_angle,perturbation_percent);
         
         
     end
 
-    function Stop_perturbation(hObj,event)
+    function stop_perturbation(hObj,event)
         display('Stop perturbation')
          reshaped_correlation = reshape(obj_cal.correlation_tuning,128,6);
          st.ForegroundColor = 'black';
-        obj_dec.ResetRotation(reshaped_correlation);
+        obj_dec.reset_rotation(reshaped_correlation);
         
         
     end

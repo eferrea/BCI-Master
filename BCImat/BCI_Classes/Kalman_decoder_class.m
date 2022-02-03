@@ -7,9 +7,7 @@
 %@E.Ferrea, 2015
 
 classdef Kalman_decoder_class < handle;
-    properties (Access=private)
-        
-        
+    properties (Access=private)  
         K;
         iteration_step;
         X_prior;
@@ -26,13 +24,11 @@ classdef Kalman_decoder_class < handle;
         dt;
         rotation_counter;
         
-        
         fileID_decoder;
         printfFormatHeader;
         printfFormatBody;
-        
-        
     end
+    
     %The following properties can be accessed also by the calibrator class
     properties (SetAccess = ?Kalman_calibrator_class)
         preferred_direction;
@@ -46,8 +42,7 @@ classdef Kalman_decoder_class < handle;
         neurons;
         H;
         H_reset;
-        fixation_position;
-        
+        fixation_position;   
     end
     
     properties (SetAccess = public)
@@ -56,16 +51,13 @@ classdef Kalman_decoder_class < handle;
         n_neurons;
         X_update;
         sample;
-        check_correlation;
-        
-        
+        check_correlation;     
     end
     
     methods (Access=public)
         
         %Constructor class -> initialize parameters used for decoding
-        function obj = Kalman_decoder_class(sample_size,max_exp_duration,delay,max_samples)
-            
+        function obj = Kalman_decoder_class(sample_size,max_exp_duration,delay,max_samples)       
             obj.expected_total_samples = ceil(max_exp_duration/sample_size);
             obj.K = 0;
             obj.position = zeros(obj.expected_total_samples,2);
@@ -100,24 +92,24 @@ classdef Kalman_decoder_class < handle;
             obj.fileID_decoder = fopen(filename_decoder,'at');
             obj.printfFormatHeader = ['%6s' '%6s\n'];
             obj.printfFormatBody = ['%12.3f  %12.3f\n'];
-            fprintf(obj.fileID_decoder,obj.printfFormatHeader,'time','K');
-            
-            
+            fprintf(obj.fileID_decoder,obj.printfFormatHeader,'time','K');          
         end
         
         %set BCI starting postion from outside (this info comes from the
-        %task controller (usually)
+        %task controller (usually). It is used to place the cursor at the
+        %central fixation target when control is not required.
         function obj = set_fixation_position(obj,fixation_position)
             obj.fixation_position  = fixation_position;
         end
         
-        
+        %read out the position of the decoded cursor position
         function pos = get_position(obj)
             pos = [obj.position(obj.sample-obj.delay,1) obj.position(obj.sample-obj.delay,2)];
         end
         
         %This function get called every iteration and update the does the
-        %decoding depending of the stage. Please note that the stage is
+        %decoding depending of the stage. If we are in manual control mode this function does nothing.
+        %Please note that the stage is
         %hard coded: movement decoding happens in stage two whereas in
         %stage 1 and 3 the decoder always output a zero velocity and a
         %fixed position
@@ -135,8 +127,7 @@ classdef Kalman_decoder_class < handle;
                 obj.position(obj.sample,:) = obj.position(obj.sample,:) ;
                 obj.velocity(obj.sample,:) = [0 0];
                 obj.P = 0;
-                
-                
+                             
             else
                 % Put cursur at zero position at the beginning of the trial
                 % and when BCI is not running
@@ -144,17 +135,14 @@ classdef Kalman_decoder_class < handle;
                 obj.position(obj.sample,:) = obj.fixation_position';%% read from TC
                 obj.velocity(obj.sample,:) = [0 0];
                 obj.X_update = [1; obj.position(obj.sample,:)'; obj.velocity(obj.sample,:)'];
-                obj.P = 0;
-                
+                obj.P = 0;         
             end
-            %Send the updated position to the task controller
-            
-            %obj.send_position();
-            
-            
+                      
         end
         
-        %Velocity Kalman Filter function
+        %Velocity Kalman Filter estimation. This fuction does the effective
+        %decoding implementing the Kalman filter online. It get called
+        %inside the decoder loop function during movement.
         function obj = update_velocity(obj,target_position,p)
             %Kalman filter parameters:
             
@@ -167,8 +155,6 @@ classdef Kalman_decoder_class < handle;
             obj.X_prior = obj.A*obj.X; %a priori estimate of the state
             obj.P = obj.A*obj.P*obj.A' + obj.W; %error covariance matrix
             
-            
-            
             % II Measurements update equations
             obj.K = obj.P*obj.H'*inv(obj.H*obj.P*obj.H' + obj.Q);
             obj.X_update = obj.X_prior + obj.K*(obj.Z-obj.H*obj.X_prior);
@@ -180,15 +166,15 @@ classdef Kalman_decoder_class < handle;
             
             obj.position(obj.sample,:) = obj.position(obj.sample-1,:) +obj.dt*norm(obj.velocity(obj.sample,:))*(obtimal_vector./norm(obtimal_vector)*p + (1-p)*obj.velocity(obj.sample,:)./norm(obj.velocity(obj.sample,:)));
             obj.X_update(2:3) = obj.position(obj.sample,:)';
-            
-            
+                        
         end
         
+        
+        %Output the actual decoder performance stor values in two variables and compare them
+        %in the future will be better to store indexes and retrieve
+        %data from proper variables. 
         function online_correlation(obj,task_state,velocity_vector,decoder_on,isIDLE)
             
-            %Output the actual decoder performance stor values in two variables and compare them
-            %in the future will be better to store indexes and retrieve
-            %data from proper variables.
             if(decoder_on && isIDLE) && (strcmp(task_state.stage_type,'2') || strcmp(task_state.stage_type,'2'))
                 obj.correlation_counter = obj.correlation_counter +1;
                 obj.correlation_velocity(1,obj.correlation_counter) =  velocity_vector(1,1);
@@ -215,7 +201,7 @@ classdef Kalman_decoder_class < handle;
         
         
         %the decoder is saved at the end of the experiment
-        function obj = SaveDecoder(obj)
+        function obj = save_decoder(obj)
             %!!here only K is saved a full list of decoder parameters can be
             %also retrieved offline by using the spikes and the calibrated_values
             fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),obj.K);
@@ -223,7 +209,7 @@ classdef Kalman_decoder_class < handle;
         
         
         %apply rotation to prefer directions of a subset of neurons
-        function obj = UpdateRotation(obj,reshaped_correlation,theta,percent)
+        function obj = update_rotation(obj,reshaped_correlation,theta,percent)
             %save original calibration matrix only if the first rotation is
             %applied sine sequential rotations can be applied also
             
@@ -251,7 +237,7 @@ classdef Kalman_decoder_class < handle;
             display_rotated_units(0.01, 0.35, .42, .6,reshaped_correlation',obj.neurons',selected_unit_matrix')
         end
         
-        function obj = ResetRotation(obj,reshaped_correlation)
+        function obj = reset_rotation(obj,reshaped_correlation)
             selected_unit_matrix = false(128,6);
             obj.H = obj.H_reset;
             display_rotated_units(0.01, 0.35, .42, .6,reshaped_correlation',obj.neurons',selected_unit_matrix')

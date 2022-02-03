@@ -1,10 +1,10 @@
-   %This class handles messages coming from the task controller , many of
-    %the parameters listed below are not used with the basic provided task
-    %controller but were used during our experiments 
-    % @ P.Morel, 2015
+%This class handles messages coming from the task controller , many of
+%the parameters listed below are not used with the basic provided task
+%controller but were used during our experiments. We kept in the class function that handles messages coming from the eye tracker.
+% @ P.Morel, 2015
 
-classdef task_state_class < handle
- 
+classdef Task_state_class < handle
+    
     
     properties
         stage_type
@@ -21,7 +21,7 @@ classdef task_state_class < handle
     
     methods
         %constructor Initialize
-        function obj=task_state_class()
+        function obj= Task_state_class()
             obj.trial_index=0;
             obj.history={};
             obj.new_trial_callback=@(tmp)disp('new_trial');
@@ -48,11 +48,11 @@ classdef task_state_class < handle
                 
                 C=textscan(msgs{k},'%s','Delimiter',',');
                 
-       
+                
                 if numel(C{:})==2
-
+                    
                     %Look if we are at trial start
-                    if strcmp(C{1}{1},'TRIAL')                       
+                    if strcmp(C{1}{1},'TRIAL')
                         obj.new_trial_callback(obj);
                         obj.new_trial=true;
                         obj.trial_type=C{1}{2};
@@ -67,7 +67,7 @@ classdef task_state_class < handle
                         continue
                     end
                     
-                       %Get the trial index from TC
+                    %Get the trial index from TC
                     if strcmp(C{1}{1},'TRIAL_NUMBER')
                         obj.trial_index_TC=str2num(C{1}{2});
                         

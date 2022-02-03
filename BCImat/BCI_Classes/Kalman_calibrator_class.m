@@ -150,7 +150,7 @@ classdef Kalman_calibrator_class < handle
         
         % Update Kalman Filter paramaters for decoder (the parameters can
         % be loaded or calculated from manual control or BCI control)
-        function obj = UpdateDecoder(obj,decoder_object,decoder_on)
+        function obj = update_decoder(obj,decoder_object,decoder_on)
             
             
             
@@ -189,10 +189,10 @@ classdef Kalman_calibrator_class < handle
             decoder_object.neurons = obj.neurons;
             
             
-            obj.SaveCalibration(decoder_object);
+            obj.save_calibration(decoder_object);
         end
         
-        function obj = SaveCalibration(obj,decoder_object)
+        function obj = save_calibration(obj,decoder_object)
             
             [year,month,day] =  ymd(datetime);
             [hour,minute,second] = hms(datetime);
@@ -218,7 +218,7 @@ classdef Kalman_calibrator_class < handle
         end
         
         % Update Kalman Filter calibrator paramaters during manual control
-        function obj = UpdateRegression(obj,decoder_on)
+        function obj = update_regression(obj,decoder_on)
             
             % obj.load = false;
             
@@ -288,7 +288,7 @@ classdef Kalman_calibrator_class < handle
         end
         
         %this function load and set the decoder parameters (it might be unused in future)
-        function obj = LoadDecoder(obj,decoder_object)
+        function obj = load_decoder(obj,decoder_object)
             
             uiopen('.mat')
             %Load calibrator parameters
@@ -320,7 +320,7 @@ classdef Kalman_calibrator_class < handle
             
             
         end
-        function ResetCalibrator(obj)
+        function reset_calibrator(obj)
             
             obj.time = zeros(1, obj.expected_total_samples);
             obj.preferred_direction = zeros(768,3);

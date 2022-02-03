@@ -1,6 +1,13 @@
 function display_array_properties(position_x,position_y, length_x,length_y,array_data,active_array)
-% this function display array layout,
+%% this function display array layout,
 %@ E.Ferrea, 2015
+%INPUT:
+%position_x: x position of the GUI in the frame
+%position_y: y position of the GUI in the frame
+%length_x: length of the GUI along horizontal dimension
+%length_y: length of the GUI along vertical dimension
+%array_data: matrix of R2 of units.
+%active_array: boolean matrix of selected units
 
 [r,c] = find(active_array~= 0);
 d= uipanel('Position',[position_x position_y length_x length_y]);
