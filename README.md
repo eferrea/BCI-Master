@@ -4,12 +4,12 @@
 **Content of the package**
 
 1. A Matlab BCI framework (BCImat).
-2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in closed-loop fashion.
+2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in a closed-loop fashion.
 
 **Purpose of the BCI framework (BCIMat)**
 
 BCImat is a Matlab GUI-based program implementing a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
-1. a simulated set of cosine tuned neurons for testing purposes (simulation mode) before using it under real brain control,
+1. a simulated set of cosine tuned neurons (Georgopoulos et al. 1982) for testing purposes (simulation mode) before using it under real brain control,
 2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).  
 
 In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
@@ -113,7 +113,7 @@ The program uses callback function associated with button presses to interact wi
 These GUIs include:
 
 1) Single Unit GUI (left column): click on single units to include them into the decoder. This panel will appear after pressing the Update Regression button for the first time. Selecting units with warmer colors (higher R2) provides better decoding performance.
-2)  *Update Regression*: to update the calibration of the decoder after performing movements. This button should be pressed every time a substantial amount of samples is performed. It can be used during calibration to control which units give a better tuning (higher R2) or during BCI online mode to improve the calibration. The online calibration mode assumes that the movement is always pointing at the target. (Gjlia et al 2012). Internally calibrations done with real movements and during closed-loop are kept separated so it is possible to retrieve data automatically when switching from one modality of calibration to another.  
+2)  *Update Regression*: to update the calibration of the decoder after performing movements. This button should be pressed every time a substantial amount of samples is performed. It can be used during calibration to control which units give a better tuning (higher R2) or during BCI online mode to improve the calibration. The online calibration mode assumes that the movement is always pointing at the target. (Gilja et al 2012). Internally calibrations done with real movements and during closed-loop are kept separated so it is possible to retrieve data automatically when switching from one modality of calibration to another.  
 3) *BCIIDLE*:  to evaluate decoder performance without closing the BCI loop (open-loop). It stores internally real speeds and decoded speeds. 
 4) *Check Correlation*: to be used in BCIIDLE mode, by pressing this button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where before allowing users to control the decoder, a decent (offline) performance needs to be achieved.
 5) *Switch BCI*: after successful calibration to switch to close loop control. It switches to the BCI closed-loop mode. A decent amount of units (30-40) and a decent amount of samples (200-300) needs to be acquired to achieve a decent performance (in offline mode the green cursor should be reliably controlled with the mouse pointer).
@@ -166,8 +166,11 @@ The code reads spikes data for 5 seconds and restructures data as used inside BC
 Have fun!
 
   
-**References**    
-WU, W., GAO, Y., BIENENSTOCK, E., DONOGHUE, J. P. & BLACK, M. J. 2006. Bayesian population decoding of motor cortical activity using a Kalman filter. Neural computation, 18, 80-118.
+**References**
+
+Georgopoulos, A. P., Kalaska, J. F., Caminiti, R., & Massey, J. T. (1982). On the relations between the direction of two-dimensional arm movements and cell discharge in primate motor cortex [Journal Article]. Journal of Neuroscience, 2(11), 1527–1537. https://doi.org/doi.org/10.1523/JNEUROSCI.02-11-01527.1982.
+Gilja, V., Nuyujukian, P., Chestek, C. A., Cunningham, J. P., Yu, B. M., Fan, J. M., Churchland, M. M., Kaufman, M. T., Kao, J. C., Ryu, S. I., & Shenoy, K. V. (2012). A high-performance neural prosthesis enabled by control algorithm design [Journal Article]. Nature Neuroscience, 15(12), 1752–1757. https://doi.org/10.1038/nn.3265.
+Wu, W., Gao, Y., Bienenstock, E., Donoghue, J. P., & Black, M. J. (2006). Bayesian population decoding of motor cortical activity using a kalman filter [Journal Article]. Neural Computation, 18(1), 80–118. https://doi.org/10.1162/089976606774841585
 
   
 
