@@ -8,47 +8,47 @@
 
 **Purpose of the BCI framework (BCIMat)**
 
-BCImat is a Matlab GUI-based program implementinhg a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
-1. a simulated set of cosine tuned neurons for testing purposes(simulation mode) before using it under real brain control,
+BCImat is a Matlab GUI-based program implementing a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
+1. a simulated set of cosine tuned neurons for testing purposes (simulation mode) before using it under real brain control,
 2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).  
 
 In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
 
 **Purpose of the task controller (TrackM)**
 
-TrackM is an example software written in C++ implementing a standard task controller for a reaching task. The task controller allows users to perform sequential reaches to  a target (green circle) starting from a central fixation circle (gray) with the mouse. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI Matlab framework. This part of the project can also be written in any other programming language as far as the VRPN methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the vrpn server method (vrpn_server_class) which should be built with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
+TrackM is an example software written in C++ implementing a standard task controller for a reaching task. The task controller allows users to perform sequential reaches to a target (green circle) starting from a central fixation circle (gray) with the mouse. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI Matlab framework. This part of the project can also be written in any other programming language as far as the VRPN methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the VRPN server method (vrpn_server_class) which should be built with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
 
 **Build the task controller project TrackM**
 
 The task controller folder TrackM contains the source code and a CMakeLists.txt to build the project under different OS architectures. 
-Before using cmake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
-After installing them, you can use cmake to generate the build environement. In Windows, it is necessary to specify  in the CmakeLists.txt the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (5 lines in total).
+Before using CMake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
+After installing them, you can use CMake to generate the build environment. In Windows, it is necessary to specify in the CmakeLists.txt the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (5 lines in total).
 In practice what you have to change in the CMakeLists.txt is the following:  
 SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\>*)   
 SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
 SET(SFML_LIBRARY_PATH *\<change to the full path of your SFML lib directory\>*)  
 SET(VRPN_LIBRARY_PATH *\<change to the full path containing vrpn.lib\>*)  
 SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)   
-SET(SFML_DLL_PATH *\<change to SFML folder containig DLLs, they should be in sfml-install-path/bin\>*)
+SET(SFML_DLL_PATH *\<change to SFML folder containing DLLs, they should be in sfml-install-path/bin\>*)
  
 In Linux, it is not necessary to specify these folders unless libraries are installed in custom locations.
 
 macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
 
-We tested vrpn version 7.33 and SFML version 2.5.1 
+We tested VRPN version 7.33 and SFML version 2.5.1 
 
 
 
 **VRPN Matlab client and server for BCImat**
 
-The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp contained in ./BCI-mat/mex folder need to be mexed with the vrpn library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successfully obtaining the Matlab executable of the VRPN server and client, the vrpn.lib needs to be built with the Runtime library Multi-threaded DLL (/MD).
+The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp contained in ./BCI-mat/mex folder need to be mexed with the VRPN library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successfully obtaining the Matlab executable of the VRPN server and client, the vrpn.lib needs to be built with the Runtime library Multi-threaded DLL (/MD).
 
 
 
 **Running the full BCI loop (TrackM + BCImat)**
 
 1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (TrackM) followed by @*<server_address>*. Also, a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP addresses. They specify the addresses of the computers where the task controller and the BCImat framework run.  
-Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a VRPN server to the BCI framework and reads the information provided by the BCI framework (via *TrackerBCI*) by implementing a vrpn client to update the position of the controlled cursor.
+Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a VRPN server to the BCI framework and reads the information provided by the BCI framework (via *TrackerBCI*) by implementing a VRPN client to update the position of the controlled cursor.
 A name of a port needs to be added to avoid conflicts when the task controller and BCI framework run on the same computer. The provided entry <6666> can be left unchanged.
 Also, the number of dots per inch for the specific screen resolution should be specified for pixel to mm conversions (not critical)
 In summary, the configuration file should look like that (when TrackM and BCImat run on the same computer):
@@ -71,14 +71,14 @@ practically it will look like that:
 BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10',6666)
 
 The simulated set of spikes is generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
-For each neuron a random modulation depth, a baseline firing rate, and a preferred direction are randomly chosen. During real movements, the rate is determined by the baseline firing rate summed to the modulation depth scaled by the cosine of the angle between the actual movement direction and the preferred direction of the neuron.
+For each neuron, a random modulation depth, a baseline firing rate, and a preferred direction are randomly chosen. During real movements, the rate is determined by the baseline firing rate summed to the modulation depth scaled by the cosine of the angle between the actual movement direction and the preferred direction of the neuron.
 
 
 * and with the following arguments in case of application mode:
 BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerTC@127.0.0.1',6666)
 
 
-Note that the server address corresponds to the client address on the task controller side while the opposite is true from the task controller side. Additionally, the server and clients addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceding the IP addresses.
+Note that the server address corresponds to the client address on the task controller side while the opposite is true from the task controller side. Additionally, the server and client addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceding the IP addresses.
 
 Also, note that the client address has a specified port that should be assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the Matlab server uses the default port so it is not necessary to specify it independently. 
 
@@ -87,7 +87,7 @@ In the case of use of a Blackrock recording system, the cbmex code streaming spi
 
 **Test procedure (simulation mode)**
 
-The user should reach to the visual targets in the TrackM program by moving the cursor with the mouse for the decoder calibration phase. Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase, mouse movements are used to trigger neuronal responses according to their preferred directions while the decoder converts this activity into movements. The task is a center-out reach task so movements are required to always start at the center of the workspace. This means that to start reaches to a new target, the user should point the mouse to the gray target at the center of the workspace. In this way at the beginning of the reach, the mouse pointer and the cursor are maximally co-localized.    
+The user should reach the visual targets in the TrackM program by moving the cursor with the mouse for the decoder calibration phase. Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase, mouse movements are used to trigger neuronal responses according to their preferred directions while the decoder converts this activity into movements. The task is a center-out reach task so movements are required to always start at the center of the workspace. This means that to start reaches to a new target, the user should point the mouse to the gray target at the center of the workspace. In this way at the beginning of the reach, the mouse pointer and the cursor are maximally co-localized.    
 
 Therefore, the simplest use of the BCI requires to:
 1. Perform several (e.g.10) reaches to the targets. 
@@ -104,37 +104,37 @@ Therefore, the simplest use of the BCI requires to:
 
 
 
-*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface functionalities* paragraph and determine the behavior of the BCI.   
+*Fig 1.	Graphical user interface exploiting BCI functionalities. The GUI layout on the left displays all recorded units arranged in a way reflecting our experimental settings. Since we recorded simultaneously from four electrode arrays each of them containing 32 channels (total of 128 recording sites), we separate each array from the other in the visualization. The identity of the channel is arranged in columns while each row represents a different unit (a spike) for that channel. For each electrode array, we split the data into six rows given that the recording system streams a maximum of six units (after online sorting). In the middle column, the name of the selected unit is displayed (ch = channel identity, U = unit identity)* together with its tuning properties calculated after the specific calibration intervals (Samples) of the decoder. R2 represents the explained variance of fitting a *cosine tuning* model to the firing rate of every single cell. This value is also color-coding the GUI on the left column. For this reason, strongly tuned cells are identified with warmer columns. The value under *bo* represents the estimated baseline firing rate of each cell while *Samples* represents the valid number of samples that were acquired (one every BCI_update_time for valid trials). The functionalities of the buttons on the right column and at the bottom left are extensively explained in the *Matlab Graphical user interface functionalities* paragraph and determine the behavior of the BCI.   
 
 
 **Matlab Graphical user interface functionalities**
 
-The program uses callback function associated to button presses to interact with the task.
+The program uses callback function associated with button presses to interact with the task.
 These GUIs include:
 
 1) Single Unit GUI (left column): click on single units to include them into the decoder. This panel will appear after pressing the Update Regression button for the first time. Selecting units with warmer colors (higher R2) provides better decoding performance.
 2)  *Update Regression*: to update the calibration of the decoder after performing movements. This button should be pressed every time a substantial amount of samples is performed. It can be used during calibration to control which units give a better tuning (higher R2) or during BCI online mode to improve the calibration. The online calibration mode assumes that the movement is always pointing at the target. (Gjlia et al 2012). Internally calibrations done with real movements and during closed-loop are kept separated so it is possible to retrieve data automatically when switching from one modality of calibration to another.  
 3) *BCIIDLE*:  to evaluate decoder performance without closing the BCI loop (open-loop). It stores internally real speeds and decoded speeds. 
-4) *Check Correlation*: to be used in BCIIDLE mode, by pressing this button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where before to allowing users to control the decoder, a decent (offline) performance needs to be achieved.
+4) *Check Correlation*: to be used in BCIIDLE mode, by pressing this button the Pearson correlation coefficient is estimated among decoded speeds and real speeds. This button is mainly intended for the application mode where before allowing users to control the decoder, a decent (offline) performance needs to be achieved.
 5) *Switch BCI*: after successful calibration to switch to close loop control. It switches to the BCI closed-loop mode. A decent amount of units (30-40) and a decent amount of samples (200-300) needs to be acquired to achieve a decent performance (in offline mode the green cursor should be reliably controlled with the mouse pointer).
 6) *Update Decoder*: to be used after a recalibration in closed-loop mode with Updated Regression. Important for real applications not in the simulation mode.  
 7) *Load Decoder*: to load a previously calibrated decoder. Note that if used among different experimental sessions
 the same number of units should be maintained. Useful for now to restore previous decoders in the same session but potentially useful to use the same decoder across many days.
-8) *Stop BCI*: stop the program loop. Should this operation not being successful, to restart the BCImat the VRPN server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
+8) *Stop BCI*: stop the program loop. Should this operation not be successful, to restart the BCImat the VRPN server needs to be manually stopped by doing the following in the Matlab shell:  *vrpn_server('stop_server')*
 9) *Reset Calibrator*: to reset the calibration if something went wrong during calibration. It starts to recollect speed and neural samples.  
-10) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during the subject' training phases and to recalibrate the decoder during closed-loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as the subject acquires proficiency with the control, the amount of control from the computer side is reduced.
+10) *Shared control*: the cursor control is shared among the computer directly pointing at the target and the neurons. Specify a number between 0-1. 1: full computer control. It is useful during the subject's training phases and to recalibrate the decoder during closed-loop control. The idea is that during real experiments a high level of computer control is introduced to maintain high performance. During the task as the subject acquires proficiency with the control, the amount of control from the computer side is reduced.
 11) *Perturbation panel*: rotate the preferred direction of a subset of units. It needs to specify the angle of rotation as well as the percentage of random units that will be rotated and start the perturbation. By rotating the preferred direction of some units during closed-loop control, the direction of movement deviates from the intended movement directions. This panel is intended to introduce visuo-motor rotations of the cursors useful for motor learning studies.
 
 **Other contents of the package**
 
 1. Inside BCI_classes folder: 
 
- * SimNeurons_2D_velocity.m: this class is used inside BCI_loop.m to generate firing rates of artificial neurons according to a Poisson distribution. During each small movement (e.g 50 ms timestamp), the mean of each Poisson neuron is determined by the baseline firing rate plus the cosine of the actual moving direction and the neuron preferred direction multiplied by the modulation depth. Each neuron preferred direction is determined according to a circular uniform distribution.  This class also uses a hard coded modulation depth in the physiological range of 4-18 Hz and a baseline firing rate in the range 4-20.  Future realeases of this class could include the possibility of specifying these ranges. 
+ * SimNeurons_2D_velocity.m: this class is used inside BCI_loop.m to generate firing rates of artificial neurons according to a Poisson distribution. During each small movement (e.g 50 ms timestamp), the mean of each Poisson neuron is determined by the baseline firing rate plus the cosine of the actual moving direction and the neuron preferred direction multiplied by the modulation depth. Each neuron preferred direction is determined according to a circular uniform distribution.  This class also uses a hardcoded modulation depth in the physiological range of 4-18 Hz and a baseline firing rate in the range 4-20.  Future releases of this class could include the possibility of specifying these ranges. 
 
  * task_parser.m: this simple class is used to handle messages coming from the task controller. It is important for the BCImat to know information about the state of the task    to adapt its behavior accordingly. For example, it could be useful to collect samples of firing rates and positional samples only when the users are engaged with the motor task. In this case, we decided to store the values for calibration online during the last stage of the task (stage 3). 
 
  * Kalman_calibrator_class.m: this class is used to internally store samples for calibrating a BCI decoder according to the following paper (Wu et al. 2006).
- * Kalman_decoder_class.m: it uses the calibration matrix generated by the the Kalman_calibration class to generate position estimation online. Ideally, this class and the calibrator class could be replaced with any other decoder type implementing a similar behavior. 
+ * Kalman_decoder_class.m: it uses the calibration matrix generated by the Kalman_calibration class to generate position estimation online. Ideally, this class and the calibrator class could be replaced with any other decoder type implementing a similar behavior. 
 
 2. Inside Test_connections:
  * TestVRPNConnection.m: is used to test if a VRPN client connection can be established without implementing all the BCI closed-loop.
@@ -145,17 +145,17 @@ the same number of units should be maintained. Useful for now to restore previou
  
  *server_address* requires the name of the server where the task controller runs, whereas *ismessage* specifies whether we want to read a message from the task controller (ismessage =1) or positional data from the task controller (ismessage =0).  
  
- In practce to check if we are able to retrieve messages it will look like that:  
+ In practice to check if we are able to retrieve messages it will look like that:  
  
  TestVRPNConnection('TrackerTC@127.0.0.1:6666',0)  
  
- In this case you should be able to read the stage of the task controller  
+ In this case, you should be able to read the stage of the task controller  
  
  it will look like that if we read positional data:   
  
  TestVRPNConnection('TrackerTC@127.0.0.1:6666',1)  
  
- In this case you should be able to read the position of the cursor on the task controller screen.
+ In this case, you should be able to read the position of the cursor on the task controller screen.
  
  * Test_Blackrock.m: is used to test if a connection can be established between the Cereplex system and BCImat .  
 This code snipped is based on how to read online data from cereplex system
