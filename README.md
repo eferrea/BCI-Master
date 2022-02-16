@@ -168,9 +168,9 @@ Have fun!
   
 **References**
 
-Georgopoulos, A. P., Kalaska, J. F., Caminiti, R., & Massey, J. T. (1982). On the relations between the direction of two-dimensional arm movements and cell discharge in primate motor cortex [Journal Article]. Journal of Neuroscience, 2(11), 1527–1537. https://doi.org/doi.org/10.1523/JNEUROSCI.02-11-01527.1982.   
-Gilja, V., Nuyujukian, P., Chestek, C. A., Cunningham, J. P., Yu, B. M., Fan, J. M., Churchland, M. M., Kaufman, M. T., Kao, J. C., Ryu, S. I., & Shenoy, K. V. (2012). A high-performance neural prosthesis enabled by control algorithm design [Journal Article]. Nature Neuroscience, 15(12), 1752–1757. https://doi.org/10.1038/nn.3265.   
-Wu, W., Gao, Y., Bienenstock, E., Donoghue, J. P., & Black, M. J. (2006). Bayesian population decoding of motor cortical activity using a kalman filter [Journal Article]. Neural Computation, 18(1), 80–118. https://doi.org/10.1162/089976606774841585
+* Georgopoulos, A. P., Kalaska, J. F., Caminiti, R., & Massey, J. T. (1982). On the relations between the direction of two-dimensional arm movements and cell discharge in primate motor cortex [Journal Article]. Journal of Neuroscience, 2(11), 1527–1537. https://doi.org/doi.org/10.1523/JNEUROSCI.02-11-01527.1982.   
+* Gilja, V., Nuyujukian, P., Chestek, C. A., Cunningham, J. P., Yu, B. M., Fan, J. M., Churchland, M. M., Kaufman, M. T., Kao, J. C., Ryu, S. I., & Shenoy, K. V. (2012). A high-performance neural prosthesis enabled by control algorithm design [Journal Article]. Nature Neuroscience, 15(12), 1752–1757. https://doi.org/10.1038/nn.3265.   
+* Wu, W., Gao, Y., Bienenstock, E., Donoghue, J. P., & Black, M. J. (2006). Bayesian population decoding of motor cortical activity using a kalman filter [Journal Article]. Neural Computation, 18(1), 80–118. https://doi.org/10.1162/089976606774841585
 
   
 
