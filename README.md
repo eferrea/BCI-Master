@@ -22,7 +22,7 @@ TrackM is an example software written in c++ implementing a standard task contro
 
 The task controller folder TrackM contains the source code and a CMakeLists.txt to build the project under different OS architectures. 
 Before using CMake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
-After installing them, you can use CMake to generate the build environment. In Windows, it is necessary to specify in the CmakeLists.txt the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (5 lines in total).
+After installing them, you can use CMake to generate the build environment. In Windows, it is necessary to specify in the CmakeLists.txt the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (6 lines in total).
 In practice what you have to change in the CMakeLists.txt is the following:  
 SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\>*)   
 SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
