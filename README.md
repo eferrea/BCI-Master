@@ -14,7 +14,7 @@ BCImat is a Matlab GUI-based program implementing a Brain-Computer Interface (BC
 
 In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
 
-The code was develop under Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It was also testd with Matlab version 2018b with the Statistics and Machine Learning Toolbox version 11.4.
+The code was maily developed under Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It was also testd with Matlab version 2018b with the Statistics and Machine Learning Toolbox version 11.4.
 
 **Purpose of the task controller (TrackM)**
 
