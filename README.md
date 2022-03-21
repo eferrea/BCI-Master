@@ -14,6 +14,8 @@ BCImat is a Matlab GUI-based program implementing a Brain-Computer Interface (BC
 
 In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
 
+The code was develop under Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It was also testd with Matlab version 2018b with the Statistics and Machine Learning Toolbox version 11.4.
+
 **Purpose of the task controller (TrackM)**
 
 TrackM is an example software written in c++ implementing a standard task controller for a reaching task. The task controller allows users to perform sequential reaches to a target (green circle) starting from a central fixation circle (gray) with the mouse. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI Matlab framework. This part of the project can also be written in any other programming language as far as the VRPN methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the VRPN server method (vrpn_server_class) which should be built with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
