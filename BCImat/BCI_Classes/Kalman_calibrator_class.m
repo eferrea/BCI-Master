@@ -1,7 +1,7 @@
 % Calibrator class for Kalman Filter decoding approach as described in Wu et
 % al., 2006 and implementing retraining approach as described in Gilja et al., 2012.
 % Note that the stages for calibration are hard coded in this class in the
-% loop function (line 116).Only trial that are successful are used for calibration (see line 134). The name of the calibration stage (or stages) can be ideally
+% loop function (line 135).Only trial that are successful are used for calibration . The name of the calibration stage (or stages) can be ideally
 %placed in the constructor. In this example stage 1 and 2 are used for callibration and data are stored only if stage 3 is reached (indicating a sucessfull trial).
 %@E.Ferrea, 2015
 
@@ -57,11 +57,18 @@ classdef Kalman_calibrator_class < handle
     methods (Access=public)
         
         %Constructor
-        function obj = Kalman_calibrator_class(sample_size,max_exp_duration,delay)
+        function obj = Kalman_calibrator_class(BCI_update_time,max_exp_duration,delay)
+            
+            %INPUT
+            %BCI_update_time: choose in seconds the rate of the BCI. (0.05 s is suggested).
+            %max_exp_duration: maximum expected time of experiment duration in seconds
+            %delay: number of time bins (!!! not ms) of BCI_update_times to shift the neural activty relative to motor output. This can be used in real experiments to make up for delays
+            %in transmission of the neural signal through the spinal cord. Phisiological values are in the range of 100-150 ms). For testing purposes use 0 (0 ms no delay)
+            %or 1 (1*BCI_update_time ms).
             
             obj.delay = delay;
             obj.load = false;
-            obj.expected_total_samples = ceil(max_exp_duration/sample_size);
+            obj.expected_total_samples = ceil(max_exp_duration/BCI_update_time);
             obj.time = zeros(1, obj.expected_total_samples);
             obj.preferred_direction = zeros(768,3);
             obj.neurons = false(128,6);
@@ -74,7 +81,7 @@ classdef Kalman_calibrator_class < handle
             obj.is_hit = false(obj.expected_total_samples,1);
             obj.is_movement_and_hit = false(obj.expected_total_samples,1);
             obj.is_movement_and_hit_and_BCI = false(obj.expected_total_samples,1);
-            obj.dt = sample_size;
+            obj.dt = BCI_update_time;
             obj.directions = zeros(1000,3);
             obj.correlation_tuning = zeros(1,768);
             obj.H = zeros(768,5);
@@ -85,11 +92,23 @@ classdef Kalman_calibrator_class < handle
         %this is the loop calibrator class to store the values (speeds and firing rates) that will be
         %used for regression depending on conditions. It saves
         %indexes for the movement time.
-        function obj = loop(obj,task_state,t,interval,spike_data,position,velocity,decoder_on,decoder_object,target_position)
+        function obj = loop(obj,task_state,global_time,interval,spike_data,position,velocity,decoder_on,decoder_object,target_position,low_velocity_threshold,high_velocity_threshold)
+            
+            %INPUT
+            %task_state: take as input task state object for reading task relevant information.
+            %interval: represents the time that has passed since the last call of the this function
+            %global_time: could be internally used to save the time that has passed.
+            %spike_data: matrix of spikes since the last function call
+            %position: specify cursor position on the screen
+            %velocity: specify velocity of the cursor
+            %decoder_on: 1 if we are in BCI or IDLE mode, 0 if we are in manually controlled trials
+            %target_position: indicates the position of the target in the screen. It is used for  shared controlled trials.
+            %low_velocity_threshold: lower limit for accepted speed or positional samples.
+            %high_velocity_threshold: higher limit for accepted speed or positional samples.
             
             if ~isempty(task_state.new_stage)
                 %internally store useful values at every iteration
-                obj.time(obj.sample) = t; %not used yet but might be useful to save the values of time
+                obj.time(obj.sample) = global_time; %not used yet but might be useful to save the values of time
                 obj.firing_rate(obj.sample,:) = spike_data./interval;
                 obj.is_decoder_on(obj.sample) = decoder_on; %used for boolean operations
                 
@@ -114,7 +133,7 @@ classdef Kalman_calibrator_class < handle
                 %specified in the class constructor
                 
                 if  ( strcmp(task_state.stage_type,'1') |  strcmp(task_state.stage_type,'2')) ...
-                        & (norm(velocity) > 0.2) & (norm(velocity) < 500);
+                        & (norm(velocity) > low_velocity_threshold) & (norm(velocity) < high_velocity_threshold);
                     
                     obj.is_movement(obj.sample,1)  = true;
                     display(['stage:',task_state.stage_type])
@@ -152,6 +171,11 @@ classdef Kalman_calibrator_class < handle
         % be loaded or calculated from manual control or BCI control)
         function obj = update_decoder(obj,decoder_object,decoder_on)
             
+            %INPUT:
+            
+            %decoder_object: specify the name of the decoder object to update decoder parameters after calibration.
+            %decoder_on: 1 if we are in BCI or idle mode, 0 under manually controlled trials.
+            
             
             
             %Calculate state equation dynamics only from the manual
@@ -188,11 +212,15 @@ classdef Kalman_calibrator_class < handle
             decoder_object.Q = (obj.Y-decoder_object.H*obj.X)*(obj.Y-decoder_object.H*obj.X)'./sample_number;
             decoder_object.neurons = obj.neurons;
             
-            
+            %save decoder parameters
             obj.save_calibration(decoder_object);
         end
         
+        %Save decoder parameters for restoring or later analysis
         function obj = save_calibration(obj,decoder_object)
+            
+            %INPUT:
+            %decoder_object: specify the name of the decoder object.
             
             [year,month,day] =  ymd(datetime);
             [hour,minute,second] = hms(datetime);
@@ -217,8 +245,12 @@ classdef Kalman_calibrator_class < handle
             
         end
         
-        % Update Kalman Filter calibrator paramaters during manual control
+        % Update Kalman Filter calibrator paramaters during manual control or BCI
         function obj = update_regression(obj,decoder_on)
+            
+            %INPUT:
+            
+            %decoder_on: specify the behaviour of this function depending on the BCI state (on,off,IDLE)
             
             % obj.load = false;
             
@@ -290,6 +322,10 @@ classdef Kalman_calibrator_class < handle
         %this function load and set the decoder parameters (it might be unused in future)
         function obj = load_decoder(obj,decoder_object)
             
+            %INPUT:
+            %decoder_object: name of the decoder from the decoder class:
+            
+            
             uiopen('.mat')
             %Load calibrator parameters
             obj.neurons = N_stored;
@@ -320,6 +356,8 @@ classdef Kalman_calibrator_class < handle
             
             
         end
+        
+        %this function erase data (velocity, position, neural data) that were previously stored for calibration
         function reset_calibrator(obj)
             
             obj.time = zeros(1, obj.expected_total_samples);
@@ -340,10 +378,11 @@ classdef Kalman_calibrator_class < handle
         end
         
         
-        %this function is accesed from outside to modify the matrix of
-        %neurons to control the cursor. In this specific decoder it is not
-        %used and it has moved to the calibrator.
+        %this function is accesed from outside to select which neurons are used for decoding
         function set_neurons(obj,channel,unit)
+            %INPUT:
+            %channel: the channel number of the unit that is set to true.
+            %unit: the unit number to be set to true and used for decoding.
             if (channel>0 & channel<=128 & unit> 0 & unit<= 6 )
                 % disp('ok')
                 if obj.neurons(channel,unit) == false

@@ -8,14 +8,14 @@
 %inside BCI mat. Importantly you must check that if spikes are recorded the
 %buffer is not empty.
 clc
-cbmex('open')
+cbmex('open') %open connection with cerebus system
 cbmex('trialconfig',1)
 cbmex('mask',2,1)
 pause(5)
 event_data = cbmex('trialdata',1)
 cbmex('close')
 
-temp =  cellfun(@length,event_data(1:128,2:7));%to fit 3D Poisson spike class
+temp =  cellfun(@length,event_data(1:128,2:7));%read data streamed from recording system
 
 temp1 = temp(:)'; %reshape(A',1,[]);%
 

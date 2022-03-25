@@ -1,10 +1,10 @@
-%%%%%% class for simulate fake monkey neurons
+%%%%%% class for simulating neurons
 % It randomly generates modulation depth, preferred direction and
 %baseline rate of a specified number of cells. The cell firing dynamic is
 %dictate by a cosine model (Georgopoulos et al., 1982).
 % @ E.Ferrea ,2015 .
 %At the actual implementation status, this class takes only the number of units as
-%input.
+%input. Modulation depths and baseline rates could be also externally specified.
 
 classdef Simulate_neurons_2Dvelocity_class < handle  % class should be implemented as a handle class.
     % All copies of a given handle object refer to the same data.
@@ -29,7 +29,12 @@ classdef Simulate_neurons_2Dvelocity_class < handle  % class should be implement
     methods (Access=public)
         %%%  constructor function
         function obj = Simulate_neurons_2Dvelocity_class(N,varargin) %constructor for the class
-            % protected memeber
+            
+            %INPUT:
+            
+            %N: number of simulated units to be used for decoding
+            
+            % protected member
             obj.time = tic;
             obj.start_time = tic;
             % public member
@@ -99,7 +104,13 @@ classdef Simulate_neurons_2Dvelocity_class < handle  % class should be implement
         end % end of constructor
         
         %%%%% main function to create Poisson process depending on the last call
-        function generate_poisson(obj,velocity_vector,mode,varargin) % mode = 1(Calibrated_PD) or 0(preferred_direction)
+        function generate_poisson(obj,velocity_vector,mode,varargin)
+            
+            %INPUT:
+            
+            %velocity_vector: The actual cursor velocity. It Generate Poisson Process depending on cosine angle rate with PD and velocity_vector
+            % mode = 1(Calibrated_PD) or 0(preferred_direction)
+            
             %normalize the vector
             velocity_vector = velocity_vector./norm(velocity_vector);
             %velocity_vector = velocity_vector; %using this second formula will make the control almost perfect but physiologically not plausible.
@@ -126,7 +137,7 @@ classdef Simulate_neurons_2Dvelocity_class < handle  % class should be implement
                     startGenerateTime = obj.TotalTime - obj.TimeSinceLastCall;
                     endGenerateTime=obj.TotalTime;
                 case 1
-                    % re-construct the "poisson_spike" memeber
+                    % re-construct the "poisson_spike" member
                     startGenerateTime = 0;
                     endGenerateTime = obj.TimeSinceLastCall;
                     obj.poisson_spike = cell(128,7); % public

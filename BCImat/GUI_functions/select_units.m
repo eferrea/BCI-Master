@@ -1,10 +1,11 @@
-function select_units (object, eventdata)
-%to display and select units from GUI
+%% to display and select units from GUI
 % @E.Ferrea,2015
+function select_units (object, eventdata)
 
-%INPUT
-%it takes the calibrator object as input and set the neurons that are used
-%for decoding
+%INPUT:
+
+%object: it takes the calibrator object as input and set the neurons that are used for decodding
+%eventdata:it defines the type of Matlab GUI. It should be 'WindowButtonDownFcn'
 
 %%
 C = get (gca, 'CurrentPoint');

@@ -97,6 +97,10 @@ elapsed_time = zeros(ceil(max_trial_duration/BCI_update_time),1);
 interval = 0;
 %We want to store data coming from the task controller in matlab timings
 
+%Define range of speeds between LOW and HIGH that are used to calibrate the decoder. It is a good choice to limit the range since 
+%too high and too low speeds could come from artifacts form the recording device. 
+low_velocity_threshold = 0.2;
+high_velocity_threshold = 500;
 
 %store in a table task parameters that will be used to dsave the data: the
 %table is suitable for two reasons: ease of indexing entries and better
@@ -323,7 +327,8 @@ while (task_running)
     %store variables for displaying correlation values in the IDLE mode.
     bci.online_correlation(tp,velocity_vector(counter,:)',decoder_on,isIDLE);
     %run a calibration step if the target was hit (inside the function regression is done at the reward stage)
-    cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector);
+    cal.loop(tp,global_time,interval,number_of_spikes,position_vector(counter,:)',velocity_vector(counter,:)',decoder_on,bci,direction_vector,...
+        low_velocity_threshold ,high_velocity_threshold);
     
     %send decoder info to TC
     pos = bci.get_position();
@@ -380,9 +385,14 @@ if(isBrain)
 end
 vrpn_server('stop_server')
 close all
-%% Define Callback functions when specific buttons are pressed
+%% Define Callback functions when specific buttons are pressed on the relative GUI. 
 
+%Switch to BCI control
     function switch_BCI(hObj,event)
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
         
         if mod(parity_check,2) == 0
             
@@ -397,8 +407,13 @@ close all
         parity_check = parity_check + 1;
     end
 
+%Update calibration
     function update_regression(hObj,event)
         
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
         
         cal.update_regression(decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
@@ -407,7 +422,13 @@ close all
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
+%Load a saved decoder
     function load_decoder(hObj,event)
+        
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
         
         cal.load_decoder(bci);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
@@ -416,7 +437,13 @@ close all
         display_array_properties(0.01, 0.35, .42, .6,reshaped_correlation',active_neurons');
     end
 
+%Update decoder values
     function update_decoder(hObj,event)
+        
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
         
         cal.update_decoder(bci,decoder_on);
         reshaped_correlation = reshape(cal.correlation_tuning,128,6);
@@ -426,15 +453,26 @@ close all
         vrpn_server('send_message',cal.filename)
     end
 
+%Reset calibration matrix
     function reset_calibrator(hObj,event)
+        
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
         
         cal.reset_calibrator();
         
     end
 
 
-
+%specify the amount of control from the computer and the brain. 1 full computer control, 0 full brain control
+%values in between 1-0 are also allowed.
     function shared_control(src,eventdata)
+        
+        %INPUT:
+        %src: input string
+        
         str=get(src,'String')
         
         if isempty(str2num(str))
@@ -454,8 +492,14 @@ close all
     end
 
 
-
+%Quit the program
     function stop_BCI(hObj,event)
+        
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
+        
         bci.save_decoder();
         delete(bci) %destructor
         delete(cal) %destructor
@@ -465,8 +509,15 @@ close all
         task_running = false;
     end
 
-
+%Switch to open loop control.
     function BCI_idle(hObj,event)
+        
+        %INPUT:
+        
+        % hObj:    handle to figure
+        % event:  reserved - to be defined in a future version of MATLAB
+        
+        
         vrpn_server('send_message','BCIIDLEON') %notify it to TC
         if mod(parity_idle,2) == 0
             display('BCI IDLE ON')

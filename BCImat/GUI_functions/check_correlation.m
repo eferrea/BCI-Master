@@ -1,10 +1,12 @@
-function check_correlation (object, eventdata)
 % to display correlation values between real and decoded movemnets in the idle mode
 % @E.Ferrea,2015
+function check_correlation (object, eventdata)
 
-%INPUT
-%take decoder object as input and display check Pearson Correlation
-%coefficients
+
+%INPUT:
+
+%object:take decoder object name as input and display check Pearson Correlation coefficients
+%eventdata:it defines the type of Matlab GUI. It should be 'PushButton'
 
 %%
 object.check_correlation = true;

@@ -24,22 +24,31 @@ classdef Task_state_class < handle
         function obj= Task_state_class()
             obj.trial_index=0;
             obj.history={};
-            obj.new_trial_callback=@(tmp)disp('new_trial');
-            obj.parameters.REFERENCE_X_DIRECTION = nan;
-            obj.parameters.REFERENCE_Y_DIRECTION = nan;
-            obj.parameters.REFERENCE_Z_DIRECTION = nan;
-            obj.parameters.X_FIXATION = 0;
-            obj.parameters.Y_FIXATION = 0;
-            obj.iseye = [];
-            obj.trial_index_TC = 0;
+            obj.new_trial_callback=@(tmp)disp('new_trial'); %define call back function
+            obj.parameters.REFERENCE_X_DIRECTION = nan; %target x position
+            obj.parameters.REFERENCE_Y_DIRECTION = nan; %target y position
+            obj.parameters.REFERENCE_Z_DIRECTION = nan; %target z position
+            obj.parameters.X_FIXATION = 0; %eye fix x position
+            obj.parameters.Y_FIXATION = 0; %eye fix y position
+            obj.iseye = []; %to store if an eye tracker is used
+            obj.trial_index_TC = 0; %initialize counter for number of trial
             
         end
         
         function set_new_trial_callback(obj,fun)
+            
+            %INPUT: 
+            
+            %fun: callback function name (defined in constructor), it simply displays when a new trial starts
             obj.new_trial_callback=fun;
         end
-        
+ 
+        %it parses the message from VRPN       
         function parse_messages(obj,msgs)
+            
+            %INPUT: 
+            
+            %msgs: vrpn text messages to be parsed inside BCImat
             
             obj.new_stage=false;
             obj.new_trial=false;

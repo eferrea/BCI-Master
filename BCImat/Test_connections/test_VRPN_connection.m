@@ -1,12 +1,12 @@
-
-function test_VRPN_connection(server_address,ismessage)
 % Check if VRPN messages and cursor positions are transmitted to BCImat
 %@ E.Ferrea, 2015
+function test_VRPN_connection(server_address,ismessage)
+
 
 % INPUT:
 %server_address: a vrpn server address from where to read the data;
 %ismessage: if =1 display messages read from the server, if =0
-%display curosr position
+%display cursor position
 
 %%
 
