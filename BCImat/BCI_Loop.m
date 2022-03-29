@@ -130,7 +130,11 @@ d2s=@(t)t*86400;
 %server_address = 'TrackerBCI@172.17.6.10';
 vrpn_server('start_server',server_address)
 %% %initialize VRPN matlab client
-client_address = [client_address ':' num2str(port)];
+%The input port could be eventually omitted in case two BCI and task controller run on two computers
+
+if exist('port','var')
+    client_address = [client_address ':' num2str(port)];
+end
 vrpn_client('open_connection',client_address ) %same computer
 
 %% initialize objects
@@ -501,6 +505,7 @@ close all
         % event:  reserved - to be defined in a future version of MATLAB
         
         bci.save_decoder();
+        bci.close_decoder();
         delete(bci) %destructor
         delete(cal) %destructor
         fclose(fileID_track);

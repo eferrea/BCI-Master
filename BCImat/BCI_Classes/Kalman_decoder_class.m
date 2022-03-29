@@ -238,6 +238,10 @@ classdef Kalman_decoder_class < handle;
             %also retrieved offline by using the spikes and the calibrated_values
             fprintf(obj.fileID_decoder,obj.printfFormatBody,obj.time(obj.sample),obj.K);
         end
+        %Close text file used to save decoder params
+        function obj = close_decoder(obj)     
+            fclose(obj.fileID_decoder);
+        end
         
         
         %apply rotation to prefer directions of a subset of neurons
