@@ -20,7 +20,7 @@ classdef Task_state_class < handle
     end
     
     methods
-        %constructor Initialize
+        %constructor Initialize.
         function obj= Task_state_class()
             obj.trial_index=0;
             obj.history={};
