@@ -22,7 +22,7 @@ affiliations:
    index: 2
  - name: Bernstein Center for Computational Neuroscience, Goettingen, Germany
    index: 3
- - name: ULR 7369 ‑ URePSSS ‑ Unite de Recherche Pluridisciplinaire Sport Santé Sociéte, Univ. Littoral Côte d’Opale, Univ. Lille, Univ. Artois, Calais, France. 
+ - name: Univ. Littoral Côte d’Opale, Univ. Lille, Univ. Artois, ULR 7369 - URePSSS - Unité de Recherche Pluridisciplinaire Sport Santé Société, F-62100 Calais, France
    index: 4
  - name: Institute for Neuromodulation and Neurotechnology, University Hospital and University of Tuebingen, Tuebingen, Germany
    index: 5  
