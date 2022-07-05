@@ -1,17 +1,5 @@
 # BCImat:  a Matlab-based framework for Intracortical Brain-Computer Interfaces and their simulation with an artificial spiking neural network
 
-Markdown:
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.03956/status.svg)](https://doi.org/10.21105/joss.03956)
-
-HTML:
-<a style="border-width:0" href="https://doi.org/10.21105/joss.03956">
-  <img src="https://joss.theoj.org/papers/10.21105/joss.03956/status.svg" alt="DOI badge" >
-</a>
-
-reStructuredText:
-.. image:: https://joss.theoj.org/papers/10.21105/joss.03956/status.svg
-   :target: https://doi.org/10.21105/joss.03956
-
 
 **Content of the package**
 
@@ -187,6 +175,17 @@ Have fun!
 * Wu, W., Gao, Y., Bienenstock, E., Donoghue, J. P., & Black, M. J. (2006). Bayesian population decoding of motor cortical activity using a kalman filter [Journal Article]. Neural Computation, 18(1), 80–118. https://doi.org/10.1162/089976606774841585
 
   
+Markdown:
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03956/status.svg)](https://doi.org/10.21105/joss.03956)
+
+HTML:
+<a style="border-width:0" href="https://doi.org/10.21105/joss.03956">
+  <img src="https://joss.theoj.org/papers/10.21105/joss.03956/status.svg" alt="DOI badge" >
+</a>
+
+reStructuredText:
+.. image:: https://joss.theoj.org/papers/10.21105/joss.03956/status.svg
+   :target: https://doi.org/10.21105/joss.03956
 
 
 
