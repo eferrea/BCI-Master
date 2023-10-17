@@ -69,9 +69,26 @@ Please note that the testing was performed with VRPN version 7.33 and SFML versi
 
 These instructions should help you set up and build the TrackM project. If you have any questions or encounter issues, refer to the respective library's documentation for installation guidance.
 
-**VRPN Matlab client and server for BCImat**
+## VRPN Matlab Client and Server for BCImat
 
-The BCImat framework is a Matlab program that uses Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. Here, we provide precompiled versions of the vrpn_server.cpp and vrpn_client.cpp for 64 bit Matlab both in Mac and Windows. If they do not work, the vrpn_server.cpp and vrpn_client.cpp contained in ./BCI-mat/mex folder need to be mexed with the VRPN library (vrpn.lib) (see mexVrpnServerAndClient.m example on how to do it on Windows and Mac). Please note that for a 64 bit Matlab version a 64 bit version of vrpn.lib needs to be built. Please also note that in Windows for successfully obtaining the Matlab executable of the VRPN server and client, the vrpn.lib needs to be built with the Runtime library Multi-threaded DLL (/MD).
+The BCImat framework is a Matlab program that utilizes Matlab executable (mex) versions of the VRPN client and server applications to exchange information with the task controller. We offer precompiled versions of the `vrpn_server.cpp` and `vrpn_client.cpp` specifically for 64-bit Matlab on both macOS and Windows.
+
+### Precompiled Versions
+
+If the precompiled versions work for your setup, you can use them directly. They are available in this repository.
+
+### Compiling from Source
+
+In case the precompiled versions do not work for your configuration, you can compile the `vrpn_server.cpp` and `vrpn_client.cpp` files located in the `./BCI-mat/mex` folder using the VRPN library (`vrpn.lib`). To compile these files, refer to the `mexVrpnServerAndClient.m` example provided, which demonstrates how to do it on both Windows and macOS.
+
+Please note the following important considerations:
+
+- For a 64-bit Matlab version, a 64-bit version of `vrpn.lib` needs to be built.
+
+- In Windows, to successfully obtain the Matlab executable of the VRPN server and client, the `vrpn.lib` needs to be built with the Runtime library set to Multi-threaded DLL (/MD).
+
+These steps should help you integrate the VRPN Matlab client and server with BCImat for your BCI experiments.
+
 
 
 
