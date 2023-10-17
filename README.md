@@ -21,11 +21,19 @@ BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It
 **Compatibility**
 * BCImat was primarily developed and tested using Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It has also been successfully tested with Matlab version 2018b and the Statistics and Machine Learning Toolbox version 11.4.
 
-**Purpose of the task controller (TrackM)**
+## **Purpose of the task controller (TrackM)**
 
-TrackM is an example software written in c++ implementing a standard task controller for a reaching task. The task controller allows users to perform sequential reaches to a target (green circle) starting from a central fixation circle (gray) with the mouse. This part of the software can be replaced (or expanded) depending on which behavioral task one wants to be performed. Therefore, despite this not being the core of the project, users can test the full BCI closed-loop functionalities by running the task controller simultaneously with the BCI Matlab framework. This part of the project can also be written in any other programming language as far as the VRPN methods are used to send and read the data to and from the BCImat interface. TrackM contains a main.cpp together with a class implementation of the VRPN server method (vrpn_server_class) which should be built with VRPN (for streaming the data via network) and SFML libraries (for graphical displays of targets to be reached). 
+TrackM is a sample software application written in C++, serving as a standard task controller designed for a reaching task. This task controller enables users to perform sequential reaches to a target represented as a green circle, starting from a central fixation circle in gray. While this component isn't the primary focus of the project, it plays a crucial role in enabling users to test the full Brain-Computer Interface (BCI) closed-loop functionalities in conjunction with the BCI Matlab framework. 
+TrackM's interface is not limited to C++; it can be implemented in any programming language that utilizes Virtual-Reality Peripheral Network (VRPN) methods to send and receive data with the BCImat interface. This interoperability opens up possibilities for diverse development environments while ensuring seamless communication with the BCImat framework.
 
-**Build the task controller project TrackM**
+**Components**
+TrackM consists of the following components:
+
+* main.cpp: The main program file responsible for orchestrating the task controller's functionality.
+* vrpn_server_class: A class implementation used to establish a VRPN server method. This method facilitates * data streaming via network communication.
+Dependencies: TrackM relies on external libraries, including VRPN (for data streaming) and SFML (for graphical displays of target objects).
+
+## **Build the task controller project TrackM**
 
 The task controller folder TrackM contains the source code and a CMakeLists.txt to build the project under different OS architectures. 
 Before using CMake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
