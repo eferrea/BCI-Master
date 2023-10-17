@@ -49,17 +49,14 @@ Before proceeding, make sure you have SFML and VRPN installed. After installing 
 
 On Windows, you will need to specify the paths to the include and library folders of SFML and VRPN in the `CMakeLists.txt` file. To do this, locate the following lines in the `CMakeLists.txt` file and replace the placeholders with the full paths to your libraries:
 
+```cmake
 SET(SFML_INCLUDE_PATH <change to the full path of your SFML include directory>)
-
 SET(VRPN_INCLUDE_PATH <change to the full path of your VRPN include directory>)
-
 SET(SFML_LIBRARY_PATH <change to the full path of your SFML lib directory>)
-
 SET(VRPN_LIBRARY_PATH <change to the full path containing vrpn.lib>)
-
 SET(VRPN_QUAT_LIBRARY_PATH <change to the full path containing quat.lib>)
-
 SET(SFML_DLL_PATH <change to SFML folder containing DLLs, they should be in sfml-install-path/bin>)
+```
 
 ### Linux
 On Linux, you generally don't need to specify custom library paths unless you've installed the libraries in non-standard locations.
