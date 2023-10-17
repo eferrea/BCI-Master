@@ -7,7 +7,7 @@ This package contains two main components:
 1. A Matlab BCI framework (BCImat).
 2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in a closed-loop fashion.
 
-**Purpose of the BCI framework (BCIMat)**
+## **Purpose of the BCI framework (BCIMat)**
 
 BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It serves as a Brain-Computer Interface (BCI) framework designed to interpret movement intentions from intracortical neural activity and translate them into cursor movements. BCImat supports two primary modes of operation:
 1. **Simulation mode**
