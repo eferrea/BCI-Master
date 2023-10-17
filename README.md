@@ -1,14 +1,14 @@
 # BCImat:  a Matlab-based framework for Intracortical Brain-Computer Interfaces and their simulation with an artificial spiking neural network
 
 
-## **Content of the package**
+## Content of the package
 
 This package contains two main components:
 
 1. A Matlab BCI framework (BCImat).
 2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in a closed-loop fashion.
 
-## **Purpose of the BCI framework (BCIMat)**
+## Purpose of the BCI framework (BCIMat)
 
 BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It serves as a Brain-Computer Interface (BCI) framework designed to interpret movement intentions from intracortical neural activity and translate them into cursor movements. BCImat supports two primary modes of operation:
 1. **Simulation mode**
@@ -21,7 +21,7 @@ BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It
 **Compatibility**
 * BCImat was primarily developed and tested using Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It has also been successfully tested with Matlab version 2018b and the Statistics and Machine Learning Toolbox version 11.4.
 
-## **Purpose of the task controller (TrackM)**
+## Purpose of the task controller (TrackM)
 
 TrackM is a sample software application written in C++, serving as a standard task controller designed for a reaching task. This task controller enables users to perform sequential reaches to a target represented as a green circle, starting from a central fixation circle in gray. While this component isn't the primary focus of the project, it plays a crucial role in enabling users to test the full Brain-Computer Interface (BCI) closed-loop functionalities in conjunction with the BCI Matlab framework. 
 TrackM's interface is not limited to C++; it can be implemented in any programming language that utilizes Virtual-Reality Peripheral Network (VRPN) methods to send and receive data with the BCImat interface. This interoperability opens up possibilities for diverse development environments while ensuring seamless communication with the BCImat framework.
