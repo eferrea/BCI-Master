@@ -92,7 +92,7 @@ These steps should help you integrate the VRPN Matlab client and server with BCI
 
 
 
-**Running the full BCI loop (TrackM + BCImat)**
+## Running the full BCI loop (TrackM + BCImat)
 
 1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (TrackM) followed by @*<server_address>*. Also, a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP addresses. They specify the addresses of the computers where the task controller and the BCImat framework run.  
 Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a VRPN server to the BCI framework and reads the information provided by the BCI framework (via *TrackerBCI*) by implementing a VRPN client to update the position of the controlled cursor.
