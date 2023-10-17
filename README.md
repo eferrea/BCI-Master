@@ -34,7 +34,7 @@ TrackM consists of the following components:
 * vrpn_server_class: A class implementation used to establish a VRPN server method. This method facilitates * data streaming via network communication.
 Dependencies: TrackM relies on external libraries, including VRPN (for data streaming) and SFML (for graphical displays of target objects).
 
-# Build the Task Controller Project TrackM
+## Build the Task Controller Project TrackM
 
 The **TrackM** folder contains the source code and a `CMakeLists.txt` file to build the project on different OS architectures. To successfully build **TrackM**, you'll need to have the following libraries installed on your computer:
 
@@ -49,7 +49,6 @@ Before proceeding, make sure you have SFML and VRPN installed. After installing 
 
 On Windows, you will need to specify the paths to the include and library folders of SFML and VRPN in the `CMakeLists.txt` file. To do this, locate the following lines in the `CMakeLists.txt` file and replace the placeholders with the full paths to your libraries:
 
-```cmake
 SET(SFML_INCLUDE_PATH <change to the full path of your SFML include directory>)
 SET(VRPN_INCLUDE_PATH <change to the full path of your VRPN include directory>)
 SET(SFML_LIBRARY_PATH <change to the full path of your SFML lib directory>)
@@ -57,28 +56,16 @@ SET(VRPN_LIBRARY_PATH <change to the full path containing vrpn.lib>)
 SET(VRPN_QUAT_LIBRARY_PATH <change to the full path containing quat.lib>)
 SET(SFML_DLL_PATH <change to SFML folder containing DLLs, they should be in sfml-install-path/bin>)
 
+### Linux
+On Linux, you generally don't need to specify custom library paths unless you've installed the libraries in non-standard locations.
 
+### macOS
+macOS was not extensively tested, but the CMakeLists.txt file contains specific instructions for it. If you encounter issues, you may need to specify the include and library folders for SFML and VRPN on macOS.
 
-## **Build the task controller project TrackM**
+### Library Versions
+Please note that the testing was performed with VRPN version 7.33 and SFML version 2.5.1. Ensure that you have these specific versions installed for compatibility.
 
-The task controller folder TrackM contains the source code and a CMakeLists.txt to build the project under different OS architectures. 
-Before using CMake to generate the build environment, TrackM requires the graphic library SFML (available at https://www.sfml-dev.org/download.php) and the virtual reality peripheral network library (VRPN) (available at https://github.com/vrpn/vrpn) to be installed on your computer. 
-After installing them, you can use CMake to generate the build environment. In Windows, it is necessary to specify in the CmakeLists.txt the path of the include and library folders of SFML and VRPN libraries. Therefore, in the CMakeLists.txt you have to change the content of the SET command to match the full path of your include and lib directories for SFML and VRPN (6 lines in total).
-In practice what you have to change in the CMakeLists.txt is the following:  
-SET(SFML_INCLUDE_PATH *\<change to the full path of your SFML include directory\>*)   
-SET(VRPN_INCLUDE_PATH *\<change to the full path of your VRPN include directory\>*)  
-SET(SFML_LIBRARY_PATH *\<change to the full path of your SFML lib directory\>*)  
-SET(VRPN_LIBRARY_PATH *\<change to the full path containing vrpn.lib\>*)  
-SET(VRPN_QUAT_LIBRARY_PATH *\<change to the full path containing quat.lib\>*)   
-SET(SFML_DLL_PATH *\<change to SFML folder containing DLLs, they should be in sfml-install-path/bin\>*)
- 
-In Linux, it is not necessary to specify these folders unless libraries are installed in custom locations.
-
-macOS was not tested but the CmakeLists also contains specific instructions for it. With macOs the include and library folders should be probably specified.  
-
-We tested VRPN version 7.33 and SFML version 2.5.1 
-
-
+These instructions should help you set up and build the TrackM project. If you have any questions or encounter issues, refer to the respective library's documentation for installation guidance.
 
 **VRPN Matlab client and server for BCImat**
 
