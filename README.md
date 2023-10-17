@@ -14,6 +14,7 @@ BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It
    * BCImat provides a simulated set of cosine-tuned neurons, as described by Georgopoulos et al. in 1982. This mode is intended for testing purposes to ensure the functionality of the BCI framework before using it under real brain control.
 2. **Application mode**
    * In application mode, BCImat interfaces with real neural data obtained from a Blackrock 128-channel recording system (manufactured by Blackrock Microsystems, Salt Lake City, USA). This connection is established using the cbmex code, enabling real intracortical control.
+   
 **Dependencies**
 * The current version of BCImat requires the "Statistics and Machine Learning Toolbox." However, in future releases, efforts will be made to eliminate dependencies on this toolbox.
 **Compatibility**
