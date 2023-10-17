@@ -27,11 +27,37 @@ TrackM is a sample software application written in C++, serving as a standard ta
 TrackM's interface is not limited to C++; it can be implemented in any programming language that utilizes Virtual-Reality Peripheral Network (VRPN) methods to send and receive data with the BCImat interface. This interoperability opens up possibilities for diverse development environments while ensuring seamless communication with the BCImat framework.
 
 **Components**
+
 TrackM consists of the following components:
 
 * main.cpp: The main program file responsible for orchestrating the task controller's functionality.
 * vrpn_server_class: A class implementation used to establish a VRPN server method. This method facilitates * data streaming via network communication.
 Dependencies: TrackM relies on external libraries, including VRPN (for data streaming) and SFML (for graphical displays of target objects).
+
+# Build the Task Controller Project TrackM
+
+The **TrackM** folder contains the source code and a `CMakeLists.txt` file to build the project on different OS architectures. To successfully build **TrackM**, you'll need to have the following libraries installed on your computer:
+
+1. **SFML** (Simple and Fast Multimedia Library) - [Download SFML](https://www.sfml-dev.org/download.php)
+2. **VRPN** (Virtual Reality Peripheral Network) - [VRPN GitHub Repository](https://github.com/vrpn/vrpn)
+
+## Installation Prerequisites
+
+Before proceeding, make sure you have SFML and VRPN installed. After installing these libraries, follow the steps below to generate the build environment using CMake:
+
+### Windows
+
+On Windows, you will need to specify the paths to the include and library folders of SFML and VRPN in the `CMakeLists.txt` file. To do this, locate the following lines in the `CMakeLists.txt` file and replace the placeholders with the full paths to your libraries:
+
+```cmake
+SET(SFML_INCLUDE_PATH <change to the full path of your SFML include directory>)
+SET(VRPN_INCLUDE_PATH <change to the full path of your VRPN include directory>)
+SET(SFML_LIBRARY_PATH <change to the full path of your SFML lib directory>)
+SET(VRPN_LIBRARY_PATH <change to the full path containing vrpn.lib>)
+SET(VRPN_QUAT_LIBRARY_PATH <change to the full path containing quat.lib>)
+SET(SFML_DLL_PATH <change to SFML folder containing DLLs, they should be in sfml-install-path/bin>)
+
+
 
 ## **Build the task controller project TrackM**
 
