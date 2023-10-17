@@ -2,19 +2,22 @@
 
 
 **Content of the package**
+This package contains two main components:
 
 1. A Matlab BCI framework (BCImat).
 2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in a closed-loop fashion.
 
 **Purpose of the BCI framework (BCIMat)**
 
-BCImat is a Matlab GUI-based program implementing a Brain-Computer Interface (BCI) decoder interpreting movement intentions from intracortical neural activity and converting them into cursor movements. Neural activity is provided via two types of interface:
-1. a simulated set of cosine tuned neurons (Georgopoulos et al. 1982) for testing purposes (simulation mode) before using it under real brain control,
-2. a real neural interface using Blackrock 128 channel recording system (Blackrock Microsystems, Salt Lake City, USA, https://www.blackrockmicro.com/) via their cbmex code for real intracortical control (application mode).  
-
-In the actual version, the "Statistics and Machine Learning Toolbox" is needed. In future releases, I will remove dependencies from this toolbox.
-
-The code was maily developed under Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It was also testd with Matlab version 2018b with the Statistics and Machine Learning Toolbox version 11.4.
+BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It serves as a Brain-Computer Interface (BCI) framework designed to interpret movement intentions from intracortical neural activity and translate them into cursor movements. BCImat supports two primary modes of operation:
+1. **Simulation mode**
+   * BCImat provides a simulated set of cosine-tuned neurons, as described by Georgopoulos et al. in 1982. This mode is intended for testing purposes to ensure the functionality of the BCI framework before using it under real brain control.
+2. **Application mode**
+   * In application mode, BCImat interfaces with real neural data obtained from a Blackrock 128-channel recording system (manufactured by Blackrock Microsystems, Salt Lake City, USA). This connection is established using the cbmex code, enabling real intracortical control.
+**Dependencies**
+* The current version of BCImat requires the "Statistics and Machine Learning Toolbox." However, in future releases, efforts will be made to eliminate dependencies on this toolbox.
+**Compatibility**
+* BCImat was primarily developed and tested using Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It has also been successfully tested with Matlab version 2018b and the Statistics and Machine Learning Toolbox version 11.4.
 
 **Purpose of the task controller (TrackM)**
 
