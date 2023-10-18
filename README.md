@@ -92,47 +92,61 @@ These steps should help you integrate the VRPN Matlab client and server with BCI
 
 
 
-## Running the full BCI loop (TrackM + BCImat)
+## Running the Full BCI Loop (TrackM + BCImat)
 
-1. Edit the provided configuration file by entering a name for the Tracker (mouse pointer in this case) implemented in the task controller (TrackM) followed by @*<server_address>*. Also, a name for the Tracker (output of the BCI decoder) implemented in the BCI server is needed and followed by @<client_address>. Here TrackerTC and TrackerBCI are used as names followed by their IP addresses. They specify the addresses of the computers where the task controller and the BCImat framework run.  
-Note that the task controller streams the information of the mouse pointer (*TrackerTC*) by implementing a VRPN server to the BCI framework and reads the information provided by the BCI framework (via *TrackerBCI*) by implementing a VRPN client to update the position of the controlled cursor.
-A name of a port needs to be added to avoid conflicts when the task controller and BCI framework run on the same computer. The provided entry <6666> can be left unchanged.
-Also, the number of dots per inch for the specific screen resolution should be specified for pixel to mm conversions (not critical)
-In summary, the configuration file should look like that (when TrackM and BCImat run on the same computer):
+1. **Edit the Configuration File:**
+   - Open the provided configuration file.
+   - Enter the following information:
+     - Name for the Tracker (mouse pointer in this case) implemented in the task controller (TrackM) followed by `@<server_address>`.
+     - Name for the Tracker (output of the BCI decoder) implemented in the BCI server followed by `@<client_address>`. These addresses specify the addresses of the computers where the task controller and the BCImat framework run.
+     - Define a name for a port to avoid conflicts when the task controller and BCI framework run on the same computer. You can leave the provided entry `<6666>` unchanged.
+     - Specify the number of dots per inch for the specific screen resolution for pixel-to-mm conversions (not critical).
+   
+   An example configuration file should look like this (when TrackM and BCImat run on the same computer):
 
-IP_address_server = TrackerTC@127.0.0.1  
-IP_address_client = TrackerBCI@127.0.0.1   
-port = 6666  
-dpi = 108.79 
+   ```plaintext
+   IP_address_server = TrackerTC@127.0.0.1
+   IP_address_client = TrackerBCI@127.0.0.1
+   port = 6666
+   dpi = 108.79
 
+2. **Run the Task Controller Program (TrackM):**
+   - Execute the Task Controller program, TrackM.
 
-2. Run the task controller program TrackM.
- 
-3. Run the function BCI_loop.m inside BCImat with the following arguments (add also subfolders of BCImat to Matlab path):
+3. **Run BCImat (BCI_loop.m):**
+   - Run the `BCI_loop.m` function inside BCImat with the following arguments (add also subfolders of BCImat to Matlab path):
 
-* for the simulation mode:
-BCI_Loop(isBrain,neurons,BCI_update_time,delay,server_address,client_address,port)
+   * For the simulation mode:
+   ```matlab
+   BCI_Loop(isBrain, neurons, BCI_update_time, delay, server_address, client_address, port)
+
 
 practically it will look like that:
 
+```matlab
 BCI_Loop(false,60,0.05,0,'TrackerBCI@172.17.6.10','TrackerTC@172.17.6.10',6666)
+```
 
-The simulated set of spikes is generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface.
-For each neuron, a random modulation depth, a baseline firing rate, and a preferred direction are randomly chosen. During real movements, the rate is determined by the baseline firing rate summed to the modulation depth scaled by the cosine of the angle between the actual movement direction and the preferred direction of the neuron.
+The simulated set of spikes is generated in a Matlab class according to a Poisson distribution the rate of which is dictated by actual mouse movement performed in the c++ task interface. For each neuron, a random modulation depth, a baseline firing rate, and a preferred direction are randomly chosen. During real movements, the rate is determined by the baseline firing rate summed to the modulation depth scaled by the cosine of the angle between the actual movement direction and the preferred direction of the neuron.
 
-
-* and with the following arguments in case of application mode:
+* And with the following arguments in case of application mode:
+```matlab
 BCI_Loop(true,60,0.05,0,'TrackerBCI@127.0.0.1','TrackerTC@127.0.0.1',6666)
+```
 
 
 Note that the server address corresponds to the client address on the task controller side while the opposite is true from the task controller side. Additionally, the server and client addresses contain the names of the trackers that are named in the example TrackerBCI and TrackerTC preceding the IP addresses.
 
-Also, note that the client address has a specified port that should be assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the Matlab server uses the default port so it is not necessary to specify it independently. 
+Also, note that the client address has a specified port that should be assigned on the task controller side since the same port cannot be used by two different servers with the same IP. Here, the Matlab server uses the default port so it is not necessary to specify it independently.
 
-In the case of use of a Blackrock recording system, the cbmex code streaming spikes from Blackrock hardware is needed. The cbmex code is available upon installation of the Cerebus Central Suite (available at https://www.blackrockmicro.com/support/#manuals-and-software-downloads).
+**Blackrock Recording System (Optional)**
+
+If you are using a Blackrock recording system, you will need the cbmex code for streaming spikes from Blackrock hardware. The cbmex code is available upon installation of the Cerebus Central Suite, which can be downloaded from here
 
 
-**Test procedure (simulation mode)**
+
+
+## Test procedure (simulation mode)
 
 The user should reach the visual targets in the TrackM program by moving the cursor with the mouse for the decoder calibration phase. Once the decoder is calibrated, it can be used to control cursor positions and perform the task (decoding phase). In this phase, mouse movements are used to trigger neuronal responses according to their preferred directions while the decoder converts this activity into movements. The task is a center-out reach task so movements are required to always start at the center of the workspace. This means that to start reaches to a new target, the user should point the mouse to the gray target at the center of the workspace. In this way at the beginning of the reach, the mouse pointer and the cursor are maximally co-localized.    
 
