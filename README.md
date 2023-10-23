@@ -5,7 +5,7 @@
 
 This package contains two main components:
 
-1. A Matlab BCI framework (BCImat).
+1. A Matlab Brain-Computer Interface (BCI) framework (BCImat).
 2. A c++ project (TrackM) implementing a task controller for testing the Matlab BCI framework in a closed-loop fashion.
 
 ## Purpose of the BCI framework (BCIMat)
@@ -18,6 +18,7 @@ BCImat is a Graphical User Interface (GUI)-based program developed in Matlab. It
    
 **Dependencies**
 * The current version of BCImat requires the "Statistics and Machine Learning Toolbox." However, in future releases, efforts will be made to eliminate dependencies on this toolbox.
+
 **Compatibility**
 * BCImat was primarily developed and tested using Matlab 2016a with the Statistics and Machine Learning Toolbox version 10.2. It has also been successfully tested with Matlab version 2018b and the Statistics and Machine Learning Toolbox version 11.4.
 
